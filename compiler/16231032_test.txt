@@ -1,0 +1,136 @@
+﻿const int a_const_int = 1, b_const_int = 2;
+const char a_const_char = 'a', b_const_char = 'A';
+
+int a_var_int,b_vat_int;
+int a_var_int_arr[10];
+char a_var_char,b_var_char;
+char a_var_char_arr[10];
+
+void printnormal(int len){
+	int i;
+	i=0;
+	printf("a_const_int=",a_const_int);
+	printf("a_const_char=",a_const_char);
+	printf("a_var_int",a_var_int);
+	printf("a_var_char",a_var_char);
+
+	printf("a_var_int_arr:");
+	for(i=0;i<len;i=i+1){
+		printf(a_var_int_arr[i]);
+	}
+
+	i=0;
+	printf("a_var_char_arr:");
+	do{
+		printf(a_var_char_arr[i]);
+		i=i+1;
+	}while(i<len-1)
+}
+
+int fibo(int n){
+	if(n==1)
+		return(1);
+	else
+		return(fibo(n-1)+fibo(n-2));
+}
+
+
+int get_gcd(int x,int y){
+	int temp;
+	int z;
+	int i;
+	if(x>y){
+		temp=x;
+		x=y;
+		y=temp;
+	}
+	z=y/x;
+	z=z*x;
+	if(y-z == 0){
+		return (x);
+	}
+	for(i=x/2;i>1;i=i-1){
+		z=x/i;
+		z=z*i;
+		if(x-z == 0){
+			z=y/i;
+			z=z*i;
+			if(y-z == 0)
+				return(i);
+		}
+	}
+	return (1);
+}
+
+char testcompare(char temp){
+	if(temp<'a')
+        printf("ascii smaller than a");
+    else
+        printf("ascii not smaller than a");
+    if(temp<='a')
+        printf("ascii smaller than a or equal to a");
+    else
+        printf("ascii bigger than a");
+    if(temp=='a')
+        printf("ascii equal to a");
+    else
+        printf("ascii not equal to a");
+    if(temp>='a')
+        printf("ascii bigger than a or equal to a");
+    else 
+        printf("ascii smaller than a");
+    if(temp>'a')
+        printf("ascii bigger than a");
+    else
+        printf("ascii not bigger than a");
+    return (temp);
+}
+
+void main(){
+	int i;
+	int len_1,len_2;
+	int x,y;
+	int fib;
+	int num;
+	int gcd;
+	char temp;
+	len_1=10;
+
+	for(i=0;i<len_1;i=i+1){
+		a_var_int_arr[i]=i;
+	}
+
+	i=0;
+	do{
+		a_var_char_arr[i]='a';
+		i=i+1;
+	}while(i<len_1-1)
+
+	a_var_int = a_const_int/1+3;
+	b_vat_int = b_const_int*1-2;
+	a_var_char = 'c';
+	b_var_char = 'C';
+	printnormal(len_1);
+
+	fib = fibo(1);
+	printf("fibo(1):",fib);
+	fib = fibo(4);
+	printf("fibo(4):",fib);
+	printf("please intput number for fibonacci:");
+	scanf(num);
+	fib = fibo(num);
+	printf("fibo:",fib);
+
+	printf("please intput two number for get_gcd:");
+	scanf(x);
+	scanf(y);
+	gcd = get_gcd(x,y);
+	printf("gcd=",gcd);
+
+	scanf(temp);
+	temp=testcompare(temp);
+	printf(temp);
+	return;
+}
+
+

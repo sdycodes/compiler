@@ -1,0 +1,167 @@
+CONST CHAR CORRECT 'c'
+CONST CHAR INCORRECT 'f'
+CONST CHAR COUNT 10
+CONST CHAR BESTNUM 42
+INT a[10]
+CHAR c[10]
+GOTO main
+FUNC comparison
+PARA i_1
+PARA j_1
+#0 = i_1 >= j_1
+BNZ #0 #LABEL0
+#1 = 0 + 1
+RET #1
+GOTO #LABEL1
+SET #LABEL0
+RET 0
+SET #LABEL1
+FUNC quickSort
+PARA left
+PARA right
+CONST CHAR CHOSEN 'k'
+INT i
+INT j
+INT l
+INT temp
+CHAR ctemp
+i = left
+j = right
+#0 = a[left]
+temp = #0
+#1 = c[left]
+ctemp = #1
+PUSH i
+PUSH j
+CALL comparison
+#2 = 1 == #RET
+BNZ #2 #LABEL2
+RET #
+GOTO #LABEL3
+SET #LABEL2
+SET #LABEL3
+SET #LABEL4
+#3 = 1 + 2
+#4 = #3 + 3
+#5 = #4 + 'a'
+l = #5
+SET #LABEL5
+#6 = a[j]
+#7 = #6 >= temp
+BNZ #7 #LABEL6
+l = l - 1
+GOTO #LABEL5
+SET #LABEL6
+#8 = j > i
+BNZ #8 #LABEL7
+#9 = a[j]
+a[i] = #9
+#10 = c[j]
+c[i] = #10
+GOTO #LABEL8
+SET #LABEL7
+SET #LABEL8
+#11 = 0 - 1
+#12 = 2 * 3
+#13 = #11 - #12
+#14 = #13 - -1
+#15 = #14 + -1
+l = #15
+SET #LABEL9
+#16 = a[i]
+#17 = #16 <= temp
+BNZ #17 #LABEL10
+l = l + 1
+GOTO #LABEL9
+SET #LABEL10
+#18 = i < j
+BNZ #18 #LABEL11
+#19 = a[i]
+a[j] = #19
+#20 = c[i]
+c[j] = #20
+GOTO #LABEL12
+SET #LABEL11
+SET #LABEL12
+#21 = i != j
+BEZ #21 #LABEL4
+a[i] = temp
+c[j] = ctemp
+#22 = i - 1
+PUSH left
+PUSH #22
+CALL quickSort
+#23 = i + 1
+PUSH #23
+PUSH right
+CALL quickSort
+FUNC initialize
+INT i
+#0 = COUNT - 1
+i = #0
+SET #LABEL13
+#1 = 0 - 1
+#2 = i > #1
+BNZ #2 #LABEL14
+#3 = 4 / 2
+#4 = #3 - 2
+a[i] = #4
+i = i - 1
+GOTO #LABEL13
+SET #LABEL14
+RET CORRECT
+FUNC main
+CONST CHAR CHOSEN 'w'
+INT i
+INT tmp
+CHAR Tmp
+CALL initialize
+#5 = #RET == 'c'
+BNZ #5 #LABEL15
+i = 0
+SET #LABEL17
+#6 = i < COUNT
+BNZ #6 #LABEL18
+IN tmp
+IN Tmp
+a[i] = tmp
+c[i] = Tmp
+i = i + 1
+GOTO #LABEL17
+SET #LABEL18
+#7 = COUNT - 1
+PUSH 0
+PUSH #7
+CALL quickSort
+OUTS Sorting finished~
+i = 0
+SET #LABEL19
+#8 = COUNT - 1
+#9 = i <= #8
+BNZ #9 #LABEL20
+OUTS This is item 
+#10 = i + 1
+OUTV #10
+#11 = a[i]
+OUTV #11
+#12 = c[i]
+#13 = #12 == CHOSEN
+BNZ #13 #LABEL21
+OUTS This is the one we chose, right? ;)
+GOTO #LABEL22
+SET #LABEL21
+SET #LABEL22
+#14 = a[i]
+#15 = #14 == BESTNUM
+BNZ #15 #LABEL23
+OUTS And here comes the best number!
+GOTO #LABEL24
+SET #LABEL23
+SET #LABEL24
+i = i + 1
+GOTO #LABEL19
+SET #LABEL20
+GOTO #LABEL16
+SET #LABEL15
+SET #LABEL16
+EXIT
