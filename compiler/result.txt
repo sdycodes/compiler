@@ -1,204 +1,3 @@
-2 23 this is a const declaration
-3 27 this is a const declaration
-4 38 this is a const declaration
-5 33 this is a const declaration
-7 15 this is a variable declaration
-8 32 this is a variable declaration
-9 16 this is a variable declaration
-10 32 this is a variable declaration
-11 34 this is a variable declaration
-12 12 this is a variable declaration
-16 13 this is a return statement
-18 3 this is a function definition
-19 13 this is a return statement
-21 3 this is a function definition
-22 13 this is a return statement
-24 3 this is a function definition
-25 13 this is a return statement
-27 3 this is a function definition
-28 13 this is a return statement
-30 3 this is a function definition
-31 13 this is a return statement
-33 4 this is a function definition
-35 14 this is a return statement
-38 14 this is a return statement
-40 1 this is an if statement
-43 4 this is a function definition
-44 7 this is a variable declaration
-45 7 this is a assign statement
-46 11 this is a printf statement
-47 7 this is a assign statement
-48 11 this is a printf statement
-49 8 this is a assign statement
-50 11 this is a printf statement
-51 8 this is a assign statement
-52 11 this is a printf statement
-53 9 this is a assign statement
-54 11 this is a printf statement
-55 9 this is a assign statement
-56 11 this is a printf statement
-57 106 this is a printf statement
-58 8 this is a return statement
-60 3 this is a function definition
-62 12 this is a return statement
-63 3 this is an if statement
-64 12 this is a return statement
-65 7 this is an if statement
-65 27 this is a return statement
-68 4 this is a function definition
-69 7 this is a variable declaration
-70 7 this is a variable declaration
-71 7 this is a variable declaration
-72 8 this is a variable declaration
-73 7 this is a assign statement
-74 7 this is a assign statement
-75 7 this is a assign statement
-76 9 this is a assign statement
-77 31 this is a printf statement
-79 17 this is a printf statement
-80 3 this is an if statement
-81 16 this is a printf statement
-82 3 this is an if statement
-83 16 this is a printf statement
-84 3 this is an if statement
-85 14 this is a printf statement
-86 3 this is an if statement
-87 20 this is a printf statement
-88 3 this is an if statement
-89 18 this is a printf statement
-90 3 this is an if statement
-91 17 this is a printf statement
-92 3 this is an if statement
-93 19 this is a printf statement
-94 3 this is an if statement
-95 19 this is a printf statement
-96 7 this is an if statement
-96 8 this is a return statement
-99 4 this is a function definition
-100 28 this is a const declaration
-101 16 this is a variable declaration
-102 19 this is a printf statement
-103 18 this is a assign statement
-104 20 this is a printf statement
-107 4 this is a function definition
-108 26 this is a variable declaration
-109 12 this is a assign statement
-110 31 this is a printf statement
-111 52 this is a assign statement
-112 62 this is a printf statement
-113 21 this is a assign statement
-114 31 this is a printf statement
-115 21 this is a assign statement
-116 31 this is a printf statement
-117 31 this is a assign statement
-118 41 this is a printf statement
-119 24 this is a assign statement
-120 34 this is a printf statement
-121 24 this is a assign statement
-122 31 this is a printf statement
-123 30 this is a assign statement
-124 37 this is a printf statement
-125 33 this is a assign statement
-126 43 this is a printf statement
-127 16 this is a assign statement
-128 13 this is a assign statement
-129 18 this is a assign statement
-130 64 this is a assign statement
-131 72 this is a printf statement
-132 8 this is a return statement
-135 4 this is a function definition
-136 10 this is a variable declaration
-137 10 this is a scanf statement
-138 11 this is a printf statement
-139 13 this is a scanf statement
-140 11 this is a printf statement
-141 11 this is a printf statement
-142 8 this is a return statement
-145 4 this is a function definition
-146 11 this is a printf statement
-147 11 this is a return statement
-150 4 this is a function definition
-151 4 this is a function definition
-151 21 this is a null statement
-152 4 this is a function definition
-152 21 this is a null statement
-152 22 this is a null statement
-152 23 this is a null statement
-152 24 this is a null statement
-152 25 this is a null statement
-152 26 this is a null statement
-152 27 this is a null statement
-152 28 this is a null statement
-152 29 this is a null statement
-152 30 this is a null statement
-152 31 this is a null statement
-152 32 this is a null statement
-152 33 this is a null statement
-153 4 this is a function definition
-154 17 this is a printf statement
-157 4 this is a function definition
-158 7 this is a variable declaration
-159 8 this is a variable declaration
-160 8 this is a variable declaration
-162 22 this is a function call statement
-164 14 this is a assign statement
-165 19 this is a assign statement
-166 14 this is a assign statement
-167 23 this is a function call statement
-168 14 this is a assign statement
-169 19 this is a assign statement
-170 14 this is a assign statement
-172 2 this is a for statement
-174 8 this is a assign statement
-176 25 this is a assign statement
-178 20 this is a printf statement
-179 4 this is an if statement
-179 13 this is a assign statement
-180 13 this is a do-while statement
-181 14 this is a printf statement
-183 1 this is an if statement
-185 4 this is a function definition
-186 20 this is a const declaration
-187 13 this is a variable declaration
-188 7 this is a variable declaration
-189 30 this is a variable declaration
-190 17 this is a variable declaration
-193 20 this is a assign statement
-194 7 this is a for statement
-194 50 this is a printf statement
-195 33 this is a scanf statement
-196 17 this is a assign statement
-198 22 this is a printf statement
-199 12 this is a assign statement
-200 23 this is a do-while statement
-203 22 this is a printf statement
-206 7 this is a for statement
-206 16 this is a printf statement
-207 22 this is a printf statement
-208 20 this is a printf statement
-209 27 this is a printf statement
-210 21 this is a printf statement
-211 20 this is a printf statement
-212 19 this is a printf statement
-213 19 this is a function call statement
-214 20 this is a function call statement
-215 13 this is a function call statement
-216 17 this is a function call statement
-217 14 this is a function call statement
-218 16 this is a function call statement
-219 9 this is a function call statement
-220 15 this is a function call statement
-221 16 this is a function call statement
-222 16 this is a function call statement
-223 14 this is a assign statement
-224 14 this is a assign statement
-225 14 this is a assign statement
-226 14 this is a assign statement
-227 14 this is a assign statement
-228 18 this is a function call statement
-229 8 this is a return statement
-230 1 this is a main function definition
-230 1 this is a program
 CONST INT g_c_int1 1
 CONST CHAR g_c_charf 'f'
 CONST CHAR g_c_chara 'a'
@@ -287,11 +86,13 @@ SET #LABEL5
 #2 = n - 1
 PUSH #2
 CALL fib
-#3 = n - 2
-PUSH #3
+#3 = #RET
+#4 = n - 2
+PUSH #4
 CALL fib
-#4 = #RET + #RET
-RET #4
+#5 = #RET
+#6 = #3 + #5
+RET #6
 FUNC test_all_cond
 INT a
 INT b
@@ -363,6 +164,7 @@ INT G_v_int_a1
 OUTC g_c_chara
 G_v_int_a1 = 222
 OUTV G_v_int_a1
+RET #
 FUNC test_expr
 INT res_of_expr
 arr[1] = 1
@@ -389,32 +191,35 @@ OUTS 10/+4=
 OUTV res_of_expr
 PUSH 12
 CALL fib
+#11 = #RET
 PUSH 14
 CALL fib
-#11 = #RET - #RET
-res_of_expr = #11
+#12 = #RET
+#13 = #11 - #12
+res_of_expr = #13
 OUTS fib(12)-fib(14)=
 OUTV res_of_expr
-#12 = 'c' + 12
-res_of_expr = #12
+#14 = 'c' + 12
+res_of_expr = #14
 OUTS c + 12 = 
 OUTV res_of_expr
-#13 = 'c' * 12
-#14 = #13 / 1
-res_of_expr = #14
+#15 = 'c' * 12
+#16 = #15 / 1
+res_of_expr = #16
 OUTS c*12/1
 OUTV res_of_expr
-#15 = 12 + 1
-#16 = 1 - #15
-res_of_expr = #16
+#17 = 12 + 1
+#18 = 1 - #17
+res_of_expr = #18
 OUTS 1-(((12+1)))
 OUTV res_of_expr
-#17 = arr[1]
-#18 = #17 * 'b'
+#19 = arr[1]
+#20 = #19 * 'b'
 PUSH 3
 CALL fib
-#19 = #18 + #RET
-res_of_expr = #19
+#21 = #RET
+#22 = #20 + #21
+res_of_expr = #22
 OUTS arr[1]*'b'+fib(3)=
 OUTV res_of_expr
 G_v_int_a1 = 5
@@ -422,16 +227,19 @@ tag[6] = 12
 g_v_char_h = 'h'
 PUSH 'h'
 CALL addone
+#23 = #RET
 PUSH 5
 CALL fib
+#24 = #RET
 PUSH 1
-PUSH #RET
+PUSH #24
 CALL add
-#20 = #RET / G_v_int_a1
-#21 = #RET + #20
-#22 = tag[6]
-#23 = #21 - #22
-res_of_expr = #23
+#25 = #RET
+#26 = #25 / G_v_int_a1
+#27 = #23 + #26
+#28 = tag[6]
+#29 = #27 - #28
+res_of_expr = #29
 OUTS addone('h')+add(1, fib(5))/G_v_int_a1 - tag[6]=
 OUTV res_of_expr
 RET #
@@ -450,12 +258,16 @@ PARA a
 OUTC a
 RET a
 FUNC really_void
+RET #
 FUNC really_void2
+RET #
 FUNC really_void3
+RET #
 FUNC echo
 PARA a
 OUTS a=
 OUTV a
+RET #
 FUNC permutation
 PARA m
 PARA n
@@ -498,20 +310,22 @@ SET #LABEL28
 #10 = chs[i]
 PUSH #10
 CALL echo_char
-r = #RET
-#11 = chs[i]
-#12 = r != #11
-BNZ #12 #LABEL29
+#11 = #RET
+r = #11
+#12 = chs[i]
+#13 = r != #12
+BNZ #13 #LABEL29
 OUTS error
 GOTO #LABEL30
 SET #LABEL29
 SET #LABEL30
-#13 = i + 1
-i = #13
-#14 = i < 5
-BEZ #14 #LABEL28
+#14 = i + 1
+i = #14
+#15 = i < 5
+BEZ #15 #LABEL28
 OUTS  
 SET #LABEL25
+RET #
 FUNC main
 CONST INT len 10
 INT i
@@ -520,12 +334,13 @@ INT user_input2
 INT res_of_expr
 i = 0
 SET #LABEL31
-#15 = i < len
-BNZ #15 #LABEL32
-#16 = i + 1
-PUSH #16
+#16 = i < len
+BNZ #16 #LABEL32
+#17 = i + 1
+PUSH #17
 CALL fib
-arr[i] = #RET
+#18 = #RET
+arr[i] = #18
 i = i + 1
 GOTO #LABEL31
 SET #LABEL32
@@ -535,46 +350,53 @@ IN user_input2
 i = user_input1
 SET #LABEL33
 OUTS  
-#17 = arr[i]
-OUTV #17
-#18 = i + 1
-i = #18
-#19 = i <= user_input2
-BEZ #19 #LABEL33
+#19 = arr[i]
+OUTV #19
+#20 = i + 1
+i = #20
+#21 = i <= user_input2
+BEZ #21 #LABEL33
 i = user_input2
 SET #LABEL34
-#20 = i >= user_input1
-BNZ #20 #LABEL35
+#22 = i >= user_input1
+BNZ #22 #LABEL35
 OUTS  
-#21 = arr[i]
-OUTV #21
+#23 = arr[i]
+OUTV #23
 i = i - 1
 GOTO #LABEL34
 SET #LABEL35
 CALL foo1
-OUTV #RET
+#24 = #RET
+OUTV #24
 PUSH 1
 PUSH 'b'
 CALL foo2
-OUTV #RET
-#22 = 0 + 2
+#25 = #RET
+OUTV #25
+#26 = 0 + 2
 PUSH 1
-PUSH #22
+PUSH #26
 CALL add
-OUTV #RET
+#27 = #RET
+OUTV #27
 PUSH 'a'
 PUSH 'b'
 CALL addchar
-OUTV #RET
+#28 = #RET
+OUTV #28
 PUSH 'F'
 CALL addone
-OUTV #RET
+#29 = #RET
+OUTV #29
 PUSH 16
 CALL addint
-OUTV #RET
+#30 = #RET
+OUTV #30
 PUSH 'c'
 CALL foo3
-OUTC #RET
+#31 = #RET
+OUTC #31
 CALL test_string_int
 CALL test_diff_domain
 CALL test_expr

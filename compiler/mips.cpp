@@ -18,18 +18,24 @@ void mc2mp() {
 	mce tmp;
 	bool islocal;
 	vector<string> paras;
-	for (int i = 0;i < mc.size();i++) {
+	int def_loc, def_context_offset;
+	for (int i = 0;i < (int)mc.size();i++) {
 		if (mc[i].op == "LABEL") {
-			if (mc[i].n1[0] == '#') {
+			if (mc[i].n1[0] == '$') {
 				gen_mips(mc[i].n1);
 			}
 			else {
-				//what should a function do
+				def_loc = search_tab(mc[i].n1, islocal);
+				def_context_offset = st[def_loc].size - 31*4;
+				for (int j = 2;j <=28;j++)
+					gen_mips("sw", "$"+to_string(j), "$sp", to_string(def_context_offset+(j-1)*4));
+				gen_mips("sw", "$" + to_string(30), "$sp", to_string(def_context_offset + (30 - 1) * 4));
+				gen_mips("sw", "$" + to_string(31), "$sp", to_string(def_context_offset + (31 - 1) * 4));
 			}
 		}
 		else if (mc[i].op == "ADD"||mc[i].op=="SUB") {
-			int loc1 = search_tab(mc[i].n1, islocal);
-			int loc2 = search_tab(mc[i].n2, islocal);
+			int loc1 = search_tab(mc[i].n1, islocal, def_loc);
+			int loc2 = search_tab(mc[i].n2, islocal, def_loc);
 			if (loc1 != -1 && st[loc1].type == ST_CONST && loc2 != -1 && st[loc2].type == ST_CONST) {
 				int res = mc[i].op == "ADD" ? st[loc1].val + st[loc2].val : st[loc1].val - st[loc2].val;
 				gen_mips("li", get_reg(mc[i].res), to_string(res));
@@ -51,8 +57,8 @@ void mc2mp() {
 			}
 		}
 		else if(mc[i].op=="MULT"||mc[i].op=="DIV"){
-			int loc1 = search_tab(mc[i].n1, islocal);
-			int loc2 = search_tab(mc[i].n2, islocal);
+			int loc1 = search_tab(mc[i].n1, islocal, def_loc);
+			int loc2 = search_tab(mc[i].n2, islocal, def_loc);
 			if (loc1 != -1 && st[loc1].type == ST_CONST && loc2 != -1 && st[loc2].type == ST_CONST) {
 				int res = mc[i].op == "MULT"?st[loc1].val*st[loc2].val: st[loc1].val/st[loc2].val;
 				gen_mips("li", get_reg(mc[i].op), to_string(res));
@@ -80,9 +86,30 @@ void mc2mp() {
 			i--;
 		}
 		else if (mc[i].op == "CALL") {
-			
+			int loc = search_tab(mc[i].n1, islocal);
+			//alloc a stack
+			gen_mips("subi", "$sp", "$sp", to_string(st[loc].size));
+			//pass parameters
+			for (int j = 0;j < paras.size();j++) {
+				gen_mips("sw", get_reg(paras[j]), "$sp", to_string(j*4));
+			}
+			paras.clear();
+			//jump to function
+			gen_mips("jal", mc[i].n1);
+			//release the stack
+			gen_mips("addi", "$sp", "$sp", to_string(st[loc].size));
 		}
-		else if (mc[i].op == "RET") {}
+		else if (mc[i].op == "RET") {
+			//put the result on $v0
+			if (mc[i].n1 != "#")
+				gen_mips("move", "$v0", get_reg(mc[i].n1));
+			//recover context def_loc and def_context still can be used
+			for (int j = 2;j <= 28;j++)
+				gen_mips("lw", "$" + to_string(j), "$sp", to_string(def_context_offset + (j - 1) * 4));
+			gen_mips("lw", "$" + to_string(30), "$sp", to_string(def_context_offset + (30 - 1) * 4));
+			gen_mips("lw", "$" + to_string(31), "$sp", to_string(def_context_offset + (31 - 1) * 4));
+			gen_mips("jr", "$ra");
+		}
 		else if (mc[i].op == "OUTS"|| mc[i].op == "OUTV"|| mc[i].op == "OUTC") {
 			gen_mips("li", "$v0", mc[i].op == "OUTS" ? "4" : mc[i].op == "OUTV" ? "5" : "11");
 			gen_mips("la", "$a0", mc[i].n1);
@@ -119,10 +146,32 @@ void mc2mp() {
 			else if (mc[i - 1].op == "NE"&&mc[i].op == "BEZ")
 				gen_mips("bne", get_reg(mc[i - 1].n1), get_reg(mc[i - 1].n2), mc[i].res);
 		}
+		else if (mc[i].op == "INC"||mc[i].op=="INV") {
+			gen_mips("li", "$v0", mc[i].op=="INV"?"5":"12");
+			gen_mips("move", get_reg(mc[i].n1), "$v0");
+		}
+		else if (mc[i].op == "GOTO") {
+			gen_mips("j", mc[i].n1);
+		}
+		else if (mc[i].op == "ASSIGN") {
+			gen_mips("move", get_reg(mc[i].res), get_reg(mc[i].n1));
+		}
+		else if (mc[i].op == "SELEM") {
+			int arr_loc = search_tab(mc[i].res, islocal, def_loc);
+			gen_mips("addi", "$k0", "$sp", to_string(st[arr_loc].addr));
+			gen_mips("add", "$k0", "$k0", get_reg(mc[i].n1));
+			gen_mips("sw", get_reg(mc[i].n2), "$k0", "0");
+		}
+		else if (mc[i].op == "LELEM") {
+			int arr_loc = search_tab(mc[i].res, islocal, def_loc);
+			gen_mips("addi", "$k0", "$sp", to_string(st[arr_loc].addr));
+			gen_mips("add", "$k0", "$k0", get_reg(mc[i].n1));
+			gen_mips("lw", get_reg(mc[i].res), "$k0", get_reg(mc[i].n2));
+		}
 	}
 }
 
 void dump_mips() {
-	for (int i = 0;i < mp.size();i++) {
+	for (int i = 0;i < (int)mp.size();i++) {
 	}
 }

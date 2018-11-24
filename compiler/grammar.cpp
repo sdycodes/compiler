@@ -10,7 +10,7 @@
 #define else_ERR_break(x,y) else{errmsg(x);break;}
 string factor(bool &onlyChar) {
 	int co = 1;
-	char tc;
+	//char tc;
 	string t, rec;
 	switch (type) {
 	case PLUS:
@@ -54,7 +54,8 @@ string factor(bool &onlyChar) {
 			if (st[ident_idx].kind == ST_FUNC) {
 				nextsym(type, val, name);
 				funcCall(ident_idx);
-				t = "#RET";
+				t = gent();
+				genmc("ASSIGN", "#RET", "0", t);
 			}
 			else if (st[ident_idx].kind == ST_ARR) {
 				nextsym(type, val, name);
@@ -303,7 +304,7 @@ void scanfstmt() {
 				loc = search_tab(name, islocal);
 				if (loc != -1) {
 					if (st[loc].kind != ST_FUNC && st[loc].kind != ST_ARR) {
-						genmc("IN", st[loc].name, "0", "0");
+						genmc(st[loc].type==ST_INT?"INV":"INC", st[loc].name, "0", "0");
 						nextsym(type, val, name);
 						if (type == COMMA) {
 							nextsym(type, val, name);
@@ -591,15 +592,27 @@ int paraList() {
 }
 void funcDef(int loc) {
 	tno = 0;
+	lno = 0;
 	int num = paraList();
 	st[loc].val = num;
 	genmc("LABEL", st[loc].name, "0", "0");
+	int func_loc = mc.size() - 1;
 	if (type == LBRACE) {
 		nextsym(type, val, name);
 		statements();
 		cal_func_size(loc);
 	}
 	else_ERR("expect a left brace", 1);
+	int i;
+	for (i = func_loc;i < (int)mc.size();i++) {
+		if (mc[i].op == "RET")
+			break;
+	}
+	if (i == mc.size()&&st[loc].type==ST_VOID)
+		genmc("RET", "#", "0", "0");
+	else if (i == mc.size()) {
+		errmsg("expect a return value", 31);
+	}
 	printf("%d %d this is a function definition\n",lc, cc);
 }
 void varDecl(int var_type, bool islocal) {

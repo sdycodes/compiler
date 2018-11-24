@@ -25,14 +25,17 @@ int insert_tab(bool islocal, string name, int kind, int type, int val, int size,
 	return stp - 1;
 }
 
-int search_tab(string name, bool &islocal) {
-	int loc = stp - 1;
-	while (st[loc].kind != ST_FUNC && loc>=0) {
+int search_tab(string name, bool &islocal, int def_loc) {
+	int loc = def_loc==-1?stp - 1:def_loc+1;
+	while (st[loc].kind != ST_FUNC && loc>=0 && loc<stp) {
 		if (st[loc].name == name) {
 			islocal = true;
 			return loc;
 		}
-		loc--;
+		if (def_loc != -1)
+			loc--;
+		else
+			loc++;
 	}
 	map<string, int>::iterator it = stidx.find(name);
 	// local variable
@@ -50,6 +53,7 @@ void cal_func_size(int loc) {
 		size += st[i].size;
 		i++;
 	}
+	st[loc].addr = size;
 	size += 4 * tno;
 	size += 4 * 31;
 	st[loc].size = size;

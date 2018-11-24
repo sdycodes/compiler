@@ -16,7 +16,7 @@ void genmc(string op, string n1, string n2, string res) {
 
 string genlabel() {
 	lno++;
-	return "#LABEL"+to_string(lno-1);
+	return "$LABEL"+to_string(lno-1);
 }
 
 string gent() {
@@ -100,7 +100,7 @@ void dumpmc() {
 			printf("%s = %s %s %s\n", mc[j].res.c_str(), mc[j].n1.c_str(), mop.c_str(), mc[j].n2.c_str());
 		}
 		else if (mc[j].op == "CALL" || mc[j].op == "PUSH" || mc[j].op == "GOTO" || mc[j].op == "RET" || \
-			mc[j].op == "IN" || mc[j].op == "OUTC" || mc[j].op == "OUTV")
+			mc[j].op == "INC" ||mc[j].op =="INV"|| mc[j].op == "OUTC" || mc[j].op == "OUTV")
 			printf("%s %s\n", mc[j].op.c_str(), mc[j].n1.c_str());
 		else if (mc[j].op == "ASSIGN")
 			printf("%s = %s\n", mc[j].res.c_str(), mc[j].n1.c_str());
