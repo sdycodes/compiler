@@ -50,6 +50,8 @@ void cal_func_size(int loc) {
 		size += st[i].size;
 		i++;
 	}
+	size += 4 * tno;
+	size += 4 * 31;
 	st[loc].size = size;
 }
 void dump_tab() {

@@ -63,4 +63,6 @@ typedef struct midcode {
 extern vector<mce> mc;
 extern int tno;
 extern int lno;
+
+extern vector<mce> mp;
 #endif

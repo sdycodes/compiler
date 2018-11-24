@@ -65,6 +65,9 @@
     <ClCompile Include="midcode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="mips.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="16231019_test.txt">

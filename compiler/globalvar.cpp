@@ -27,6 +27,10 @@ map<string, int> stidx;
 vector<mce> mc;
 int tno = 0;
 int lno = 0;
+
+//target code data structure
+vector<mce> mp;
+
 void init_gvar() {
 	reserve_tab["+"] = PLUS;
 	reserve_tab["-"] = MINUS;

@@ -33,7 +33,7 @@ void dumpmc() {
 			if(st[i].type==ST_CHAR)
 				printf("CONST CHAR %s '%c'\n", st[i].name.c_str(), (st[i].val%256));
 			else
-				printf("CONST CHAR %s %d\n", st[i].name.c_str(), st[i].val);
+				printf("CONST INT %s %d\n", st[i].name.c_str(), st[i].val);
 		}
 		else if (st[i].kind == ST_VAR) {
 			if (st[i].type == ST_CHAR)
