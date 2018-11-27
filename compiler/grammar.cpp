@@ -30,9 +30,7 @@ string factor(bool &onlyChar) {
 		nextsym(type, val, name);
 		break;
 	case CHAR:
-		t = (char)(val % 256);
-		t = "'" + t;
-		t = t + "'";
+		t = to_string(val % 256);
 		nextsym(type, val, name);
 		break;
 	case LPAR:

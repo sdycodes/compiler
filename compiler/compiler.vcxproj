@@ -156,6 +156,7 @@
     <ClInclude Include="grammar.h" />
     <ClInclude Include="lexical.h" />
     <ClInclude Include="midcode.h" />
+    <ClInclude Include="mips.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="sign_table.h" />
     <ClInclude Include="stdHeader.h" />

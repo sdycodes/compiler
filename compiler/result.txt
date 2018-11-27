@@ -1,3 +1,243 @@
+2 23 this is a const declaration
+3 27 this is a const declaration
+4 38 this is a const declaration
+5 33 this is a const declaration
+7 15 this is a variable declaration
+8 32 this is a variable declaration
+9 16 this is a variable declaration
+10 32 this is a variable declaration
+11 34 this is a variable declaration
+12 12 this is a variable declaration
+16 13 this is a return statement
+18 3 this is a function definition
+ERROR: line:19, col:9	undefined identifier
+19 13 this is a return statement
+21 3 this is a function definition
+ERROR: line:22, col:9	undefined identifier
+22 13 this is a return statement
+24 3 this is a function definition
+ERROR: line:25, col:9	undefined identifier
+25 13 this is a return statement
+27 3 this is a function definition
+28 13 this is a return statement
+30 3 this is a function definition
+31 13 this is a return statement
+33 4 this is a function definition
+35 14 this is a return statement
+38 14 this is a return statement
+40 1 this is an if statement
+43 4 this is a function definition
+44 7 this is a variable declaration
+45 7 this is a assign statement
+46 11 this is a printf statement
+47 7 this is a assign statement
+48 11 this is a printf statement
+49 8 this is a assign statement
+50 11 this is a printf statement
+51 8 this is a assign statement
+52 11 this is a printf statement
+53 9 this is a assign statement
+54 11 this is a printf statement
+55 9 this is a assign statement
+56 11 this is a printf statement
+57 106 this is a printf statement
+58 8 this is a return statement
+60 3 this is a function definition
+62 12 this is a return statement
+63 3 this is an if statement
+64 12 this is a return statement
+65 7 this is an if statement
+65 27 this is a return statement
+68 4 this is a function definition
+69 7 this is a variable declaration
+70 7 this is a variable declaration
+71 7 this is a variable declaration
+72 8 this is a variable declaration
+ERROR: line:73, col:2	undefined identifier
+ERROR: line:73, col:4	illegal beginning of a statement
+73 7 this is a null statement
+ERROR: line:74, col:2	undefined identifier
+ERROR: line:74, col:4	illegal beginning of a statement
+74 7 this is a null statement
+ERROR: line:75, col:2	undefined identifier
+ERROR: line:75, col:4	illegal beginning of a statement
+75 7 this is a null statement
+76 9 this is a assign statement
+77 31 this is a printf statement
+ERROR: line:78, col:5	undefined identifier
+ERROR: line:78, col:8	undefined identifier
+79 17 this is a printf statement
+80 3 this is an if statement
+ERROR: line:80, col:5	undefined identifier
+ERROR: line:80, col:7	undefined identifier
+81 16 this is a printf statement
+82 3 this is an if statement
+ERROR: line:82, col:5	undefined identifier
+ERROR: line:82, col:7	undefined identifier
+83 16 this is a printf statement
+84 3 this is an if statement
+85 14 this is a printf statement
+86 3 this is an if statement
+ERROR: line:86, col:5	undefined identifier
+87 20 this is a printf statement
+88 3 this is an if statement
+ERROR: line:88, col:5	undefined identifier
+89 18 this is a printf statement
+90 3 this is an if statement
+ERROR: line:90, col:5	undefined identifier
+ERROR: line:90, col:8	undefined identifier
+91 17 this is a printf statement
+92 3 this is an if statement
+ERROR: line:92, col:5	undefined identifier
+ERROR: line:92, col:8	undefined identifier
+93 19 this is a printf statement
+94 3 this is an if statement
+95 19 this is a printf statement
+96 7 this is an if statement
+96 8 this is a return statement
+99 4 this is a function definition
+100 28 this is a const declaration
+101 16 this is a variable declaration
+102 19 this is a printf statement
+103 18 this is a assign statement
+104 20 this is a printf statement
+107 4 this is a function definition
+108 26 this is a variable declaration
+109 12 this is a assign statement
+110 31 this is a printf statement
+ERROR: line:111, col:12	undefined identifier
+ERROR: line:111, col:14	illegal beginning of a statement
+111 52 this is a null statement
+ERROR: line:112, col:60	undefined identifier
+112 62 this is a printf statement
+ERROR: line:113, col:12	undefined identifier
+ERROR: line:113, col:14	illegal beginning of a statement
+113 21 this is a null statement
+ERROR: line:114, col:29	undefined identifier
+114 31 this is a printf statement
+ERROR: line:115, col:12	undefined identifier
+ERROR: line:115, col:14	illegal beginning of a statement
+115 21 this is a null statement
+ERROR: line:116, col:29	undefined identifier
+116 31 this is a printf statement
+ERROR: line:117, col:12	undefined identifier
+ERROR: line:117, col:14	illegal beginning of a statement
+117 31 this is a null statement
+ERROR: line:118, col:39	undefined identifier
+118 41 this is a printf statement
+ERROR: line:119, col:12	undefined identifier
+ERROR: line:119, col:14	illegal beginning of a statement
+119 24 this is a null statement
+ERROR: line:120, col:32	undefined identifier
+120 34 this is a printf statement
+ERROR: line:121, col:12	undefined identifier
+ERROR: line:121, col:14	illegal beginning of a statement
+121 24 this is a null statement
+ERROR: line:122, col:29	undefined identifier
+122 31 this is a printf statement
+ERROR: line:123, col:12	undefined identifier
+ERROR: line:123, col:14	illegal beginning of a statement
+123 30 this is a null statement
+ERROR: line:124, col:35	undefined identifier
+124 37 this is a printf statement
+ERROR: line:125, col:12	undefined identifier
+ERROR: line:125, col:14	illegal beginning of a statement
+125 33 this is a null statement
+ERROR: line:126, col:41	undefined identifier
+126 43 this is a printf statement
+127 16 this is a assign statement
+128 13 this is a assign statement
+129 18 this is a assign statement
+ERROR: line:130, col:12	undefined identifier
+ERROR: line:130, col:14	illegal beginning of a statement
+130 64 this is a null statement
+ERROR: line:131, col:70	undefined identifier
+131 72 this is a printf statement
+132 8 this is a return statement
+135 4 this is a function definition
+136 10 this is a variable declaration
+ERROR: line:137, col:8	undefined identifier
+ERROR: line:137, col:9	expect a semicolon
+137 10 this is a null statement
+ERROR: line:138, col:9	undefined identifier
+138 11 this is a printf statement
+ERROR: line:139, col:8	undefined identifier
+ERROR: line:139, col:9	expect a semicolon
+ERROR: line:139, col:12	expect a becomes or a left bracket
+139 13 this is a assign statement
+ERROR: line:140, col:9	undefined identifier
+140 11 this is a printf statement
+141 11 this is a printf statement
+142 8 this is a return statement
+145 4 this is a function definition
+146 11 this is a printf statement
+147 11 this is a return statement
+150 4 this is a function definition
+151 4 this is a function definition
+151 21 this is a null statement
+152 4 this is a function definition
+152 21 this is a null statement
+152 22 this is a null statement
+152 23 this is a null statement
+152 24 this is a null statement
+152 25 this is a null statement
+152 26 this is a null statement
+152 27 this is a null statement
+152 28 this is a null statement
+152 29 this is a null statement
+152 30 this is a null statement
+152 31 this is a null statement
+152 32 this is a null statement
+152 33 this is a null statement
+153 4 this is a function definition
+154 17 this is a printf statement
+157 4 this is a function definition
+158 7 this is a variable declaration
+159 8 this is a variable declaration
+160 8 this is a variable declaration
+ERROR: line:161, col:6	undefined identifier
+ERROR: line:161, col:10	undefined identifier
+ERROR: line:162, col:15	undefined identifier
+ERROR: line:162, col:20	undefined identifier
+ERROR: line:162, col:21	type not match
+162 22 this is a function call statement
+ERROR: line:163, col:8	undefined identifier
+ERROR: line:163, col:10	illegal beginning of a statement
+163 15 this is a null statement
+ERROR: line:163, col:16	undefined identifier
+ERROR: line:163, col:18	illegal beginning of a statement
+163 21 this is a null statement
+ERROR: line:163, col:22	undefined identifier
+ERROR: line:163, col:24	illegal beginning of a statement
+164 14 this is a null statement
+ERROR: line:165, col:8	undefined identifier
+ERROR: line:165, col:9	illegal index of array
+ERROR: line:165, col:17	undefined identifier
+165 19 this is a assign statement
+ERROR: line:166, col:8	undefined identifier
+ERROR: line:166, col:9	illegal index of array
+ERROR: line:166, col:13	undefined identifier
+166 14 this is a assign statement
+ERROR: line:167, col:16	undefined identifier
+ERROR: line:167, col:21	undefined identifier
+ERROR: line:167, col:22	type not match
+167 23 this is a function call statement
+ERROR: line:168, col:4	undefined identifier
+ERROR: line:168, col:6	illegal beginning of a statement
+168 14 this is a null statement
+ERROR: line:169, col:8	undefined identifier
+ERROR: line:169, col:9	illegal index of array
+ERROR: line:169, col:17	undefined identifier
+169 19 this is a assign statement
+ERROR: line:170, col:8	undefined identifier
+ERROR: line:170, col:9	illegal index of array
+ERROR: line:170, col:13	undefined identifier
+170 14 this is a assign statement
+172 2 this is an if statement
+173 5 this is a function definition
+ERROR: line:173, col:5	should have a main function
+ERROR: line:173, col:6	expect a end of file
+174 3 this is a program
 CONST INT g_c_int1 1
 CONST CHAR g_c_charf 'f'
 CONST CHAR g_c_chara 'a'
@@ -20,17 +260,17 @@ RET #0
 FUNC foo2
 PARA a
 PARA b
-#0 = a + b
+#0 =  + b
 RET #0
 FUNC add
 PARA a
 PARA b
-#0 = a + b
+#0 =  + b
 RET #0
 FUNC addchar
 PARA a
 PARA b
-#0 = a + b
+#0 =  + b
 RET #0
 FUNC addone
 PARA a
@@ -42,13 +282,13 @@ PARA a
 RET #0
 FUNC foo3
 PARA c
-#0 = c > 'c'
-BNZ #0 #LABEL0
-RET '/'
-GOTO #LABEL1
-SET #LABEL0
-RET '*'
-SET #LABEL1
+#0 = c > 99
+BNZ #0 $LABEL0
+RET 47
+GOTO $LABEL1
+SET $LABEL0
+RET 42
+SET $LABEL1
 FUNC test_string_int
 INT a
 a = 1
@@ -72,17 +312,17 @@ RET #
 FUNC fib
 PARA n
 #0 = n == 1
-BNZ #0 #LABEL2
+BNZ #0 $LABEL0
 RET 1
-GOTO #LABEL3
-SET #LABEL2
-SET #LABEL3
+GOTO $LABEL1
+SET $LABEL0
+SET $LABEL1
 #1 = n == 2
-BNZ #1 #LABEL4
+BNZ #1 $LABEL2
 RET 1
-GOTO #LABEL5
-SET #LABEL4
-SET #LABEL5
+GOTO $LABEL3
+SET $LABEL2
+SET $LABEL3
 #2 = n - 1
 PUSH #2
 CALL fib
@@ -98,65 +338,62 @@ INT a
 INT b
 INT c
 CHAR d
-a = 1
-b = 2
-c = 2
-d = 'A'
+d = 65
 OUTS test of comp symbol
-#0 = b == c
-BNZ #0 #LABEL6
+#0 =  == 
+BNZ #0 $LABEL0
 OUTS a==b
-GOTO #LABEL7
-SET #LABEL6
-SET #LABEL7
-#1 = a < b
-BNZ #1 #LABEL8
+GOTO $LABEL1
+SET $LABEL0
+SET $LABEL1
+#1 =  < 
+BNZ #1 $LABEL2
 OUTS a<b
-GOTO #LABEL9
-SET #LABEL8
-SET #LABEL9
-#2 = c > a
-BNZ #2 #LABEL10
+GOTO $LABEL3
+SET $LABEL2
+SET $LABEL3
+#2 =  > 
+BNZ #2 $LABEL4
 OUTS c>a
-GOTO #LABEL11
-SET #LABEL10
-SET #LABEL11
+GOTO $LABEL5
+SET $LABEL4
+SET $LABEL5
 #3 = d != 0
-BNZ #3 #LABEL12
+BNZ #3 $LABEL6
 OUTS d
-GOTO #LABEL13
-SET #LABEL12
-SET #LABEL13
-#4 = a == 1
-BNZ #4 #LABEL14
+GOTO $LABEL7
+SET $LABEL6
+SET $LABEL7
+#4 =  == 1
+BNZ #4 $LABEL8
 OUTS error!!
-GOTO #LABEL15
-SET #LABEL14
-SET #LABEL15
-#5 = a != 1
-BNZ #5 #LABEL16
+GOTO $LABEL9
+SET $LABEL8
+SET $LABEL9
+#5 =  != 1
+BNZ #5 $LABEL10
 OUTS error
-GOTO #LABEL17
-SET #LABEL16
-SET #LABEL17
-#6 = a <= c
-BNZ #6 #LABEL18
+GOTO $LABEL11
+SET $LABEL10
+SET $LABEL11
+#6 =  <= 
+BNZ #6 $LABEL12
 OUTS a<=c
-GOTO #LABEL19
-SET #LABEL18
-SET #LABEL19
-#7 = a >= c
-BNZ #7 #LABEL20
+GOTO $LABEL13
+SET $LABEL12
+SET $LABEL13
+#7 =  >= 
+BNZ #7 $LABEL14
 OUTS error!
-GOTO #LABEL21
-SET #LABEL20
-SET #LABEL21
+GOTO $LABEL15
+SET $LABEL14
+SET $LABEL15
 #8 = d > 66
-BNZ #8 #LABEL22
+BNZ #8 $LABEL16
 OUTS error!
-GOTO #LABEL23
-SET #LABEL22
-SET #LABEL23
+GOTO $LABEL17
+SET $LABEL16
+SET $LABEL17
 RET #
 FUNC test_diff_domain
 CONST CHAR g_c_chara 'b'
@@ -169,88 +406,33 @@ FUNC test_expr
 INT res_of_expr
 arr[1] = 1
 OUTS test for expression
-#0 = 0 - -12
-#1 = #0 - -12
-#2 = #1 - -12
-#3 = #2 - 12
-#4 = #3 + -12
-#5 = #4 - -12
-#6 = #5 - -12
-#7 = #6 - -12
-#8 = #7 - -12
-res_of_expr = #8
 OUTS --12--12--12-+12+-12--12--12--12--12=
-OUTV res_of_expr
-#9 = 10 * -5
-res_of_expr = #9
+OUTC 
 OUTS 10*-5=
-OUTV res_of_expr
-#10 = 10 / 4
-res_of_expr = #10
+OUTC 
 OUTS 10/+4=
-OUTV res_of_expr
-PUSH 12
-CALL fib
-#11 = #RET
-PUSH 14
-CALL fib
-#12 = #RET
-#13 = #11 - #12
-res_of_expr = #13
+OUTC 
 OUTS fib(12)-fib(14)=
-OUTV res_of_expr
-#14 = 'c' + 12
-res_of_expr = #14
+OUTC 
 OUTS c + 12 = 
-OUTV res_of_expr
-#15 = 'c' * 12
-#16 = #15 / 1
-res_of_expr = #16
+OUTC 
 OUTS c*12/1
-OUTV res_of_expr
-#17 = 12 + 1
-#18 = 1 - #17
-res_of_expr = #18
+OUTC 
 OUTS 1-(((12+1)))
-OUTV res_of_expr
-#19 = arr[1]
-#20 = #19 * 'b'
-PUSH 3
-CALL fib
-#21 = #RET
-#22 = #20 + #21
-res_of_expr = #22
+OUTC 
 OUTS arr[1]*'b'+fib(3)=
-OUTV res_of_expr
+OUTC 
 G_v_int_a1 = 5
 tag[6] = 12
-g_v_char_h = 'h'
-PUSH 'h'
-CALL addone
-#23 = #RET
-PUSH 5
-CALL fib
-#24 = #RET
-PUSH 1
-PUSH #24
-CALL add
-#25 = #RET
-#26 = #25 / G_v_int_a1
-#27 = #23 + #26
-#28 = tag[6]
-#29 = #27 - #28
-res_of_expr = #29
+g_v_char_h = 104
 OUTS addone('h')+add(1, fib(5))/G_v_int_a1 - tag[6]=
-OUTV res_of_expr
+OUTC 
 RET #
 FUNC test_scanf
 INT a
 INT b
-IN a
-OUTV a
-IN a
-IN b
-OUTV a
+OUTC 
+OUTC 
 OUTV b
 RET #
 FUNC echo_char
@@ -274,148 +456,24 @@ PARA n
 INT i
 CHAR t
 CHAR r
-#0 = n - 1
-#1 = m < #0
-BNZ #1 #LABEL24
-#2 = m + 1
+#0 =  - 1
+#1 =  < #0
+BNZ #1 $LABEL0
+#2 =  + 1
 PUSH #2
-PUSH n
+PUSH 
 CALL permutation
-#3 = m + 1
-i = #3
-SET #LABEL26
-#4 = i < n
-BNZ #4 #LABEL27
-#5 = chs[m]
-t = #5
-#6 = chs[i]
-chs[m] = #6
-chs[i] = t
-#7 = m + 1
-PUSH #7
-PUSH n
+#3 = chs[]
+chs[] = #3
+chs[] = 
+#4 =  + 1
+PUSH #4
+PUSH 
 CALL permutation
-#8 = chs[m]
-t = #8
-#9 = chs[i]
-chs[m] = #9
-chs[i] = t
-i = i + 1
-GOTO #LABEL26
-SET #LABEL27
-GOTO #LABEL25
-SET #LABEL24
-i = 0
-SET #LABEL28
-#10 = chs[i]
-PUSH #10
-CALL echo_char
-#11 = #RET
-r = #11
-#12 = chs[i]
-#13 = r != #12
-BNZ #13 #LABEL29
-OUTS error
-GOTO #LABEL30
-SET #LABEL29
-SET #LABEL30
-#14 = i + 1
-i = #14
-#15 = i < 5
-BEZ #15 #LABEL28
-OUTS  
-SET #LABEL25
+#5 = chs[]
+chs[] = #5
+chs[] = 
+GOTO $LABEL1
+SET $LABEL0
+SET $LABEL1
 RET #
-FUNC main
-CONST INT len 10
-INT i
-INT user_input1
-INT user_input2
-INT res_of_expr
-i = 0
-SET #LABEL31
-#16 = i < len
-BNZ #16 #LABEL32
-#17 = i + 1
-PUSH #17
-CALL fib
-#18 = #RET
-arr[i] = #18
-i = i + 1
-GOTO #LABEL31
-SET #LABEL32
-OUTS input the number of fib you want(1~10)
-IN user_input1
-IN user_input2
-i = user_input1
-SET #LABEL33
-OUTS  
-#19 = arr[i]
-OUTV #19
-#20 = i + 1
-i = #20
-#21 = i <= user_input2
-BEZ #21 #LABEL33
-i = user_input2
-SET #LABEL34
-#22 = i >= user_input1
-BNZ #22 #LABEL35
-OUTS  
-#23 = arr[i]
-OUTV #23
-i = i - 1
-GOTO #LABEL34
-SET #LABEL35
-CALL foo1
-#24 = #RET
-OUTV #24
-PUSH 1
-PUSH 'b'
-CALL foo2
-#25 = #RET
-OUTV #25
-#26 = 0 + 2
-PUSH 1
-PUSH #26
-CALL add
-#27 = #RET
-OUTV #27
-PUSH 'a'
-PUSH 'b'
-CALL addchar
-#28 = #RET
-OUTV #28
-PUSH 'F'
-CALL addone
-#29 = #RET
-OUTV #29
-PUSH 16
-CALL addint
-#30 = #RET
-OUTV #30
-PUSH 'c'
-CALL foo3
-#31 = #RET
-OUTC #31
-CALL test_string_int
-CALL test_diff_domain
-CALL test_expr
-CALL test_all_cond
-CALL test_scanf
-PUSH 'a'
-CALL echo_char
-PUSH 5
-CALL echo
-CALL really_void
-CALL really_void2
-CALL really_void3
-chs[0] = 'A'
-chs[1] = 'B'
-chs[2] = 'C'
-chs[3] = 'D'
-chs[4] = 'E'
-PUSH 0
-PUSH 5
-CALL permutation
-RET #
-EXIT

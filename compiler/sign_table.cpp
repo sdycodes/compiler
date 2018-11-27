@@ -32,7 +32,7 @@ int search_tab(string name, bool &islocal, int def_loc) {
 			islocal = true;
 			return loc;
 		}
-		if (def_loc != -1)
+		if (def_loc == -1)
 			loc--;
 		else
 			loc++;
@@ -54,8 +54,8 @@ void cal_func_size(int loc) {
 		i++;
 	}
 	st[loc].addr = size;
-	size += 4 * tno;
-	size += 4 * 31;
+	//size += 4 * tno;
+	size += 4 * 31;	//保存现场用
 	st[loc].size = size;
 }
 void dump_tab() {

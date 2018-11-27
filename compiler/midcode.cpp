@@ -117,6 +117,5 @@ void dumpmc() {
 		else {
 			printf("!!!!!!!!!%s\n", mc[j].op.c_str());
 		}
-		
 	}
 }
