@@ -3,8 +3,13 @@
 #include "stdHeader.h"
 #include "sign_table.h"
 #include "mips.h"
-#define no2name(x) (x)>=16&&(x)<=23?"s"+to_string(x):(x)<16?"t"+to_string(x-8):"t"+to_string(x-16)
-int stk[18] = { 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25 };	//register stack
+#define no2name(x) (x)>=16&&(x)<=23?"$s"+to_string(x-16):	\
+					(x)<16&&(x)>=8?"$t"+to_string(x-8): \
+					(x)==24||(x)==25?"$t"+to_string(x-16):"!!!"
+
+#define isCon(num) (isdigit(num[0])||num[0]=='-'||num[0]=='+')
+#define REG_NUM 10
+int stk[REG_NUM] = { 8,9,10,11,12,13,14,15,24,25 };	//register stack
 map<int, string> alloc;	//record each register and its variable name
 vector<string> midvar;
 
@@ -21,6 +26,8 @@ int call_midvar_loc(string name) {
 	return (midvar.size() - i) * 4;
 }
 string get_reg(string name, int def_loc) {
+	if (name == "#RET")
+		return "$v0";
 	int loc;
 	bool islocal;
 	int max_num = 0;
@@ -33,11 +40,11 @@ string get_reg(string name, int def_loc) {
 	if (it != alloc.end()) {
 		int i;
 		//寻找它对应的寄存器位置
-		for (i = 0;i < 18;i++) {
+		for (i = 0;i < REG_NUM;i++) {
 			if (stk[i] == it->first)
 				break;
 		}
-		int r = i;
+		int r = stk[i];
 		//放到顶部 LRU算法
 		for (int j = i;j >= 1;j--)
 			stk[j] = stk[j - 1];
@@ -48,11 +55,11 @@ string get_reg(string name, int def_loc) {
 	else {
 		string rec_name = "";
 		//如果栈底寄存器不空 说明寄存器全部被占用 需要弹出栈底
-		if (alloc.find(stk[17]) != alloc.end()&&alloc[stk[17]]!="") {
-			rec_name = alloc[stk[17]];
+		if (alloc.find(stk[REG_NUM-1]) != alloc.end()&&alloc[stk[REG_NUM-1]]!="") {
+			rec_name = alloc[stk[REG_NUM-1]];
 		}
-		int r = stk[17];
-		for (int k = 17;k >= 1;k--)
+		int r = stk[REG_NUM-1];
+		for (int k = REG_NUM-1;k >= 1;k--)
 			stk[k] = stk[k - 1];
 		stk[0] = r;	//栈底寄存器放到栈顶
 		alloc[r] = name;	//分配寄存器
@@ -90,49 +97,53 @@ void mc2mp() {
 	mce tmp;
 	bool islocal;
 	vector<string> paras;
-	int def_loc, def_context_offset;
+	int def_loc;
+	gen_mips(".data", "", "", "");
+	string all_string="";
+	for (int s = 0;s < strtabp;s++) {
+		if (strtab[s] == '\0')
+			all_string += "\\0";
+		else if(strtab[s]=='\\')
+			all_string += "\\\\";
+		else
+			all_string += strtab[s];
+	}
+	all_string += '"';
+	all_string = '"' + all_string;
+	gen_mips("$string:", ".asciiz", all_string, "");
+	gen_mips(".text", "", "", "");
+	def_loc = search_tab("main", islocal, -1);
+	gen_mips("li", "$fp", "0x7ffffffc");
+	gen_mips("subi", "$sp", "$fp", to_string(st[def_loc].size));
 	for (int i = 0;i < (int)mc.size();i++) {
 		if (mc[i].op == "LABEL") {	//标签
-			gen_mips(mc[i].n1);
+			gen_mips(mc[i].n1+':');
 			if (mc[i].n1[0] != '$') {	//是一个函数标签
 				midvar.clear();	//清空中间变量
+				alloc.clear();	//清空对应关系
 				def_loc = search_tab(mc[i].n1, islocal);
 			}
 		}
 		else if (mc[i].op == "ADD"||mc[i].op=="SUB") {
-			int loc1 = search_tab(mc[i].n1, islocal, def_loc);
-			int loc2 = search_tab(mc[i].n2, islocal, def_loc);
-			string num1 = loc1 != -1 && st[loc1].kind == ST_CONST ? to_string(st[loc1].val) :
-				loc1 != -1 && st[loc1].kind != ST_CONST ? get_reg(mc[i].n1, def_loc) :
-				loc1 == -1 && mc[i].n1[0] == '#' ? get_reg(mc[i].n1, def_loc) :
-				mc[i].n1;
-			string num2 = loc2 != -1 && st[loc2].kind == ST_CONST ? to_string(st[loc2].val) :
-				loc2 != -1 && st[loc2].kind != ST_CONST ? get_reg(mc[i].n2, def_loc) :
-				loc2 == -1 && mc[i].n2[0] == '#' ? get_reg(mc[i].n2, def_loc) :
-				mc[i].n2;
-			bool isn1Con = loc1 != -1 && st[loc1].kind == ST_CONST ?true:
-				loc1 != -1 && st[loc1].kind != ST_CONST ? false :
-				loc1 == -1 && mc[i].n1[0] == '#' ? false :true;
-			bool isn2Con = loc2 != -1 && st[loc2].kind == ST_CONST ? true :
-				loc2 != -1 && st[loc2].kind != ST_CONST ? false :
-				loc2 == -1 && mc[i].n2[0] == '#' ? false : true;
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
 			//都是常量 li
-			if (isn1Con&&isn2Con) {
+			if (isCon(mc[i].n1)&&isCon(mc[i].n2)) {
 				int res = mc[i].op == "ADD" ? stoi(num1) + stoi(num2) : stoi(num1) - stoi(num2);
 				gen_mips("li", get_reg(mc[i].res, def_loc), to_string(res));
 			}
 			//一个是常量 一个是变量 addi/subi
-			else if (isn2Con) {
+			else if (isCon(mc[i].n2)) {
 				string op = mc[i].op == "ADD" ? "addi" : "subi";
 				gen_mips(op, get_reg(mc[i].res, def_loc), num1, num2);
 			}
-			else if (isn1Con) {
+			else if (isCon(mc[i].n1)) {
 				if (mc[i].op == "SUB") {
 					gen_mips("sub", get_reg(mc[i].res, def_loc), "$0", num2);
-					gen_mips("addi", get_reg(mc[i].res, def_loc), get_reg(mc[i].res, def_loc), num1);
+					gen_mips("addi", get_reg(mc[i].res, def_loc), get_reg(mc[i].res, def_loc),num1);
 				}
 				else {
-					gen_mips("addi", get_reg(mc[i].res, def_loc), num1, num2);
+					gen_mips("addi", get_reg(mc[i].res, def_loc), num2, num1);
 				}
 			}
 			//都是变量
@@ -142,33 +153,26 @@ void mc2mp() {
 			}
 		}
 		else if(mc[i].op=="MULT"||mc[i].op=="DIV"){
-			int loc1 = search_tab(mc[i].n1, islocal, def_loc);
-			int loc2 = search_tab(mc[i].n2, islocal, def_loc);
-			string num1 = loc1 != -1 && st[loc1].kind == ST_CONST ? to_string(st[loc1].val) :
-				loc1 != -1 && st[loc1].kind != ST_CONST ? get_reg(mc[i].n1, def_loc) :
-				loc1 == -1 && mc[i].n1[0] == '#' ? get_reg(mc[i].n1, def_loc) :
-				mc[i].n1;
-			string num2 = loc2 != -1 && st[loc2].kind == ST_CONST ? to_string(st[loc2].val) :
-				loc2 != -1 && st[loc2].kind != ST_CONST ? get_reg(mc[i].n2, def_loc) :
-				loc2 == -1 && mc[i].n2[0] == '#' ? get_reg(mc[i].n2, def_loc) :
-				mc[i].n2;
-			bool isn1Con = loc1 != -1 && st[loc1].kind == ST_CONST ? true :
-				loc1 != -1 && st[loc1].kind != ST_CONST ? false :
-				loc1 == -1 && mc[i].n1[0] == '#' ? false : true;
-			bool isn2Con = loc2 != -1 && st[loc2].kind == ST_CONST ? true :
-				loc2 != -1 && st[loc2].kind != ST_CONST ? false :
-				loc2 == -1 && mc[i].n2[0] == '#' ? false : true;
 			//都是常量 li
-			if (isn1Con&&isn2Con) {
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
+			if (isCon(mc[i].n1)&&isCon(mc[i].n2)) {
 				int res = mc[i].op == "MULT" ? stoi(num1) * stoi(num2) : stoi(num1) / stoi(num2);
 				gen_mips("li", get_reg(mc[i].res, def_loc), to_string(res));
 			}
 			//一个是常量 一个是变量
-			else if (isn1Con||isn2Con) {
-				string op = mc[i].op == "MULT" ? "mult" : "div";
-				gen_mips("li", "$v1", isn1Con?num1:num2);
-				gen_mips(op, get_reg(mc[i].res, def_loc), isn1Con?"$v1":num1, isn2Con?"$v1":num2);
-				gen_mips("mflo", get_reg(mc[i].res, def_loc));
+			else if (isCon(mc[i].n2)) {
+				string op = mc[i].op == "MULT" ? "mul" : "div";
+				gen_mips(op, get_reg(mc[i].res, def_loc), num1, num2);
+			}
+			else if (isCon(mc[i].n1)) {
+				if (mc[i].op == "DIV") {
+					gen_mips("li", "$k1", num1);
+					gen_mips("div", get_reg(mc[i].res, def_loc), "$k1", num2);
+				}
+				else {
+					gen_mips("mul", get_reg(mc[i].res, def_loc), num2, num1);
+				}
 			}
 			//都是变量
 			else {
@@ -189,57 +193,64 @@ void mc2mp() {
 			int context_offset = st[loc].addr;	//保存现场的起始位置
 			//传参数
 			for (int j = 0;j < (int)paras.size();j++) {
-				gen_mips("sw", get_reg(paras[j], def_loc), "$sp", to_string(-j * 4));
+				if (isCon(paras[j])) {
+					gen_mips("li", "$k1", paras[j]);
+					gen_mips("sw", "$k1", "$sp", to_string(-j * 4));
+				}
+				else
+					gen_mips("sw", get_reg(paras[j], def_loc), "$sp", to_string(-j * 4));
 			}
 			paras.clear();
-			for (int j = 2;j <= 31;j++)	//保存现场操作
-				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - (j - 1) * 4));
+			for (int j = 8;j <= 15;j++)	//保存现场操作
+				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
+			for(int j=24;j<=31;j++)
+				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
 			//分配函数运行栈
 			gen_mips("move", "$fp", "$sp");
 			gen_mips("subi", "$sp", "$fp", to_string(st[loc].size));
 			//jump to function
 			gen_mips("jal", mc[i].n1);
-			for (int j = 2;j <= 28;j++)	//恢复现场操作
-				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - (j - 1) * 4));
-			gen_mips("lw", "$" + to_string(30), "$fp", to_string(-context_offset - (30 - 1) * 4));
-			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - (31 - 1) * 4));
-			//release the stack
-			gen_mips("addi", "$fp", "$sp", to_string(st[loc].size));
+			for (int j = 8;j <= 15;j++)	//恢复现场操作
+				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
+			for(int j=24;j<=29;j++)
+				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
+			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31*4));
+			gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));
 		}
 		else if (mc[i].op == "RET") {
 			//put the result on $v0
-			if (mc[i].n1 != "#")
+			if (isCon(mc[i].n1))
+				gen_mips("li", "$v0", mc[i].n1);
+			else if (mc[i].n1 != "#")
 				gen_mips("move", "$v0", get_reg(mc[i].n1, def_loc));
 			gen_mips("jr", "$ra");
 		}
 		else if (mc[i].op == "OUTS"|| mc[i].op == "OUTV"|| mc[i].op == "OUTC") {
-			gen_mips("li", "$v0", mc[i].op == "OUTS" ? "4" : mc[i].op == "OUTV" ? "5" : "11");
-			gen_mips("la", "$a0", mc[i].n1);
-			gen_mips("syscall");
+			gen_mips("li", "$v0", mc[i].op == "OUTS" ? "4" : mc[i].op == "OUTV" ? "1" : "11");
+			if (mc[i].op == "OUTS") {
+				gen_mips("li", "$a0", to_string(0x10010000 + stoi(mc[i].n1)));
+				gen_mips("syscall");
+			}
+			else {
+				if (isdigit(mc[i].n1[0]) || mc[i].n1[0] == '-' || mc[i].n1[0] == '+') {
+					gen_mips("li", "$a0", mc[i].n1);
+					gen_mips("syscall");
+				}
+				else {
+					gen_mips("move", "$a0", get_reg(mc[i].n1, def_loc));
+					gen_mips("syscall");
+				}
+			}
 		}
 		else if(mc[i].op=="EXIT"){
 			gen_mips("li", "$v0", "10");
 			gen_mips("syscall");
 		}
 		else if (mc[i].op == "LT" || mc[i].op == "LE" || mc[i].op == "GT" || mc[i].op == "GE" || mc[i].op == "EQ" || mc[i].op == "NE") {
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);	
 			i++;
-			int loc1 = search_tab(mc[i].n1, islocal, def_loc);
-			int loc2 = search_tab(mc[i].n2, islocal, def_loc);
-			string num1 = loc1 != -1 && st[loc1].kind == ST_CONST ? to_string(st[loc1].val) :
-				loc1 != -1 && st[loc1].kind != ST_CONST ? get_reg(mc[i].n1, def_loc) :
-				loc1 == -1 && mc[i].n1[0] == '#' ? get_reg(mc[i].n1, def_loc) :
-				mc[i].n1;
-			string num2 = loc2 != -1 && st[loc2].kind == ST_CONST ? to_string(st[loc2].val) :
-				loc2 != -1 && st[loc2].kind != ST_CONST ? get_reg(mc[i].n2, def_loc) :
-				loc2 == -1 && mc[i].n2[0] == '#' ? get_reg(mc[i].n2, def_loc) :
-				mc[i].n2;
-			bool isn1Con = loc1 != -1 && st[loc1].kind == ST_CONST ? true :
-				loc1 != -1 && st[loc1].kind != ST_CONST ? false :
-				loc1 == -1 && mc[i].n1[0] == '#' ? false : true;
-			bool isn2Con = loc2 != -1 && st[loc2].kind == ST_CONST ? true :
-				loc2 != -1 && st[loc2].kind != ST_CONST ? false :
-				loc2 == -1 && mc[i].n2[0] == '#' ? false : true;
-			if (isn1Con&&isn2Con) {
+			if (isCon(mc[i-1].n1)&&isCon(mc[i-1].n2)) {
 				if ((mc[i - 1].op == "LT"&&stoi(num1) < stoi(num2))||
 					(mc[i - 1].op == "LE"&&stoi(num1) <= stoi(num2))||
 					(mc[i - 1].op == "GT"&&stoi(num1)>stoi(num2))||
@@ -261,10 +272,10 @@ void mc2mp() {
 						continue;
 					}
 			}
-			if (isn1Con || isn2Con) {
-				gen_mips("li", "$v1", isn1Con ? num1 : num2);
-				if (isn1Con)	num1 = "$v1";
-				else num2 = "$v1";
+			if (isCon(mc[i-1].n1) || isCon(mc[i-1].n2)) {
+				gen_mips("li", "$k1", isCon(mc[i-1].n1) ? num1 : num2);
+				if (isCon(mc[i-1].n1))	num1 = "$k1";
+				else num2 = "$k1";
 			}
 			if (mc[i - 1].op == "LT"&&mc[i].op == "BNZ")
 				gen_mips("bge", mc[i].res, num1, num2);
@@ -293,25 +304,47 @@ void mc2mp() {
 		}
 		else if (mc[i].op == "INC"||mc[i].op=="INV") {
 			gen_mips("li", "$v0", mc[i].op=="INV"?"5":"12");
+			gen_mips("syscall");
 			gen_mips("move", get_reg(mc[i].n1, def_loc), "$v0");
 		}
 		else if (mc[i].op == "GOTO") {
 			gen_mips("j", mc[i].n1);
 		}
 		else if (mc[i].op == "ASSIGN") {
-			gen_mips("move", get_reg(mc[i].res, def_loc), get_reg(mc[i].n1, def_loc));
+			if (isCon(mc[i].n1))
+				gen_mips("li", get_reg(mc[i].res, def_loc), mc[i].n1);
+			else
+				gen_mips("move", get_reg(mc[i].res, def_loc), get_reg(mc[i].n1, def_loc));
 		}
-		else if (mc[i].op == "SELEM") {
+		else if (mc[i].op == "SELEM") { 
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
 			int arr_loc = search_tab(mc[i].res, islocal, def_loc);
-			gen_mips("subi", "$v1", islocal?"$fp":"$gp", to_string((islocal?-1:1)*st[arr_loc].addr));
-			gen_mips("subi", "$v1", "$v1", get_reg(mc[i].n1, def_loc));
-			gen_mips("sw", get_reg(mc[i].n2, def_loc), "$v1", "0");
+			if (isCon(mc[i].n1))
+				gen_mips("li", "$k1", num1);
+			else
+				gen_mips("move", "$k1", num1);
+			gen_mips("sll", "$k1", "$k1", "2");
+			gen_mips("addi", "$k1", "$k1", to_string(st[arr_loc].addr));
+			if (islocal)
+				gen_mips("sub", "$k1", "$fp", "$k1");
+			else
+				gen_mips("add", "$k1", "$gp", "$k1");
+			if (isCon(mc[i].n2))
+				gen_mips("li", "$k0", mc[i].n2);
+			gen_mips("sw", isCon(mc[i].n2) ? "$k0" : num2, "$k1", "0");
 		}
 		else if (mc[i].op == "LELEM") {
-			int arr_loc = search_tab(mc[i].res, islocal, def_loc);
-			gen_mips("addi", "$v1", islocal?"$fp":"$gp", to_string((islocal ? -1 : 1)*st[arr_loc].addr));
-			gen_mips("add", "$v1", "$v1", get_reg(mc[i].n1, def_loc));
-			gen_mips("lw", get_reg(mc[i].res, def_loc), "$v1", get_reg(mc[i].n2, def_loc));
+			int arr_loc = search_tab(mc[i].n1, islocal, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
+			gen_mips(isCon(mc[i].n2)?"li":"move", "$k1", num2);
+			gen_mips("sll", "$k1", "$k1", "2");
+			gen_mips("addi", "$k1", "$k1", to_string(st[arr_loc].addr));
+			if (islocal)
+				gen_mips("sub", "$k1", "$fp", "$k1");
+			else
+				gen_mips("add", "$k1", "$gp", "$k1");
+			gen_mips("lw", get_reg(mc[i].res), "$k1", "0");
 		}
 	}
 }
@@ -319,6 +352,11 @@ void mc2mp() {
 void dump_mips() {
 	string a, b, c, d;
 	for (int i = 0;i < (int)mp.size();i++){
-		cout << mp[i].op << " " << mp[i].res << " " << mp[i].n1 << " " << mp[i].n2<<"\n";
+		if (mp[i].op == "beq" || mp[i].op == "bne" || mp[i].op == "ble" || mp[i].op == "blt" || mp[i].op == "bgt" || mp[i].op == "bge")
+			printf("%s %s %s %s\n", mp[i].op.c_str(), mp[i].n1.c_str(), mp[i].n2.c_str(), mp[i].res.c_str());
+		else if (mp[i].op == "sw" || mp[i].op == "lw")
+			printf("%s %s %s(%s)\n", mp[i].op.c_str(), mp[i].res.c_str(), mp[i].n2.c_str(), mp[i].n1.c_str());
+		else
+			printf("%s %s %s %s\n", mp[i].op.c_str(), mp[i].res.c_str(), mp[i].n1.c_str(), mp[i].n2.c_str());
 	}
 }

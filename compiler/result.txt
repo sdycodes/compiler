@@ -1,479 +1,528 @@
-2 23 this is a const declaration
-3 27 this is a const declaration
-4 38 this is a const declaration
-5 33 this is a const declaration
-7 15 this is a variable declaration
-8 32 this is a variable declaration
-9 16 this is a variable declaration
-10 32 this is a variable declaration
-11 34 this is a variable declaration
-12 12 this is a variable declaration
-16 13 this is a return statement
-18 3 this is a function definition
-ERROR: line:19, col:9	undefined identifier
-19 13 this is a return statement
-21 3 this is a function definition
-ERROR: line:22, col:9	undefined identifier
-22 13 this is a return statement
-24 3 this is a function definition
-ERROR: line:25, col:9	undefined identifier
-25 13 this is a return statement
-27 3 this is a function definition
-28 13 this is a return statement
-30 3 this is a function definition
-31 13 this is a return statement
-33 4 this is a function definition
-35 14 this is a return statement
-38 14 this is a return statement
-40 1 this is an if statement
-43 4 this is a function definition
-44 7 this is a variable declaration
-45 7 this is a assign statement
-46 11 this is a printf statement
-47 7 this is a assign statement
-48 11 this is a printf statement
-49 8 this is a assign statement
-50 11 this is a printf statement
-51 8 this is a assign statement
-52 11 this is a printf statement
-53 9 this is a assign statement
-54 11 this is a printf statement
-55 9 this is a assign statement
-56 11 this is a printf statement
-57 106 this is a printf statement
-58 8 this is a return statement
-60 3 this is a function definition
-62 12 this is a return statement
-63 3 this is an if statement
-64 12 this is a return statement
-65 7 this is an if statement
-65 27 this is a return statement
-68 4 this is a function definition
-69 7 this is a variable declaration
-70 7 this is a variable declaration
-71 7 this is a variable declaration
-72 8 this is a variable declaration
-ERROR: line:73, col:2	undefined identifier
-ERROR: line:73, col:4	illegal beginning of a statement
-73 7 this is a null statement
-ERROR: line:74, col:2	undefined identifier
-ERROR: line:74, col:4	illegal beginning of a statement
-74 7 this is a null statement
-ERROR: line:75, col:2	undefined identifier
-ERROR: line:75, col:4	illegal beginning of a statement
-75 7 this is a null statement
-76 9 this is a assign statement
-77 31 this is a printf statement
-ERROR: line:78, col:5	undefined identifier
-ERROR: line:78, col:8	undefined identifier
-79 17 this is a printf statement
-80 3 this is an if statement
-ERROR: line:80, col:5	undefined identifier
-ERROR: line:80, col:7	undefined identifier
-81 16 this is a printf statement
-82 3 this is an if statement
-ERROR: line:82, col:5	undefined identifier
-ERROR: line:82, col:7	undefined identifier
-83 16 this is a printf statement
-84 3 this is an if statement
-85 14 this is a printf statement
-86 3 this is an if statement
-ERROR: line:86, col:5	undefined identifier
-87 20 this is a printf statement
-88 3 this is an if statement
-ERROR: line:88, col:5	undefined identifier
-89 18 this is a printf statement
-90 3 this is an if statement
-ERROR: line:90, col:5	undefined identifier
-ERROR: line:90, col:8	undefined identifier
-91 17 this is a printf statement
-92 3 this is an if statement
-ERROR: line:92, col:5	undefined identifier
-ERROR: line:92, col:8	undefined identifier
-93 19 this is a printf statement
-94 3 this is an if statement
-95 19 this is a printf statement
-96 7 this is an if statement
-96 8 this is a return statement
-99 4 this is a function definition
-100 28 this is a const declaration
-101 16 this is a variable declaration
-102 19 this is a printf statement
-103 18 this is a assign statement
-104 20 this is a printf statement
-107 4 this is a function definition
-108 26 this is a variable declaration
-109 12 this is a assign statement
-110 31 this is a printf statement
-ERROR: line:111, col:12	undefined identifier
-ERROR: line:111, col:14	illegal beginning of a statement
-111 52 this is a null statement
-ERROR: line:112, col:60	undefined identifier
-112 62 this is a printf statement
-ERROR: line:113, col:12	undefined identifier
-ERROR: line:113, col:14	illegal beginning of a statement
-113 21 this is a null statement
-ERROR: line:114, col:29	undefined identifier
-114 31 this is a printf statement
-ERROR: line:115, col:12	undefined identifier
-ERROR: line:115, col:14	illegal beginning of a statement
-115 21 this is a null statement
-ERROR: line:116, col:29	undefined identifier
-116 31 this is a printf statement
-ERROR: line:117, col:12	undefined identifier
-ERROR: line:117, col:14	illegal beginning of a statement
-117 31 this is a null statement
-ERROR: line:118, col:39	undefined identifier
-118 41 this is a printf statement
-ERROR: line:119, col:12	undefined identifier
-ERROR: line:119, col:14	illegal beginning of a statement
-119 24 this is a null statement
-ERROR: line:120, col:32	undefined identifier
-120 34 this is a printf statement
-ERROR: line:121, col:12	undefined identifier
-ERROR: line:121, col:14	illegal beginning of a statement
-121 24 this is a null statement
-ERROR: line:122, col:29	undefined identifier
-122 31 this is a printf statement
-ERROR: line:123, col:12	undefined identifier
-ERROR: line:123, col:14	illegal beginning of a statement
-123 30 this is a null statement
-ERROR: line:124, col:35	undefined identifier
-124 37 this is a printf statement
-ERROR: line:125, col:12	undefined identifier
-ERROR: line:125, col:14	illegal beginning of a statement
-125 33 this is a null statement
-ERROR: line:126, col:41	undefined identifier
-126 43 this is a printf statement
-127 16 this is a assign statement
-128 13 this is a assign statement
-129 18 this is a assign statement
-ERROR: line:130, col:12	undefined identifier
-ERROR: line:130, col:14	illegal beginning of a statement
-130 64 this is a null statement
-ERROR: line:131, col:70	undefined identifier
-131 72 this is a printf statement
-132 8 this is a return statement
-135 4 this is a function definition
-136 10 this is a variable declaration
-ERROR: line:137, col:8	undefined identifier
-ERROR: line:137, col:9	expect a semicolon
-137 10 this is a null statement
-ERROR: line:138, col:9	undefined identifier
-138 11 this is a printf statement
-ERROR: line:139, col:8	undefined identifier
-ERROR: line:139, col:9	expect a semicolon
-ERROR: line:139, col:12	expect a becomes or a left bracket
-139 13 this is a assign statement
-ERROR: line:140, col:9	undefined identifier
-140 11 this is a printf statement
-141 11 this is a printf statement
-142 8 this is a return statement
-145 4 this is a function definition
-146 11 this is a printf statement
-147 11 this is a return statement
-150 4 this is a function definition
-151 4 this is a function definition
-151 21 this is a null statement
-152 4 this is a function definition
-152 21 this is a null statement
-152 22 this is a null statement
-152 23 this is a null statement
-152 24 this is a null statement
-152 25 this is a null statement
-152 26 this is a null statement
-152 27 this is a null statement
-152 28 this is a null statement
-152 29 this is a null statement
-152 30 this is a null statement
-152 31 this is a null statement
-152 32 this is a null statement
-152 33 this is a null statement
-153 4 this is a function definition
-154 17 this is a printf statement
-157 4 this is a function definition
-158 7 this is a variable declaration
-159 8 this is a variable declaration
-160 8 this is a variable declaration
-ERROR: line:161, col:6	undefined identifier
-ERROR: line:161, col:10	undefined identifier
-ERROR: line:162, col:15	undefined identifier
-ERROR: line:162, col:20	undefined identifier
-ERROR: line:162, col:21	type not match
-162 22 this is a function call statement
-ERROR: line:163, col:8	undefined identifier
-ERROR: line:163, col:10	illegal beginning of a statement
-163 15 this is a null statement
-ERROR: line:163, col:16	undefined identifier
-ERROR: line:163, col:18	illegal beginning of a statement
-163 21 this is a null statement
-ERROR: line:163, col:22	undefined identifier
-ERROR: line:163, col:24	illegal beginning of a statement
-164 14 this is a null statement
-ERROR: line:165, col:8	undefined identifier
-ERROR: line:165, col:9	illegal index of array
-ERROR: line:165, col:17	undefined identifier
-165 19 this is a assign statement
-ERROR: line:166, col:8	undefined identifier
-ERROR: line:166, col:9	illegal index of array
-ERROR: line:166, col:13	undefined identifier
-166 14 this is a assign statement
-ERROR: line:167, col:16	undefined identifier
-ERROR: line:167, col:21	undefined identifier
-ERROR: line:167, col:22	type not match
-167 23 this is a function call statement
-ERROR: line:168, col:4	undefined identifier
-ERROR: line:168, col:6	illegal beginning of a statement
-168 14 this is a null statement
-ERROR: line:169, col:8	undefined identifier
-ERROR: line:169, col:9	illegal index of array
-ERROR: line:169, col:17	undefined identifier
-169 19 this is a assign statement
-ERROR: line:170, col:8	undefined identifier
-ERROR: line:170, col:9	illegal index of array
-ERROR: line:170, col:13	undefined identifier
-170 14 this is a assign statement
-172 2 this is an if statement
-173 5 this is a function definition
-ERROR: line:173, col:5	should have a main function
-ERROR: line:173, col:6	expect a end of file
-174 3 this is a program
-CONST INT g_c_int1 1
-CONST CHAR g_c_charf 'f'
-CONST CHAR g_c_chara 'a'
-CONST CHAR _0b 'b'
-CONST INT _c_int2 2
-CONST INT _g_10 3
-INT G_v_int_a1
-INT g_V_INT10_arr1[15]
-INT tag[20]
-CHAR g_v_char_h
-INT g_v_int_arr2[10]
-INT g_v_int_b
-CHAR g_v_char_b
-CHAR g_v_char_arr[50]
-CHAR chs[5]
-GOTO main
-FUNC foo1
-#0 = 0 - 1
-RET #0
-FUNC foo2
-PARA a
-PARA b
-#0 =  + b
-RET #0
-FUNC add
-PARA a
-PARA b
-#0 =  + b
-RET #0
-FUNC addchar
-PARA a
-PARA b
-#0 =  + b
-RET #0
-FUNC addone
-PARA a
-#0 = a + 1
-RET #0
-FUNC addint
-PARA a
-#0 = a + 1
-RET #0
-FUNC foo3
-PARA c
-#0 = c > 99
-BNZ #0 $LABEL0
-RET 47
-GOTO $LABEL1
-SET $LABEL0
-RET 42
-SET $LABEL1
-FUNC test_string_int
-INT a
-a = 1
-OUTV a
-a = 0
-OUTV a
-#0 = 0 + 0
-a = #0
-OUTV a
-#1 = 0 - 0
-a = #1
-OUTV a
-#2 = 0 + 12
-a = #2
-OUTV a
-#3 = 0 - 12
-a = #3
-OUTV a
-OUTS #$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ !
-RET #
-FUNC fib
-PARA n
-#0 = n == 1
-BNZ #0 $LABEL0
-RET 1
-GOTO $LABEL1
-SET $LABEL0
-SET $LABEL1
-#1 = n == 2
-BNZ #1 $LABEL2
-RET 1
-GOTO $LABEL3
-SET $LABEL2
-SET $LABEL3
-#2 = n - 1
-PUSH #2
-CALL fib
-#3 = #RET
-#4 = n - 2
-PUSH #4
-CALL fib
-#5 = #RET
-#6 = #3 + #5
-RET #6
-FUNC test_all_cond
-INT a
-INT b
-INT c
-CHAR d
-d = 65
-OUTS test of comp symbol
-#0 =  == 
-BNZ #0 $LABEL0
-OUTS a==b
-GOTO $LABEL1
-SET $LABEL0
-SET $LABEL1
-#1 =  < 
-BNZ #1 $LABEL2
-OUTS a<b
-GOTO $LABEL3
-SET $LABEL2
-SET $LABEL3
-#2 =  > 
-BNZ #2 $LABEL4
-OUTS c>a
-GOTO $LABEL5
-SET $LABEL4
-SET $LABEL5
-#3 = d != 0
-BNZ #3 $LABEL6
-OUTS d
-GOTO $LABEL7
-SET $LABEL6
-SET $LABEL7
-#4 =  == 1
-BNZ #4 $LABEL8
-OUTS error!!
-GOTO $LABEL9
-SET $LABEL8
-SET $LABEL9
-#5 =  != 1
-BNZ #5 $LABEL10
-OUTS error
-GOTO $LABEL11
-SET $LABEL10
-SET $LABEL11
-#6 =  <= 
-BNZ #6 $LABEL12
-OUTS a<=c
-GOTO $LABEL13
-SET $LABEL12
-SET $LABEL13
-#7 =  >= 
-BNZ #7 $LABEL14
-OUTS error!
-GOTO $LABEL15
-SET $LABEL14
-SET $LABEL15
-#8 = d > 66
-BNZ #8 $LABEL16
-OUTS error!
-GOTO $LABEL17
-SET $LABEL16
-SET $LABEL17
-RET #
-FUNC test_diff_domain
-CONST CHAR g_c_chara 'b'
-INT G_v_int_a1
-OUTC g_c_chara
-G_v_int_a1 = 222
-OUTV G_v_int_a1
-RET #
-FUNC test_expr
-INT res_of_expr
-arr[1] = 1
-OUTS test for expression
-OUTS --12--12--12-+12+-12--12--12--12--12=
-OUTC 
-OUTS 10*-5=
-OUTC 
-OUTS 10/+4=
-OUTC 
-OUTS fib(12)-fib(14)=
-OUTC 
-OUTS c + 12 = 
-OUTC 
-OUTS c*12/1
-OUTC 
-OUTS 1-(((12+1)))
-OUTC 
-OUTS arr[1]*'b'+fib(3)=
-OUTC 
-G_v_int_a1 = 5
-tag[6] = 12
-g_v_char_h = 104
-OUTS addone('h')+add(1, fib(5))/G_v_int_a1 - tag[6]=
-OUTC 
-RET #
-FUNC test_scanf
-INT a
-INT b
-OUTC 
-OUTC 
-OUTV b
-RET #
-FUNC echo_char
-PARA a
-OUTC a
-RET a
-FUNC really_void
-RET #
-FUNC really_void2
-RET #
-FUNC really_void3
-RET #
-FUNC echo
-PARA a
-OUTS a=
-OUTV a
-RET #
-FUNC permutation
-PARA m
-PARA n
-INT i
-CHAR t
-CHAR r
-#0 =  - 1
-#1 =  < #0
-BNZ #1 $LABEL0
-#2 =  + 1
-PUSH #2
-PUSH 
-CALL permutation
-#3 = chs[]
-chs[] = #3
-chs[] = 
-#4 =  + 1
-PUSH #4
-PUSH 
-CALL permutation
-#5 = chs[]
-chs[] = #5
-chs[] = 
-GOTO $LABEL1
-SET $LABEL0
-SET $LABEL1
-RET #
+.data   
+$string: .asciiz " \0\0\\n\0\0ERROR!\0\0ERROR!\0\0ERROR!\0\0\\n\0\0ERROR!\\n\0\0ERROR!\\n\0\0" 
+.text   
+li $fp 0x7ffffffc 
+subi $sp $fp 132
+j main  
+recursive_cal:   
+lw $t9 0($fp)
+lw $t8 8($gp)
+bne $t9 $t8 $LABEL0
+li $k1 0 
+sll $k1 $k1 2
+addi $k1 $k1 12
+add $k1 $gp $k1
+subi $sp $sp 4
+lw $t7 4($sp)
+lw $t7 0($k1)
+li $v0 1 
+move $a0 $t7 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+lw $t6 -8($fp)
+li $t6 1 
+$LABEL2:   
+bge $t6 $t8 $LABEL3
+li $v0 4 
+li $a0 268500992 
+syscall   
+move $k1 $t6 
+sll $k1 $k1 2
+addi $k1 $k1 12
+add $k1 $gp $k1
+subi $sp $sp 4
+lw $t5 4($sp)
+lw $t5 0($k1)
+li $v0 1 
+move $a0 $t5 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+addi $t6 $t6 1
+j $LABEL2  
+$LABEL3:   
+li $v0 4 
+li $a0 268500995 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 0 
+jr $ra  
+j $LABEL1  
+$LABEL0:   
+bge $t9 $t8 $LABEL4
+lw $t4 -4($fp)
+move $t6 $t4 
+$LABEL6:   
+lw $t3 4($gp)
+subi $sp $sp 4
+lw $t2 4($sp)
+add $t2 $t9 $t3
+subi $sp $sp 4
+lw $t1 4($sp)
+sub $t1 $t2 $t8
+subi $sp $sp 4
+lw $t0 4($sp)
+addi $t0 $t1 1
+bgt $t6 $t0 $LABEL7
+move $k1 $t9 
+sll $k1 $k1 2
+addi $k1 $k1 12
+add $k1 $gp $k1
+sw $t6 0($k1)
+subi $sp $sp 4
+sw $t7 4($sp)
+lw $t7 4($sp)
+addi $t7 $t9 0
+subi $sp $sp 4
+sw $t5 4($sp)
+lw $t5 4($sp)
+addi $t5 $t7 1
+sw $t4 -4($fp)
+subi $sp $sp 4
+lw $t4 4($sp)
+addi $t4 $t6 1
+sw $t5 0($sp)
+sw $t4 -4($sp)
+sw $8 -44($sp)
+sw $9 -48($sp)
+sw $10 -52($sp)
+sw $11 -56($sp)
+sw $12 -60($sp)
+sw $13 -64($sp)
+sw $14 -68($sp)
+sw $15 -72($sp)
+sw $24 -108($sp)
+sw $25 -112($sp)
+sw $26 -116($sp)
+sw $27 -120($sp)
+sw $28 -124($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal recursive_cal  
+lw $8 -44($fp)
+lw $9 -48($fp)
+lw $10 -52($fp)
+lw $11 -56($fp)
+lw $12 -60($fp)
+lw $13 -64($fp)
+lw $14 -68($fp)
+lw $15 -72($fp)
+lw $24 -108($fp)
+lw $25 -112($fp)
+lw $26 -116($fp)
+lw $27 -120($fp)
+lw $28 -124($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+sw $t3 4($gp)
+subi $sp $sp 4
+lw $t3 4($sp)
+move $t3 $v0 
+subi $sp $sp 4
+sw $t2 4($sp)
+lw $t2 4($sp)
+li $t2 -1 
+bne $t3 $t2 $LABEL8
+sw $t8 8($gp)
+subi $sp $sp 4
+lw $t8 4($sp)
+li $t8 -1 
+move $v0 $t8 
+jr $ra  
+j $LABEL9  
+$LABEL8:   
+$LABEL9:   
+addi $t6 $t6 1
+j $LABEL6  
+$LABEL7:   
+li $v0 0 
+jr $ra  
+j $LABEL5  
+$LABEL4:   
+subi $sp $sp 4
+sw $t1 4($sp)
+lw $t1 4($sp)
+li $t1 -1 
+move $v0 $t1 
+jr $ra  
+$LABEL5:   
+$LABEL1:   
+initial:   
+lw $t0 -8($fp)
+li $t0 0 
+$LABEL10:   
+lw $t9 0($fp)
+move $k1 $t0 
+sll $k1 $k1 2
+addi $k1 $k1 12
+add $k1 $gp $k1
+sw $t9 0($k1)
+subi $sp $sp 4
+lw $t7 4($sp)
+addi $t7 $t0 1
+move $t0 $t7 
+lw $t5 -4($fp)
+ble $t0 $t5 $LABEL10
+jr $ra  
+echo_lower:   
+lw $t4 0($fp)
+li $v1 97 
+ble $t4 $v1 $LABEL11
+li $v1 122 
+bgt $t4 $v1 $LABEL13
+move $v0 $t4 
+jr $ra  
+j $LABEL14  
+$LABEL13:   
+li $v0 4 
+li $a0 268500999 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 48 
+jr $ra  
+$LABEL14:   
+j $LABEL12  
+$LABEL11:   
+li $v0 4 
+li $a0 268501007 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 48 
+jr $ra  
+$LABEL12:   
+test:   
+subi $sp $sp 4
+lw $t3 4($sp)
+li $t3 -1 
+li $k1 0 
+sll $k1 $k1 2
+addi $k1 $k1 16
+sub $k1 $fp $k1
+sw $t3 0($k1)
+li $k1 0 
+sll $k1 $k1 2
+addi $k1 $k1 16
+sub $k1 $fp $k1
+subi $sp $sp 4
+lw $t2 4($sp)
+lw $t2 0($k1)
+subi $sp $sp 4
+lw $t8 4($sp)
+mul $t8 $t2 -2
+subi $sp $sp 4
+lw $t6 4($sp)
+sub $t6 $0 $t8
+addi $t6 $t6 0
+li $k1 99 
+sw $k1 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 128
+jal echo_lower  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+subi $sp $sp 4
+lw $t1 4($sp)
+move $t1 $v0 
+subi $sp $sp 4
+lw $t9 4($sp)
+sub $t9 $0 $t1
+addi $t9 $t9 101
+subi $sp $sp 4
+lw $t7 4($sp)
+mul $t7 $t9 1
+subi $sp $sp 4
+lw $t0 4($sp)
+div $t0 $t7 1
+subi $sp $sp 4
+lw $t5 4($sp)
+add $t5 $t6 $t0
+li $k1 1 
+sll $k1 $k1 2
+addi $k1 $k1 16
+sub $k1 $fp $k1
+sw $t5 0($k1)
+li $k1 1 
+sll $k1 $k1 2
+addi $k1 $k1 16
+sub $k1 $fp $k1
+subi $sp $sp 4
+lw $t4 4($sp)
+lw $t4 0($k1)
+li $v1 0 
+beq $t4 $v1 $LABEL15
+li $v0 4 
+li $a0 268501015 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+j $LABEL16  
+$LABEL15:   
+$LABEL16:   
+li $k1 0 
+sll $k1 $k1 2
+addi $k1 $k1 16
+sub $k1 $fp $k1
+subi $sp $sp 4
+sw $t3 4($sp)
+lw $t3 4($sp)
+lw $t3 0($k1)
+subi $sp $sp 4
+sw $t2 4($sp)
+lw $t2 4($sp)
+addi $t2 $t3 1
+li $v0 1 
+move $a0 $t2 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $k1 1 
+sll $k1 $k1 2
+addi $k1 $k1 16
+sub $k1 $fp $k1
+subi $sp $sp 4
+sw $t8 4($sp)
+lw $t8 4($sp)
+lw $t8 0($k1)
+li $v0 1 
+move $a0 $t8 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 11 
+li $a0 116 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 11 
+li $a0 101 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 11 
+li $a0 115 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 11 
+li $a0 116 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 4 
+li $a0 268501023 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+jr $ra  
+main:   
+sw $8 -60($sp)
+sw $9 -64($sp)
+sw $10 -68($sp)
+sw $11 -72($sp)
+sw $12 -76($sp)
+sw $13 -80($sp)
+sw $14 -84($sp)
+sw $15 -88($sp)
+sw $24 -124($sp)
+sw $25 -128($sp)
+sw $26 -132($sp)
+sw $27 -136($sp)
+sw $28 -140($sp)
+sw $29 -144($sp)
+sw $30 -148($sp)
+sw $31 -152($sp)
+move $fp $sp 
+subi $sp $fp 152
+jal test  
+lw $8 -60($fp)
+lw $9 -64($fp)
+lw $10 -68($fp)
+lw $11 -72($fp)
+lw $12 -76($fp)
+lw $13 -80($fp)
+lw $14 -84($fp)
+lw $15 -88($fp)
+lw $24 -124($fp)
+lw $25 -128($fp)
+lw $26 -132($fp)
+lw $27 -136($fp)
+lw $28 -140($fp)
+lw $29 -144($fp)
+lw $31 -152($fp)
+lw $fp -148($fp)
+li $v0 5 
+syscall   
+lw $t1 4($gp)
+move $t1 $v0 
+li $v0 5 
+syscall   
+lw $t9 8($gp)
+move $t9 $v0 
+subi $sp $sp 4
+lw $t7 4($sp)
+addi $t7 $t9 1
+li $v1 1000 
+ble $t7 $v1 $LABEL17
+li $v0 4 
+li $a0 268501027 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+li $v0 10 
+syscall   
+j $LABEL18  
+$LABEL17:   
+$LABEL18:   
+subi $sp $sp 4
+lw $t6 4($sp)
+addi $t6 $t9 1
+subi $sp $sp 4
+lw $t0 4($sp)
+mul $t0 $t6 1
+li $k1 0 
+sw $k1 0($sp)
+sw $t0 -4($sp)
+sw $8 -44($sp)
+sw $9 -48($sp)
+sw $10 -52($sp)
+sw $11 -56($sp)
+sw $12 -60($sp)
+sw $13 -64($sp)
+sw $14 -68($sp)
+sw $15 -72($sp)
+sw $24 -108($sp)
+sw $25 -112($sp)
+sw $26 -116($sp)
+sw $27 -120($sp)
+sw $28 -124($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal initial  
+lw $8 -44($fp)
+lw $9 -48($fp)
+lw $10 -52($fp)
+lw $11 -56($fp)
+lw $12 -60($fp)
+lw $13 -64($fp)
+lw $14 -68($fp)
+lw $15 -72($fp)
+lw $24 -108($fp)
+lw $25 -112($fp)
+lw $26 -116($fp)
+lw $27 -120($fp)
+lw $28 -124($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+li $k1 0 
+sw $k1 0($sp)
+li $k1 1 
+sw $k1 -4($sp)
+sw $8 -44($sp)
+sw $9 -48($sp)
+sw $10 -52($sp)
+sw $11 -56($sp)
+sw $12 -60($sp)
+sw $13 -64($sp)
+sw $14 -68($sp)
+sw $15 -72($sp)
+sw $24 -108($sp)
+sw $25 -112($sp)
+sw $26 -116($sp)
+sw $27 -120($sp)
+sw $28 -124($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal recursive_cal  
+lw $8 -44($fp)
+lw $9 -48($fp)
+lw $10 -52($fp)
+lw $11 -56($fp)
+lw $12 -60($fp)
+lw $13 -64($fp)
+lw $14 -68($fp)
+lw $15 -72($fp)
+lw $24 -108($fp)
+lw $25 -112($fp)
+lw $26 -116($fp)
+lw $27 -120($fp)
+lw $28 -124($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+subi $sp $sp 4
+lw $t5 4($sp)
+move $t5 $v0 
+subi $sp $sp 4
+lw $t4 4($sp)
+li $t4 -1 
+bne $t5 $t4 $LABEL19
+li $v0 4 
+li $a0 268501037 
+syscall   
+li $v0 11 
+li $a0 10 
+syscall   
+j $LABEL20  
+$LABEL19:   
+$LABEL20:   
+li $v0 10 
+syscall   

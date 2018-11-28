@@ -186,6 +186,7 @@
     <Text Include="16231281_test.txt" />
     <Text Include="16721145_test.txt" />
     <Text Include="grammar_test.txt" />
+    <Text Include="part.txt" />
     <Text Include="result.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,21 +1,14 @@
-
 const int g_c_int1 = 1;
 const char g_c_charf = 'f';
 const char g_c_chara = 'a', _0b = 'b';
 const int _c_int2 = 2, _g_10 = 3;
 
 int G_v_int_a1;
-int g_V_INT10_arr1[15], tag[20];
-char g_v_char_h;
 int g_v_int_arr2[10], g_v_int_b;
 char g_v_char_b, g_v_char_arr[50];
 char chs[5];
 
-
-int foo1(){
-	return(-+1);	
-}
-int foo2(int a, char b){
+int foo1(int a, char b){
 	return(a+b);
 }
 int add(int a, int b){
@@ -30,7 +23,7 @@ int addone(char a){
 int addint(int a){
 	return(a+1);
 }
-char foo3(char c){
+char foo2(char c){
 	if(c > 'c'){
 		return('/');
 	}
@@ -38,7 +31,6 @@ char foo3(char c){
 		return('*');
 	}
 }
-
 
 void test_string_int(){
 	int a;
@@ -57,10 +49,11 @@ void test_string_int(){
 	printf("#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~ !");
 	return;
 }
+
 int fib(int n){	
 	if(n==1)
 		return(1);
-	if(n==2)
+	else if(n==2)
 		return(1);
 	return(fib(n-1)+fib(n-2));
 }
@@ -84,7 +77,7 @@ void test_all_cond(){
 	if(d)
 		printf("d");
 	if(a==1)
-		printf("error!!");
+		printf("error");
 	if(a!=1)
 		printf("error");
 	if(a<=c)
@@ -96,17 +89,34 @@ void test_all_cond(){
 	return;
 }
 
-void test_diff_domain(){
+void test_diff_domain(int para_change){
 	const char g_c_chara = 'b';
 	int G_v_int_a1;
 	printf(g_c_chara);
 	G_v_int_a1 = 222;
 	printf(G_v_int_a1);
+	printf("test global variable and constance");
+	printf(g_c_int1);
+	printf(g_c_charf);
+	printf(g_c_chara);
+	printf(_0b);
+	printf(_c_int2);
+	printf(_g_10);
+	g_v_char_arr[2] = 'H';
+	printf(g_v_char_arr[2]);
+	g_v_int_arr2[6] = 155;
+	printf(g_v_int_arr2[6]);
+	printf("before change para=", para_change);
+	para_change = para_change*2;
+	printf("after change para=", para_change);
+	g_v_char_b = 'Y';
+	printf(g_v_char_b);
 }
 
 void test_expr(){
-	int res_of_expr, arr[10];
-	arr[1] = 1;
+	int res_of_expr;
+	int arr[12], tag[7];
+	char g_v_char_h;
 	printf("test for expression");
 	res_of_expr = --12--12--12-+12+-12--12--12--12--12;
 	printf("--12--12--12-+12+-12--12--12--12--12=", res_of_expr);
@@ -119,23 +129,26 @@ void test_expr(){
 	res_of_expr = 'c' + 12;
 	printf("c + 12 = ", res_of_expr);
 	res_of_expr = 'c'*12/1;
-	printf("c*12/1", res_of_expr);
+	printf("c*12/1=", res_of_expr);
 	res_of_expr = 1-((((12+1))));
-	printf("1-(((12+1)))", res_of_expr);
+	printf("1-(((12+1)))=", res_of_expr);
+	arr[1] = 15;
 	res_of_expr = arr[1]*'b'+fib(3);
 	printf("arr[1]*'b'+fib(3)=", res_of_expr);
 	G_v_int_a1 = 5;			
 	tag[6] = 12;
 	g_v_char_h = 'h';
-	res_of_expr = addone('h') + add(1, fib(5))/G_v_int_a1 - tag[6];
-	printf("addone('h')+add(1, fib(5))/G_v_int_a1 - tag[6]=", res_of_expr);
+	res_of_expr = addone(g_v_char_h) + add(1, fib(5))/G_v_int_a1 - tag[6];
+	printf("addone(g_v_char_h)+add(1, fib(5))/G_v_int_a1 - tag[6]=", res_of_expr);
 	return;
 }
 
 void test_scanf(){
 	int a, b;
+	printf("please input an integer");
 	scanf(a);
 	printf(a);
+	printf("please input 2 integers press enter for each integer");
 	scanf(a, b);
 	printf(a);
 	printf(b);
@@ -150,9 +163,6 @@ char echo_char(char a){
 void really_void(){}
 void really_void2(){;}
 void really_void3(){;;;;;;;;;;;;;}
-void echo(int a){
-	printf("a=", a);
-}
 
 void permutation(int m, int n){ 
 	int i; 
@@ -193,30 +203,27 @@ void main() {
 		arr[i] = fib(i+1);
 	printf("input the number of fib you want(1~10)");
 	scanf(user_input1, user_input2);
-	i = user_input1;
+	i = user_input1-1;
 	do{
 		printf(" ", arr[i]);
 		i = i + 1;
-	}while(i<=user_input2)
+	}while(i<user_input2)
 
-	for(i=user_input2;i>=user_input1;i=i-1){
+	for(i=user_input2-1;i>=user_input1-1;i=i-1){
 		printf(" ", arr[i]);
 	}
-	
-	printf(foo1());
-	printf(foo2(1, 'b'));
+	printf(foo1(1, 'b'));
 	printf(add(1, +2));
 	printf(addchar('a', 'b'));
 	printf(addone('F'));
 	printf(addint(16));
-	printf(foo3('c'));
+	printf(foo2('c'));
 	test_string_int();
-	test_diff_domain();
+	test_diff_domain(233);
 	test_expr();
 	test_all_cond();
 	test_scanf();
 	echo_char('a');
-	echo(5);
 	really_void();
 	really_void2();
 	really_void3();
@@ -225,6 +232,7 @@ void main() {
 	chs[2] = 'C';
 	chs[3] = 'D';
 	chs[4] = 'E';
+	printf("this is a permutation of ABCDE");
 	permutation(0,5);
 	return;
 }

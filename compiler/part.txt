@@ -1,0 +1,57 @@
+const int g_c_int1 = 1;
+const char g_c_charf = 'f';
+const char g_c_chara = 'a', _0b = 'b';
+const int _c_int2 = 2, _g_10 = 3;
+
+int G_v_int_a1;
+int g_v_int_arr2[10], g_v_int_b;
+char g_v_char_b, g_v_char_arr[50];
+char chs[5];
+
+int foo1(int a, char b){
+	return(a+b);
+}
+int add(int a, int b){
+	return(a+b);
+}
+int addchar(char a, char b){
+	return(a+b);
+}
+int addone(char a){
+	return(a+1);
+}
+int addint(int a){
+	return(a+1);
+}
+char foo2(char c){
+	if(c > 'c'){
+		return('/');
+	}
+	else{
+		return('*');
+	}
+}
+
+
+char echo_char(char a){
+	printf(a);
+	return(a);
+}
+
+void main() {
+	const int len = 10;
+	int arr[10];	
+	int i;
+	int user_input1, user_input2;
+	int res_of_expr;
+
+	
+	printf(foo1(1, 'b'));
+	printf(add(1, +2));
+	printf(addchar('a', 'b'));
+	printf(addone('F'));
+	printf(addint(16));
+	printf(foo2('c'));
+	echo_char('a');
+	return;
+}

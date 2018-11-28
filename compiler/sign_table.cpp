@@ -38,7 +38,7 @@ int search_tab(string name, bool &islocal, int def_loc) {
 			loc++;
 	}
 	map<string, int>::iterator it = stidx.find(name);
-	// local variable
+	// global variable
 	if (it != stidx.end()) {
 		islocal = false;
 		return it->second;

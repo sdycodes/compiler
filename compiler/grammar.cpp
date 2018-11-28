@@ -8,6 +8,7 @@
 #include "midcode.h"
 #define else_ERR(x,y) else{errmsg(x);}
 #define else_ERR_break(x,y) else{errmsg(x);break;}
+#define DUMP_GREAMMAR false
 string factor(bool &onlyChar) {
 	int co = 1;
 	//char tc;
@@ -77,8 +78,12 @@ string factor(bool &onlyChar) {
 				}
 				else_ERR("expect a left bracket", 1)
 			}
-			else if (st[ident_idx].kind == ST_VAR||st[ident_idx].kind==ST_PARA||st[ident_idx].kind==ST_CONST) {
+			else if (st[ident_idx].kind == ST_VAR||st[ident_idx].kind==ST_PARA) {
 				t = st[ident_idx].name;
+				nextsym(type, val, name);
+			}
+			else if (st[ident_idx].kind == ST_CONST) {
+				t = to_string(st[ident_idx].val);
 				nextsym(type, val, name);
 			}
 			else_ERR("unexpected beginning of factor", 1)
@@ -97,7 +102,7 @@ string term(bool &onlyChar) {
 	t = rec1;
 	while (type==TIMES||type==DIV) {
 		onlyChar = false;
-		op = type == TIMES ? "MUL" : "DIV";
+		op = type == TIMES ? "MULT" : "DIV";
 		nextsym(type, val, name);
 		t = gent();
 		rec2 = factor(onlyChar);
@@ -133,7 +138,6 @@ string expr(bool &onlyChar) {
 		}
 	}
 	return t;
-	//printf("%d %d this is an expression\n", lc, cc);
 }
 void funcCall(int ident_idx) {
 	string t, rec;
@@ -266,7 +270,7 @@ void forstmt() {
 													genmc(op, ident_name, rec_step, ident_name);
 													genmc("GOTO", label_judge, "0", "0");
 													genmc("LABEL", label_end, "0", "0");
-													printf("%d %d this is a for statement\n", lc, cc);
+													if (DUMP_GREAMMAR) printf("%d %d this is a for statement\n", lc, cc);
 												}
 												else_ERR("expect a right parent", 31)
 											}
@@ -335,11 +339,13 @@ void printfstmt() {
 				rec_val = expr(onlyChar);
 				genmc(onlyChar?"OUTC":"OUTV",rec_val, "0", "0");
 				if(type==RPAR){
+					genmc("OUTC", "10", "0", "0");
 					nextsym(type, val, name);
 				}
 				else_ERR("expect a right parent", 2)
 			}
 			else if (type == RPAR) {
+				genmc("OUTC", "10", "0", "0");
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a comma or a right parent", 2)
@@ -348,6 +354,7 @@ void printfstmt() {
 			rec_val = expr(onlyChar);
 			genmc(onlyChar ? "OUTC" : "OUTV", rec_val, "0", "0");
 			if (type == RPAR) {
+				genmc("OUTC", "10", "0", "0");
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a right parent", 2)
@@ -411,7 +418,7 @@ void dowhilestmt() {
 			rec = conditions();
 			genmc("BEZ", rec, "0", label);
 			if (type == RPAR) {
-				printf("%d %d this is a do-while statement\n", lc, cc);
+				if (DUMP_GREAMMAR) printf("%d %d this is a do-while statement\n", lc, cc);
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a right parent", 1)
@@ -442,7 +449,7 @@ void ifstmt() {
 		else_ERR("expect a right parent", 21)
 	}
 	else_ERR("expect a left brace", 21)
-	printf("%d %d this is an if statement\n", lc, cc);
+		if (DUMP_GREAMMAR) printf("%d %d this is an if statement\n", lc, cc);
 }
 void state() {
 	string stmttype;
@@ -510,7 +517,7 @@ void state() {
 		return;
 	}
 	if (type == SEMICOLON) {
-		printf("%d %d this is a %s statement\n", lc, cc, stmttype.c_str());
+		if (DUMP_GREAMMAR) printf("%d %d this is a %s statement\n", lc, cc, stmttype.c_str());
 		nextsym(type, val, name);
 	}
 	else if(need_semicolon){
@@ -539,6 +546,7 @@ void statements() {
 }
 void mainDef(int loc) {
 	genmc("LABEL", "main", "0", "0");
+	int main_loc = mc.size()-1;
 	if (type == LPAR) {
 		nextsym(type, val, name);
 		if (type == RPAR) {
@@ -547,8 +555,13 @@ void mainDef(int loc) {
 				nextsym(type, val, name);
 				statements();
 				cal_func_size(loc);
-				printf("%d %d this is a main function definition\n", lc, cc);
+				if (DUMP_GREAMMAR) printf("%d %d this is a main function definition\n", lc, cc);
 				nextsym(type, val, name);
+				int i;
+				for (i = main_loc;i < (int)mc.size();i++) {
+					if (mc[i].op == "RET")
+						mc[i].op = "EXIT";
+				}
 				genmc("EXIT", "0", "0", "0");
 			}
 			else_ERR("expect left brace", 1)
@@ -590,7 +603,6 @@ int paraList() {
 }
 void funcDef(int loc) {
 	tno = 0;
-	lno = 0;
 	int num = paraList();
 	st[loc].val = num;
 	genmc("LABEL", st[loc].name, "0", "0");
@@ -611,7 +623,7 @@ void funcDef(int loc) {
 	else if (i == mc.size()) {
 		errmsg("expect a return value", 31);
 	}
-	printf("%d %d this is a function definition\n",lc, cc);
+	if (DUMP_GREAMMAR) printf("%d %d this is a function definition\n",lc, cc);
 }
 void varDecl(int var_type, bool islocal) {
 	int ident_type, ident_kind;
@@ -636,7 +648,7 @@ void varDecl(int var_type, bool islocal) {
 							nextsym(type, val, name);
 						}
 						else if (type == SEMICOLON) {
-							printf("%d %d this is a variable declaration\n", lc, cc);
+							if (DUMP_GREAMMAR) printf("%d %d this is a variable declaration\n", lc, cc);
 							nextsym(type, val, name);
 							break;
 						}
@@ -655,7 +667,7 @@ void varDecl(int var_type, bool islocal) {
 			}
 			else if (type == SEMICOLON) {
 				insert_tab(islocal, ident_name, ident_kind, ident_type, 0, 4, 0);
-				printf("%d %d this is a variable declaration\n", lc, cc);
+				if (DUMP_GREAMMAR) printf("%d %d this is a variable declaration\n", lc, cc);
 				nextsym(type, val, name);
 				return;
 			}
@@ -703,7 +715,7 @@ void constDef(bool islocal) {
 				else_ERR("expect an identifier", 1)
 			} while (type == COMMA);
 			if (type == SEMICOLON) {
-				printf("%d %d this is a const declaration\n", lc, cc);
+				if (DUMP_GREAMMAR) printf("%d %d this is a const declaration\n", lc, cc);
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a semicolon", 1)
@@ -744,7 +756,7 @@ void program() {
 									varDecl(ident_type, false);
 								}
 								else if (type == SEMICOLON) {
-									printf("%d %d this is a variable declaration\n",lc, cc);
+									if (DUMP_GREAMMAR) printf("%d %d this is a variable declaration\n",lc, cc);
 									nextsym(type, val, name);
 
 								}
@@ -764,7 +776,7 @@ void program() {
 					}
 					else if (type == SEMICOLON) {
 						insert_tab(false, ident_name, ST_VAR, ident_type, 0, 4, 0);
-						printf("%d %d this is a variable declaration\n", lc, cc);
+						if (DUMP_GREAMMAR) printf("%d %d this is a variable declaration\n", lc, cc);
 						nextsym(type, val, name);
 					}
 					else if (type == LPAR) {
@@ -822,5 +834,5 @@ void program() {
 	if (type != END) {
 		errmsg("expect a end of file");
 	}
-	printf("%d %d this is a program\n", lc, cc);
+	if (DUMP_GREAMMAR) printf("%d %d this is a program\n", lc, cc);
 }

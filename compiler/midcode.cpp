@@ -86,11 +86,11 @@ void dumpmc() {
 				printf("SET %s\n", mc[j].n1.c_str());
 			}
 		}
-		else if (mc[j].op == "ADD" || mc[j].op == "SUB" || mc[j].op == "MUL" || mc[j].op == "DIV" || \
+		else if (mc[j].op == "ADD" || mc[j].op == "SUB" || mc[j].op == "MULT" || mc[j].op == "DIV" || \
 			mc[j].op == "LT" || mc[j].op == "LE" || mc[j].op == "EQ" || mc[j].op == "NE" || mc[j].op == "GT" || mc[j].op == "GE") {
 			mop = mc[j].op == "ADD" ? "+" :
 				mc[j].op == "SUB" ? "-" :
-				mc[j].op == "MUL" ? "*" :
+				mc[j].op == "MULT" ? "*" :
 				mc[j].op == "DIV" ? "/" :
 				mc[j].op == "LT" ? "<" :
 				mc[j].op == "LE" ? "<=" :
