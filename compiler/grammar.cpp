@@ -146,7 +146,7 @@ void funcCall(int ident_idx) {
 	if (type == LPAR) {
 		nextsym(type, val, name);
 		if (type == RPAR && st[ident_idx].val==0) {
-			genmc("CALL", st[ident_idx].name, "0", "0");
+			genmc("CALL", "FUNC_"+st[ident_idx].name, "0", "0");
 			nextsym(type, val, name);
 		}
 		else if (type == RPAR && st[ident_idx].val != 0) {
@@ -182,7 +182,7 @@ void funcCall(int ident_idx) {
 				for (int i = 0;i < (int)paras.size();i++) {
 					genmc("PUSH", paras[i], "0", "0");
 				}
-				genmc("CALL", st[ident_idx].name, "0", "0");
+				genmc("CALL", "FUNC_"+st[ident_idx].name, "0", "0");
 			}
 		}
 	}
@@ -605,7 +605,7 @@ void funcDef(int loc) {
 	tno = 0;
 	int num = paraList();
 	st[loc].val = num;
-	genmc("LABEL", st[loc].name, "0", "0");
+	genmc("LABEL", "FUNC_"+st[loc].name, "0", "0");
 	int func_loc = mc.size() - 1;
 	if (type == LBRACE) {
 		nextsym(type, val, name);

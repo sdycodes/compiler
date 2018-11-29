@@ -113,7 +113,7 @@ void dumpmc() {
 		else if (mc[j].op == "OUTS")
 			printf("OUTS %s\n", &strtab[atoi(mc[j].n1.c_str())]);
 		else if (mc[j].op=="EXIT")
-			printf("EXIT");
+			printf("EXIT\n");
 		else {
 			printf("!!!!!!!!!%s\n", mc[j].op.c_str());
 		}

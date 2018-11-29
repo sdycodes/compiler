@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="base_block.h" />
     <ClInclude Include="error.h" />
     <ClInclude Include="globalvar.h" />
     <ClInclude Include="grammar.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="stdHeader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="base_block.cpp" />
     <ClCompile Include="compiler.cpp" />
     <ClCompile Include="error.cpp" />
     <ClCompile Include="globalvar.cpp" />
@@ -186,6 +188,7 @@
     <Text Include="16231281_test.txt" />
     <Text Include="16721145_test.txt" />
     <Text Include="grammar_test.txt" />
+    <Text Include="lru.txt" />
     <Text Include="part.txt" />
     <Text Include="result.txt" />
   </ItemGroup>

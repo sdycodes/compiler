@@ -1,0 +1,54 @@
+int loc;
+bool islocal;
+map<int, string>::iterator it = alloc.begin();
+	for (;it != alloc.end();it++) {
+		if (it->second == name)
+			break;
+	}
+	//如果当前变量已经分配了寄存器
+	if (it != alloc.end()) {
+		int i;
+		//寻找它对应的寄存器位置
+		for (i = 0;i < REG_NUM;i++) {
+			if (stk[i] == it->first)
+				break;
+		}
+		int r = stk[i];
+		//放到顶部 LRU算法
+		for (int j = i;j >= 1;j--)
+			stk[j] = stk[j - 1];
+		stk[0] = r;
+		return no2name(r);
+	}
+	//如果没有分配寄存器
+	else {
+		string rec_name = "";
+		//如果栈底寄存器不空 说明寄存器全部被占用 需要弹出栈底
+		if (alloc.find(stk[REG_NUM - 1]) != alloc.end() && alloc[stk[REG_NUM - 1]] != "") {
+			rec_name = alloc[stk[REG_NUM - 1]];
+		}
+		int r = stk[REG_NUM - 1];
+		for (int k = REG_NUM - 1;k >= 1;k--)
+			stk[k] = stk[k - 1];
+		stk[0] = r;	//栈底寄存器放到栈顶
+		alloc[r] = name;	//分配寄存器
+		//rec_name不空说明被挤掉了，需要回写
+		if (rec_name != "") {
+			loc = search_tab(rec_name, islocal, def_loc);
+			if (loc == -1) 	//中间变量回写可能还没分配内存，需要压栈，在call_midvar_loc中
+				gen_mips("sw", no2name(r), "$sp", to_string(call_midvar_loc(name)));
+			else if (islocal)
+				gen_mips("sw", no2name(r), "$fp", to_string(-st[loc].addr));
+			else
+				gen_mips("sw", no2name(r), "$gp", to_string(st[loc].addr));
+		}
+		//把新分配的load出来
+		loc = search_tab(name, islocal, def_loc);
+		if (loc == -1)
+			gen_mips("lw", no2name(r), "$sp", to_string(call_midvar_loc(name)));
+		else if (islocal)
+			gen_mips("lw", no2name(r), "$fp", to_string(-st[loc].addr));
+		else
+			gen_mips("lw", no2name(r), "$gp", to_string(st[loc].addr));
+		return no2name(r);
+	}
