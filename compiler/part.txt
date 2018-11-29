@@ -1,57 +1,74 @@
-const int g_c_int1 = 1;
-const char g_c_charf = 'f';
-const char g_c_chara = 'a', _0b = 'b';
-const int _c_int2 = 2, _g_10 = 3;
+const char CORRECT = 'c', INCORRECT = 'f';
+const int COUNT = 10, BESTNUM = 42;
+int a[10];
+char c[10];
 
-int G_v_int_a1;
-int g_v_int_arr2[10], g_v_int_b;
-char g_v_char_b, g_v_char_arr[50];
-char chs[5];
+int comparison(int i_1, int j_1)
+{
+	if(i_1 >= j_1)
+		return(+1);
+	else
+		return(0);
+}
+void quickSort(int left, int right)
+{
+	int i, j, l;
+	int temp;
+	i = left;
+	j = right;
+	temp = a[left];
+	if(1 == (comparison(i, j)))
+		return;
+	do
+	{
+		if (j > i)
+		{
+			temp = a[i];
+			a[i] = a[j];
+			a[j] = temp;
+		}
+		if (i < j)
+		{
+			temp = a[j];
+			a[j] = a[i];
+			a[i] = temp;
+		}
+		i=i-1;
+		j= j-1;
+	} while(i != j)
+	a[i] = temp;
+	quickSort(left, i - 1);
+	quickSort(i + 1, right);
+}
 
-int foo1(int a, char b){
-	return(a+b);
-}
-int add(int a, int b){
-	return(a+b);
-}
-int addchar(char a, char b){
-	return(a+b);
-}
-int addone(char a){
-	return(a+1);
-}
-int addint(int a){
-	return(a+1);
-}
-char foo2(char c){
-	if(c > 'c'){
-		return('/');
-	}
-	else{
-		return('*');
-	}
-}
-
-
-char echo_char(char a){
-	printf(a);
-	return(a);
-}
-
-void main() {
-	const int len = 10;
-	int arr[10];	
+char initialize()
+{
 	int i;
-	int user_input1, user_input2;
-	int res_of_expr;
+	for(i = COUNT - 1; i >= 0; i = i - 1)
+		a[i] = 4 / 2 - 2;
+	return(CORRECT);
+}
 
-	
-	printf(foo1(1, 'b'));
-	printf(add(1, +2));
-	printf(addchar('a', 'b'));
-	printf(addone('F'));
-	printf(addint(16));
-	printf(foo2('c'));
-	echo_char('a');
-	return;
+void main()
+{
+	int i, tmp;
+	char ctmp;
+	if (initialize() == 'c')
+	{
+		for(i = 0; i < COUNT; i = i + 1)
+		{
+			scanf(tmp);
+			a[i] = tmp;
+		}
+		quickSort(0, COUNT - 1);
+		printf("Sorting finished~");
+		for(i = 0; i < COUNT; i = i + 1)
+		{
+			printf(a[i]);
+			if(a[i] == BESTNUM)
+			{
+				printf("And here comes the best number!");
+			}
+		}
+	}
 }

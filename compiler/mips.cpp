@@ -9,8 +9,9 @@
 
 #define isCon(num) (isdigit(num[0])||num[0]=='-'||num[0]=='+')
 #define REG_NUM 10
-int stk[REG_NUM] = { 8,9,10,11,12,13,14,15,24,25 };	//register stack
-map<int, string> alloc;	//record each register and its variable name
+int stk[REG_NUM] = { 8,9,10,11,12,13,14,15,24,25 };	//t-register stack
+
+map<int, string> alloc;	//record each t-register and its variable name
 vector<string> midvar;
 
 int call_midvar_loc(string name) {
@@ -25,6 +26,61 @@ int call_midvar_loc(string name) {
 	}
 	return (midvar.size() - i) * 4;
 }
+/*string get_reg(string name, int def_loc) {
+	if (name == "#RET")
+		return "$v0";
+	int loc, rec_loc;
+	bool islocal;
+	loc = search_tab(name, islocal, def_loc);
+	bool ist = islocal || name[0] == '#';
+	map<int, string>::iterator it;
+	it = alloc.begin();
+	for (;it != alloc.end();it++) {
+		if (it->second == name)
+			break;
+	}
+	//如果当前变量已经分配了寄存器
+	if (it != alloc.end()) {
+		int i;
+		//寻找它对应的寄存器位置
+		for (i = 0;i < REG_NUM;i++) {
+			if (stk[i] == it->first)
+				break;
+		}
+		int r = stk[i];
+		//放到顶部 LRU算法
+		for (int j = i;j >= 1;j--)
+			stk[j] = stk[j - 1];
+		stk[0] = r;
+		return no2name(r);
+	}
+	//如果没有分配寄存器
+	else {
+		string rec_name = "";
+		//如果栈底寄存器不空 说明寄存器全部被占用 需要弹出栈底
+		if (alloc.find(stk[REG_NUM - 1]) != alloc.end() && alloc[stk[REG_NUM - 1]] != "")
+			rec_name = alloc[stk[REG_NUM - 1]];
+		int r = stk[REG_NUM - 1];
+		for (int k = REG_NUM - 1;k >= 1;k--)
+			stk[k] = stk[k - 1];
+		stk[0] = r;	//栈底寄存器放到栈顶
+		alloc[r] = name;	//分配寄存器
+		//rec_name不空说明被挤掉了，需要回写
+		if (rec_name != "") {
+			rec_loc = search_tab(rec_name, islocal, def_loc);
+			if (rec_name[0] == '#') //中间变量回写可能还没分配内存，需要压栈，在call_midvar_loc中
+				gen_mips("sw", no2name(r), "$sp", to_string(call_midvar_loc(name)));
+			else
+				gen_mips("sw", no2name(r), "$fp", to_string(-st[rec_loc].addr));
+		}
+		//把新分配的load出来
+		if (name[0] == '#')
+			gen_mips("lw", no2name(r), "$sp", to_string(call_midvar_loc(name)));
+		else
+			gen_mips("lw", no2name(r), "$fp", to_string(-st[loc].addr));
+		return no2name(r);
+	}
+}*/
 string get_reg(string name, int def_loc) {
 	if (name == "#RET")
 		return "$v0";
@@ -55,36 +111,35 @@ string get_reg(string name, int def_loc) {
 	else {
 		string rec_name = "";
 		//如果栈底寄存器不空 说明寄存器全部被占用 需要弹出栈底
-		if (alloc.find(stk[REG_NUM-1]) != alloc.end()&&alloc[stk[REG_NUM-1]]!="") {
-			rec_name = alloc[stk[REG_NUM-1]];
+		if (alloc.find(stk[REG_NUM - 1]) != alloc.end() && alloc[stk[REG_NUM - 1]] != "") {
+			rec_name = alloc[stk[REG_NUM - 1]];
 		}
-		int r = stk[REG_NUM-1];
-		for (int k = REG_NUM-1;k >= 1;k--)
+		int r = stk[REG_NUM - 1];
+		for (int k = REG_NUM - 1;k >= 1;k--)
 			stk[k] = stk[k - 1];
 		stk[0] = r;	//栈底寄存器放到栈顶
 		alloc[r] = name;	//分配寄存器
 		//rec_name不空说明被挤掉了，需要回写
 		if (rec_name != "") {
 			loc = search_tab(rec_name, islocal, def_loc);
-			if (loc==-1) 	//中间变量回写可能还没分配内存，需要压栈，在call_midvar_loc中
+			if (loc == -1) 	//中间变量回写可能还没分配内存，需要压栈，在call_midvar_loc中
 				gen_mips("sw", no2name(r), "$sp", to_string(call_midvar_loc(name)));
-			else if(islocal)
+			else if (islocal)
 				gen_mips("sw", no2name(r), "$fp", to_string(-st[loc].addr));
 			else
 				gen_mips("sw", no2name(r), "$gp", to_string(st[loc].addr));
 		}
 		//把新分配的load出来
 		loc = search_tab(name, islocal, def_loc);
-		if (loc==-1)
+		if (loc == -1)
 			gen_mips("lw", no2name(r), "$sp", to_string(call_midvar_loc(name)));
-		else if(islocal)
+		else if (islocal)
 			gen_mips("lw", no2name(r), "$fp", to_string(-st[loc].addr));
 		else
 			gen_mips("lw", no2name(r), "$gp", to_string(st[loc].addr));
 		return no2name(r);
 	}
 }
-
 void gen_mips(string op, string res, string n1, string n2) {
 	mce tmp;
 	tmp.op = op;
@@ -113,7 +168,7 @@ void mc2mp() {
 	gen_mips("$string:", ".asciiz", all_string, "");
 	gen_mips(".text", "", "", "");
 	def_loc = search_tab("main", islocal, -1);
-	gen_mips("li", "$fp", "0x7ffffffc");
+	gen_mips("li", "$fp", "0x7fffeffc");
 	gen_mips("subi", "$sp", "$fp", to_string(st[def_loc].size));
 	for (int i = 0;i < (int)mc.size();i++) {
 		if (mc[i].op == "LABEL") {	//标签
@@ -306,6 +361,9 @@ void mc2mp() {
 			gen_mips("li", "$v0", mc[i].op=="INV"?"5":"12");
 			gen_mips("syscall");
 			gen_mips("move", get_reg(mc[i].n1, def_loc), "$v0");
+			int loc = search_tab(mc[i].n1, islocal, def_loc);
+			if (loc != -1 && !islocal)
+				gen_mips("sw", get_reg(mc[i].n1, def_loc), "$gp", to_string(st[loc].addr));
 		}
 		else if (mc[i].op == "GOTO") {
 			gen_mips("j", mc[i].n1);
@@ -315,6 +373,9 @@ void mc2mp() {
 				gen_mips("li", get_reg(mc[i].res, def_loc), mc[i].n1);
 			else
 				gen_mips("move", get_reg(mc[i].res, def_loc), get_reg(mc[i].n1, def_loc));
+			int loc = search_tab(mc[i].res, islocal, def_loc);
+			if (loc!=-1&&!islocal)
+				gen_mips("sw", get_reg(mc[i].res, def_loc), "$gp", to_string(st[loc].addr));
 		}
 		else if (mc[i].op == "SELEM") { 
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
