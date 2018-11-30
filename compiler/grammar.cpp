@@ -229,9 +229,10 @@ void assignstmt(int ident_idx) {
 void forstmt() {
 	string ident_name;
 	string label_judge, label_end, rec_init, rec_cond, op, rec_step;
-	
+	string name2;
 	bool islocal, onlyChar = true;
 	int loc;
+
 	if (type == LPAR) {
 		nextsym(type, val, name);
 		if (type == IDEN) {
@@ -253,6 +254,7 @@ void forstmt() {
 						if (type == SEMICOLON) {
 							nextsym(type, val, name);
 							if (type == IDEN) {
+								name2 = name;
 								nextsym(type, val, name);
 								if (type == BECOMES) {
 									nextsym(type, val, name);
@@ -267,7 +269,7 @@ void forstmt() {
 												if (type == RPAR) {
 													nextsym(type, val, name);
 													state();
-													genmc(op, ident_name, rec_step, ident_name);
+													genmc(op, name2, rec_step, name2);
 													genmc("GOTO", label_judge, "0", "0");
 													genmc("LABEL", label_end, "0", "0");
 													if (DUMP_GREAMMAR) printf("%d %d this is a for statement\n", lc, cc);
@@ -613,16 +615,10 @@ void funcDef(int loc) {
 		cal_func_size(loc);
 	}
 	else_ERR("expect a left brace", 1);
-	int i;
-	for (i = func_loc;i < (int)mc.size();i++) {
-		if (mc[i].op == "RET")
-			break;
-	}
-	if (i == mc.size()&&st[loc].type==ST_VOID)
+	if (st[loc].type == ST_VOID)
 		genmc("RET", "#", "0", "0");
-	else if (i == mc.size()) {
-		errmsg("expect a return value", 31);
-	}
+	else
+		genmc("RET", "0", "0", "0");
 	if (DUMP_GREAMMAR) printf("%d %d this is a function definition\n",lc, cc);
 }
 void varDecl(int var_type, bool islocal) {
