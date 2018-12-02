@@ -11,10 +11,11 @@
 #define REG_NUM 10
 int stk[REG_NUM] = { 8,9,10,11,12,13,14,15,24,25 };	//t-register stack
 
-map<int, string> alloc;	//record each t-register and its variable name
-vector<string> midvar;
+//map<int, string> alloc;	//record each t-register and its variable name
+//vector<string> midvar;
 
 int call_midvar_loc(string name) {
+	/*
 	int i;
 	for (i = midvar.size() - 1;i >= 0;i--)
 		if (midvar[i] == name)
@@ -24,7 +25,8 @@ int call_midvar_loc(string name) {
 		midvar.push_back(name);
 		return 4;
 	}
-	return (midvar.size() - i) * 4;
+	return (midvar.size() - i) * 4;*/
+	return (stoi(name.substr(1))<<2)+4;
 }
 string get_reg(string name, int def_loc) {
 	if (name == "#RET")
@@ -76,8 +78,8 @@ void mc2mp() {
 		if (mc[i].op == "LABEL") {	//标签
 			gen_mips(mc[i].n1+':');
 			if (mc[i].n1[0] != '$') {	//是一个函数标签
-				midvar.clear();	//清空中间变量
-				alloc.clear();	//清空对应关系
+				//midvar.clear();	//清空中间变量
+				//alloc.clear();	//清空对应关系
 				def_loc = search_tab(mc[i].n1=="main"?"main":mc[i].n1.substr(5), islocal);
 			}
 		}

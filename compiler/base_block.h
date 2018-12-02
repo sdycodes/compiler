@@ -11,6 +11,7 @@ typedef struct block {
 	bool def[MAXSIGNNUM], use[MAXSIGNNUM], in[MAXSIGNNUM], out[MAXSIGNNUM];
 }block;
 extern vector<block> blocks;
+extern int name2reg[MAXSIGNNUM];
 void dump_def_use();
 void init_block(block& b);
 void split_block();

@@ -1,1252 +1,2313 @@
-
---------------------1-----------------
-def:
-use:a b 
-in:a b 
-out:
-pre:0 
-next:89 
-1:LABEL 0 FUNC_foo1 0
-2:ADD #0 a b
-3:RET 0 #0 0
------------------------------------------
-
---------------------2-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-4:RET 0 0 0
------------------------------------------
-
---------------------3-----------------
-def:
-use:a b 
-in:a b 
-out:
-pre:
-next:89 
-5:LABEL 0 FUNC_add 0
-6:ADD #0 a b
-7:RET 0 #0 0
------------------------------------------
-
---------------------4-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-8:RET 0 0 0
------------------------------------------
-
---------------------5-----------------
-def:
-use:a b 
-in:a b 
-out:
-pre:
-next:89 
-9:LABEL 0 FUNC_addchar 0
-10:ADD #0 a b
-11:RET 0 #0 0
------------------------------------------
-
---------------------6-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-12:RET 0 0 0
------------------------------------------
-
---------------------7-----------------
-def:
-use:a 
-in:a 
-out:
-pre:
-next:89 
-13:LABEL 0 FUNC_addone 0
-14:ADD #0 a 1
-15:RET 0 #0 0
------------------------------------------
-
---------------------8-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-16:RET 0 0 0
------------------------------------------
-
---------------------9-----------------
-def:
-use:a 
-in:a 
-out:
-pre:
-next:89 
-17:LABEL 0 FUNC_addint 0
-18:ADD #0 a 1
-19:RET 0 #0 0
------------------------------------------
-
---------------------10-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-20:RET 0 0 0
------------------------------------------
-
---------------------11-----------------
-def:
-use:c 
-in:c 
-out:
-pre:
-next:12 14 
-21:LABEL 0 FUNC_foo2 0
-22:GT #0 c 99
-23:BNZ $LABEL0 #0 0
------------------------------------------
-
---------------------12-----------------
-def:
-use:
-in:
-out:
-pre:11 
-next:89 
-24:RET 0 47 0
------------------------------------------
-
---------------------13-----------------
-def:
-use:
-in:
-out:
-pre:
-next:15 
-25:GOTO 0 $LABEL1 0
------------------------------------------
-
---------------------14-----------------
-def:
-use:
-in:
-out:
-pre:11 
-next:89 
-26:LABEL 0 $LABEL0 0
-27:RET 0 42 0
------------------------------------------
-
---------------------15-----------------
-def:
-use:
-in:
-out:
-pre:13 
-next:89 
-28:LABEL 0 $LABEL1 0
-29:RET 0 0 0
------------------------------------------
-
---------------------16-----------------
-def:a 
-use:
-in:
-out:
-pre:
-next:89 
-30:LABEL 0 FUNC_test_string_int 0
-31:ASSIGN a 1 0
-32:OUTV 0 a 0
-33:OUTC 0 32 0
-34:ASSIGN a 0 0
-35:OUTV 0 a 0
-36:OUTC 0 32 0
-37:ADD #0 0 0
-38:ASSIGN a #0 0
-39:OUTV 0 a 0
-40:OUTC 0 32 0
-41:SUB #1 0 0
-42:ASSIGN a #1 0
-43:OUTV 0 a 0
-44:OUTC 0 32 0
-45:ADD #2 0 12
-46:ASSIGN a #2 0
-47:OUTV 0 a 0
-48:OUTC 0 32 0
-49:SUB #3 0 12
-50:ASSIGN a #3 0
-51:OUTV 0 a 0
-52:OUTC 0 32 0
-53:OUTS 0 0 0
-54:OUTC 0 32 0
-55:RET 0 # 0
------------------------------------------
-
---------------------17-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-56:RET 0 # 0
------------------------------------------
-
---------------------18-----------------
-def:
-use:n 
-in:n 
-out:n 
-pre:
-next:19 21 
-57:LABEL 0 FUNC_fib 0
-58:EQ #0 n 1
-59:BNZ $LABEL2 #0 0
------------------------------------------
-
---------------------19-----------------
-def:
-use:
-in:
-out:
-pre:18 
-next:89 
-60:RET 0 1 0
------------------------------------------
-
---------------------20-----------------
-def:
-use:
-in:n 
-out:n 
-pre:
-next:26 
-61:GOTO 0 $LABEL3 0
------------------------------------------
-
---------------------21-----------------
-def:
-use:n 
-in:n 
-out:n 
-pre:18 
-next:22 24 
-62:LABEL 0 $LABEL2 0
-63:EQ #1 n 2
-64:BNZ $LABEL4 #1 0
------------------------------------------
-
---------------------22-----------------
-def:
-use:
-in:
-out:
-pre:21 
-next:89 
-65:RET 0 1 0
------------------------------------------
-
---------------------23-----------------
-def:
-use:
-in:n 
-out:n 
-pre:
-next:25 
-66:GOTO 0 $LABEL5 0
------------------------------------------
-
---------------------24-----------------
-def:
-use:
-in:n 
-out:n 
-pre:21 
-next:25 
-67:LABEL 0 $LABEL4 0
------------------------------------------
-
---------------------25-----------------
-def:
-use:
-in:n 
-out:n 
-pre:24 23 
-next:26 
-68:LABEL 0 $LABEL5 0
------------------------------------------
-
---------------------26-----------------
-def:
-use:n 
-in:n 
-out:
-pre:25 20 
-next:89 
-69:LABEL 0 $LABEL3 0
-70:SUB #2 n 1
-71:PUSH 0 #2 0
-72:CALL 0 FUNC_fib 0
-73:ASSIGN #3 #RET 0
-74:SUB #4 n 2
-75:PUSH 0 #4 0
-76:CALL 0 FUNC_fib 0
-77:ASSIGN #5 #RET 0
-78:ADD #6 #3 #5
-79:RET 0 #6 0
------------------------------------------
-
---------------------27-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-80:RET 0 0 0
------------------------------------------
-
---------------------28-----------------
-def:a b c d 
-use:
-in:
-out:a b c d 
-pre:
-next:29 30 
-81:LABEL 0 FUNC_test_all_cond 0
-82:ASSIGN a 1 0
-83:ASSIGN b 2 0
-84:ASSIGN c 2 0
-85:ASSIGN d 65 0
-86:OUTS 0 96 0
-87:OUTC 0 32 0
-88:EQ #0 b c
-89:BNZ $LABEL6 #0 0
------------------------------------------
-
---------------------29-----------------
-def:
-use:
-in:a b c d 
-out:a b c d 
-pre:28 
-next:31 
-90:OUTS 0 117 0
-91:OUTC 0 32 0
-92:GOTO 0 $LABEL7 0
------------------------------------------
-
---------------------30-----------------
-def:
-use:
-in:a b c d 
-out:a b c d 
-pre:28 
-next:31 
-93:LABEL 0 $LABEL6 0
------------------------------------------
-
---------------------31-----------------
-def:
-use:a b 
-in:a b c d 
-out:a c d 
-pre:30 29 
-next:32 33 
-94:LABEL 0 $LABEL7 0
-95:LT #1 a b
-96:BNZ $LABEL8 #1 0
------------------------------------------
-
---------------------32-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:31 
-next:34 
-97:OUTS 0 123 0
-98:OUTC 0 32 0
-99:GOTO 0 $LABEL9 0
------------------------------------------
-
---------------------33-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:31 
-next:34 
-100:LABEL 0 $LABEL8 0
------------------------------------------
-
---------------------34-----------------
-def:
-use:a c 
-in:a c d 
-out:a c d 
-pre:33 32 
-next:35 36 
-101:LABEL 0 $LABEL9 0
-102:GT #2 c a
-103:BNZ $LABEL10 #2 0
------------------------------------------
-
---------------------35-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:34 
-next:37 
-104:OUTS 0 128 0
-105:OUTC 0 32 0
-106:GOTO 0 $LABEL11 0
------------------------------------------
-
---------------------36-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:34 
-next:37 
-107:LABEL 0 $LABEL10 0
------------------------------------------
-
---------------------37-----------------
-def:
-use:d 
-in:a c d 
-out:a c d 
-pre:36 35 
-next:38 39 
-108:LABEL 0 $LABEL11 0
-109:NE #3 d 0
-110:BNZ $LABEL12 #3 0
------------------------------------------
-
---------------------38-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:37 
-next:40 
-111:OUTS 0 133 0
-112:OUTC 0 32 0
-113:GOTO 0 $LABEL13 0
------------------------------------------
-
---------------------39-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:37 
-next:40 
-114:LABEL 0 $LABEL12 0
------------------------------------------
-
---------------------40-----------------
-def:
-use:a 
-in:a c d 
-out:a c d 
-pre:39 38 
-next:41 42 
-115:LABEL 0 $LABEL13 0
-116:EQ #4 a 1
-117:BNZ $LABEL14 #4 0
------------------------------------------
-
---------------------41-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:40 
-next:43 
-118:OUTS 0 136 0
-119:OUTC 0 32 0
-120:GOTO 0 $LABEL15 0
------------------------------------------
-
---------------------42-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:40 
-next:43 
-121:LABEL 0 $LABEL14 0
------------------------------------------
-
---------------------43-----------------
-def:
-use:a 
-in:a c d 
-out:a c d 
-pre:42 41 
-next:44 45 
-122:LABEL 0 $LABEL15 0
-123:NE #5 a 1
-124:BNZ $LABEL16 #5 0
------------------------------------------
-
---------------------44-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:43 
-next:46 
-125:OUTS 0 143 0
-126:OUTC 0 32 0
-127:GOTO 0 $LABEL17 0
------------------------------------------
-
---------------------45-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:43 
-next:46 
-128:LABEL 0 $LABEL16 0
------------------------------------------
-
---------------------46-----------------
-def:
-use:a c 
-in:a c d 
-out:a c d 
-pre:45 44 
-next:47 48 
-129:LABEL 0 $LABEL17 0
-130:LE #6 a c
-131:BNZ $LABEL18 #6 0
------------------------------------------
-
---------------------47-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:46 
-next:49 
-132:OUTS 0 150 0
-133:OUTC 0 32 0
-134:GOTO 0 $LABEL19 0
------------------------------------------
-
---------------------48-----------------
-def:
-use:
-in:a c d 
-out:a c d 
-pre:46 
-next:49 
-135:LABEL 0 $LABEL18 0
------------------------------------------
-
---------------------49-----------------
-def:
-use:a c 
-in:a c d 
-out:d 
-pre:48 47 
-next:50 51 
-136:LABEL 0 $LABEL19 0
-137:GE #7 a c
-138:BNZ $LABEL20 #7 0
------------------------------------------
-
---------------------50-----------------
-def:
-use:
-in:d 
-out:d 
-pre:49 
-next:52 
-139:OUTS 0 156 0
-140:OUTC 0 32 0
-141:GOTO 0 $LABEL21 0
------------------------------------------
-
---------------------51-----------------
-def:
-use:
-in:d 
-out:d 
-pre:49 
-next:52 
-142:LABEL 0 $LABEL20 0
------------------------------------------
-
---------------------52-----------------
-def:
-use:d 
-in:d 
-out:
-pre:51 50 
-next:53 54 
-143:LABEL 0 $LABEL21 0
-144:GT #8 d 66
-145:BNZ $LABEL22 #8 0
------------------------------------------
-
---------------------53-----------------
-def:
-use:
-in:
-out:
-pre:52 
-next:55 
-146:OUTS 0 164 0
-147:OUTC 0 32 0
-148:GOTO 0 $LABEL23 0
------------------------------------------
-
---------------------54-----------------
-def:
-use:
-in:
-out:
-pre:52 
-next:55 
-149:LABEL 0 $LABEL22 0
------------------------------------------
-
---------------------55-----------------
-def:
-use:
-in:
-out:
-pre:54 53 
-next:89 
-150:LABEL 0 $LABEL23 0
-151:RET 0 # 0
------------------------------------------
-
---------------------56-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-152:RET 0 # 0
------------------------------------------
-
---------------------57-----------------
-def:G_v_int_a1 
-use:para_change 
-in:para_change 
-out:
-pre:
-next:89 
-153:LABEL 0 FUNC_test_diff_domain 0
-154:OUTC 0 98 0
-155:OUTC 0 32 0
-156:ASSIGN G_v_int_a1 222 0
-157:OUTV 0 G_v_int_a1 0
-158:OUTC 0 32 0
-159:OUTS 0 172 0
-160:OUTC 0 32 0
-161:OUTV 0 1 0
-162:OUTC 0 32 0
-163:OUTC 0 102 0
-164:OUTC 0 32 0
-165:OUTC 0 98 0
-166:OUTC 0 32 0
-167:OUTC 0 98 0
-168:OUTC 0 32 0
-169:OUTV 0 2 0
-170:OUTC 0 32 0
-171:OUTV 0 3 0
-172:OUTC 0 32 0
-173:SELEM g_v_char_arr 2 72
-174:LELEM #0 g_v_char_arr 2
-175:OUTC 0 #0 0
-176:OUTC 0 32 0
-177:SELEM g_v_int_arr2 6 155
-178:LELEM #1 g_v_int_arr2 6
-179:OUTV 0 #1 0
-180:OUTC 0 32 0
-181:OUTS 0 208 0
-182:OUTV 0 para_change 0
-183:OUTC 0 32 0
-184:MULT #2 para_change 2
-185:ASSIGN para_change #2 0
-186:OUTS 0 229 0
-187:OUTV 0 para_change 0
-188:OUTC 0 32 0
-189:ASSIGN g_v_char_b 89 0
-190:OUTC 0 g_v_char_b 0
-191:OUTC 0 32 0
-192:RET 0 # 0
------------------------------------------
-
---------------------58-----------------
-def:res_of_expr g_v_char_h 
-use:arr tag 
-in:arr tag 
-out:
-pre:
-next:89 
-193:LABEL 0 FUNC_test_expr 0
-194:OUTS 0 249 0
-195:OUTC 0 32 0
-196:SUB #0 0 -12
-197:SUB #1 #0 -12
-198:SUB #2 #1 -12
-199:SUB #3 #2 12
-200:ADD #4 #3 -12
-201:SUB #5 #4 -12
-202:SUB #6 #5 -12
-203:SUB #7 #6 -12
-204:SUB #8 #7 -12
-205:ASSIGN res_of_expr #8 0
-206:OUTS 0 270 0
-207:OUTV 0 res_of_expr 0
-208:OUTC 0 32 0
-209:MULT #9 10 -5
-210:ASSIGN res_of_expr #9 0
-211:OUTS 0 309 0
-212:OUTV 0 res_of_expr 0
-213:OUTC 0 32 0
-214:DIV #10 10 4
-215:ASSIGN res_of_expr #10 0
-216:OUTS 0 317 0
-217:OUTV 0 res_of_expr 0
-218:OUTC 0 32 0
-219:PUSH 0 12 0
-220:CALL 0 FUNC_fib 0
-221:ASSIGN #11 #RET 0
-222:PUSH 0 14 0
-223:CALL 0 FUNC_fib 0
-224:ASSIGN #12 #RET 0
-225:SUB #13 #11 #12
-226:ASSIGN res_of_expr #13 0
-227:OUTS 0 325 0
-228:OUTV 0 res_of_expr 0
-229:OUTC 0 32 0
-230:ADD #14 99 12
-231:ASSIGN res_of_expr #14 0
-232:OUTS 0 343 0
-233:OUTV 0 res_of_expr 0
-234:OUTC 0 32 0
-235:MULT #15 99 12
-236:DIV #16 #15 1
-237:ASSIGN res_of_expr #16 0
-238:OUTS 0 354 0
-239:OUTV 0 res_of_expr 0
-240:OUTC 0 32 0
-241:ADD #17 12 1
-242:SUB #18 1 #17
-243:ASSIGN res_of_expr #18 0
-244:OUTS 0 363 0
-245:OUTV 0 res_of_expr 0
-246:OUTC 0 32 0
-247:SELEM arr 1 15
-248:LELEM #19 arr 1
-249:MULT #20 #19 98
-250:PUSH 0 3 0
-251:CALL 0 FUNC_fib 0
-252:ASSIGN #21 #RET 0
-253:ADD #22 #20 #21
-254:ASSIGN res_of_expr #22 0
-255:OUTS 0 378 0
-256:OUTV 0 res_of_expr 0
-257:OUTC 0 32 0
-258:ASSIGN G_v_int_a1 5 0
-259:SELEM tag 6 12
-260:ASSIGN g_v_char_h 104 0
-261:PUSH 0 g_v_char_h 0
-262:CALL 0 FUNC_addone 0
-263:ASSIGN #23 #RET 0
-264:PUSH 0 5 0
-265:CALL 0 FUNC_fib 0
-266:ASSIGN #24 #RET 0
-267:PUSH 0 1 0
-268:PUSH 0 #24 0
-269:CALL 0 FUNC_add 0
-270:ASSIGN #25 #RET 0
-271:DIV #26 #25 G_v_int_a1
-272:ADD #27 #23 #26
-273:LELEM #28 tag 6
-274:SUB #29 #27 #28
-275:ASSIGN res_of_expr #29 0
-276:OUTS 0 398 0
-277:OUTV 0 res_of_expr 0
-278:OUTC 0 32 0
-279:RET 0 # 0
------------------------------------------
-
---------------------59-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-280:RET 0 # 0
------------------------------------------
-
---------------------60-----------------
-def:a b 
-use:
-in:
-out:
-pre:
-next:89 
-281:LABEL 0 FUNC_test_scanf 0
-282:OUTS 0 454 0
-283:OUTC 0 32 0
-284:INV 0 a 0
-285:OUTV 0 a 0
-286:OUTC 0 32 0
-287:OUTS 0 479 0
-288:OUTC 0 32 0
-289:INV 0 a 0
-290:INV 0 b 0
-291:OUTV 0 a 0
-292:OUTC 0 32 0
-293:OUTV 0 b 0
-294:OUTC 0 32 0
-295:RET 0 # 0
------------------------------------------
-
---------------------61-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-296:RET 0 # 0
------------------------------------------
-
---------------------62-----------------
-def:
-use:a 
-in:a 
-out:
-pre:
-next:89 
-297:LABEL 0 FUNC_echo_char 0
-298:OUTC 0 a 0
-299:OUTC 0 32 0
-300:RET 0 a 0
------------------------------------------
-
---------------------63-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-301:RET 0 0 0
------------------------------------------
-
---------------------64-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-302:LABEL 0 FUNC_really_void 0
-303:RET 0 # 0
------------------------------------------
-
---------------------65-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-304:LABEL 0 FUNC_really_void2 0
-305:RET 0 # 0
------------------------------------------
-
---------------------66-----------------
-def:
-use:
-in:
-out:
-pre:
-next:89 
-306:LABEL 0 FUNC_really_void3 0
-307:RET 0 # 0
------------------------------------------
-
---------------------67-----------------
-def:
-use:m n 
-in:m n 
-out:m n 
-pre:
-next:68 72 
-308:LABEL 0 FUNC_permutation 0
-309:SUB #0 n 1
-310:LT #1 m #0
-311:BNZ $LABEL24 #1 0
------------------------------------------
-
---------------------68-----------------
-def:i 
-use:m n 
-in:m n 
-out:m n i 
-pre:67 
-next:69 
-312:ADD #2 m 1
-313:PUSH 0 #2 0
-314:PUSH 0 n 0
-315:CALL 0 FUNC_permutation 0
-316:ADD #3 m 1
-317:ASSIGN i #3 0
------------------------------------------
-
---------------------69-----------------
-def:
-use:n i 
-in:m n i 
-out:m n i 
-pre:68 70 
-next:70 71 
-318:LABEL 0 $LABEL26 0
-319:LT #4 i n
-320:BNZ $LABEL27 #4 0
------------------------------------------
-
---------------------70-----------------
-def:t 
-use:m n i 
-in:m n i 
-out:m n i 
-pre:69 
-next:69 
-321:LELEM #5 chs m
-322:ASSIGN t #5 0
-323:LELEM #6 chs i
-324:SELEM chs m #6
-325:SELEM chs i t
-326:ADD #7 m 1
-327:PUSH 0 #7 0
-328:PUSH 0 n 0
-329:CALL 0 FUNC_permutation 0
-330:LELEM #8 chs m
-331:ASSIGN t #8 0
-332:LELEM #9 chs i
-333:SELEM chs m #9
-334:SELEM chs i t
-335:ADD i i 1
-336:GOTO 0 $LABEL26 0
------------------------------------------
-
---------------------71-----------------
-def:
-use:
-in:
-out:
-pre:69 
-next:78 
-337:LABEL 0 $LABEL27 0
-338:GOTO 0 $LABEL25 0
------------------------------------------
-
---------------------72-----------------
-def:i 
-use:
-in:
-out:i 
-pre:67 
-next:73 
-339:LABEL 0 $LABEL24 0
-340:ASSIGN i 0 0
------------------------------------------
-
---------------------73-----------------
-def:r 
-use:i 
-in:i 
-out:i 
-pre:72 76 
-next:74 75 
-341:LABEL 0 $LABEL28 0
-342:LELEM #10 chs i
-343:PUSH 0 #10 0
-344:CALL 0 FUNC_echo_char 0
-345:ASSIGN #11 #RET 0
-346:ASSIGN r #11 0
-347:LELEM #12 chs i
-348:NE #13 r #12
-349:BNZ $LABEL29 #13 0
------------------------------------------
-
---------------------74-----------------
-def:
-use:
-in:i 
-out:i 
-pre:73 
-next:76 
-350:OUTS 0 533 0
-351:OUTC 0 32 0
-352:GOTO 0 $LABEL30 0
------------------------------------------
-
---------------------75-----------------
-def:
-use:
-in:i 
-out:i 
-pre:73 
-next:76 
-353:LABEL 0 $LABEL29 0
------------------------------------------
-
---------------------76-----------------
-def:
-use:i 
-in:i 
-out:i 
-pre:75 74 
-next:77 73 
-354:LABEL 0 $LABEL30 0
-355:ADD #14 i 1
-356:ASSIGN i #14 0
-357:LT #15 i 5
-358:BEZ $LABEL28 #15 0
------------------------------------------
-
---------------------77-----------------
-def:
-use:
-in:
-out:
-pre:76 
-next:78 
-359:OUTS 0 540 0
-360:OUTC 0 32 0
------------------------------------------
-
---------------------78-----------------
-def:
-use:
-in:
-out:
-pre:77 71 
-next:89 
-361:LABEL 0 $LABEL25 0
-362:RET 0 # 0
------------------------------------------
-
---------------------79-----------------
-def:i 
-use:
-in:arr 
-out:arr i 
-pre:
-next:80 
-363:LABEL 0 main 0
-364:ASSIGN i 0 0
------------------------------------------
-
---------------------80-----------------
-def:
-use:i 
-in:arr i 
-out:arr i 
-pre:79 81 
-next:81 82 
-365:LABEL 0 $LABEL31 0
-366:LT #16 i 10
-367:BNZ $LABEL32 #16 0
------------------------------------------
-
---------------------81-----------------
-def:
-use:i 
-in:arr i 
-out:arr i 
-pre:80 
-next:80 
-368:ADD #17 i 1
-369:PUSH 0 #17 0
-370:CALL 0 FUNC_fib 0
-371:ASSIGN #18 #RET 0
-372:SELEM arr i #18
-373:ADD i i 1
-374:GOTO 0 $LABEL31 0
------------------------------------------
-
---------------------82-----------------
-def:i user_input1 user_input2 
-use:
-in:arr 
-out:arr i user_input1 user_input2 
-pre:80 
-next:83 
-375:LABEL 0 $LABEL32 0
-376:OUTS 0 543 0
-377:OUTC 0 32 0
-378:INV 0 user_input1 0
-379:INV 0 user_input2 0
-380:SUB #19 user_input1 1
-381:ASSIGN i #19 0
------------------------------------------
-
---------------------83-----------------
-def:
-use:arr i user_input2 
-in:arr i user_input1 user_input2 
-out:arr i user_input1 user_input2 
-pre:82 83 
-next:84 83 
-382:LABEL 0 $LABEL33 0
-383:OUTS 0 583 0
-384:LELEM #20 arr i
-385:OUTV 0 #20 0
-386:OUTC 0 32 0
-387:ADD #21 i 1
-388:ASSIGN i #21 0
-389:LT #22 i user_input2
-390:BEZ $LABEL33 #22 0
------------------------------------------
-
---------------------84-----------------
-def:i 
-use:user_input2 
-in:arr user_input1 user_input2 
-out:arr i user_input1 
-pre:83 
-next:85 
-391:SUB #23 user_input2 1
-392:ASSIGN i #23 0
------------------------------------------
-
---------------------85-----------------
-def:
-use:i user_input1 
-in:arr i user_input1 
-out:arr i user_input1 
-pre:84 86 
-next:86 87 
-393:LABEL 0 $LABEL34 0
-394:SUB #24 user_input1 1
-395:GE #25 i #24
-396:BNZ $LABEL35 #25 0
------------------------------------------
-
---------------------86-----------------
-def:
-use:arr i 
-in:arr i user_input1 
-out:arr i user_input1 
-pre:85 
-next:85 
-397:OUTS 0 586 0
-398:LELEM #26 arr i
-399:OUTV 0 #26 0
-400:OUTC 0 32 0
-401:SUB i i 1
-402:GOTO 0 $LABEL34 0
------------------------------------------
-
---------------------87-----------------
-def:
-use:
-in:
-out:
-pre:85 
-next:89 
-403:LABEL 0 $LABEL35 0
-404:PUSH 0 1 0
-405:PUSH 0 98 0
-406:CALL 0 FUNC_foo1 0
-407:ASSIGN #27 #RET 0
-408:OUTV 0 #27 0
-409:OUTC 0 32 0
-410:ADD #28 0 2
-411:PUSH 0 1 0
-412:PUSH 0 #28 0
-413:CALL 0 FUNC_add 0
-414:ASSIGN #29 #RET 0
-415:OUTV 0 #29 0
-416:OUTC 0 32 0
-417:PUSH 0 97 0
-418:PUSH 0 98 0
-419:CALL 0 FUNC_addchar 0
-420:ASSIGN #30 #RET 0
-421:OUTV 0 #30 0
-422:OUTC 0 32 0
-423:PUSH 0 70 0
-424:CALL 0 FUNC_addone 0
-425:ASSIGN #31 #RET 0
-426:OUTV 0 #31 0
-427:OUTC 0 32 0
-428:PUSH 0 16 0
-429:CALL 0 FUNC_addint 0
-430:ASSIGN #32 #RET 0
-431:OUTV 0 #32 0
-432:OUTC 0 32 0
-433:PUSH 0 99 0
-434:CALL 0 FUNC_foo2 0
-435:ASSIGN #33 #RET 0
-436:OUTC 0 #33 0
-437:OUTC 0 32 0
-438:CALL 0 FUNC_test_string_int 0
-439:PUSH 0 233 0
-440:CALL 0 FUNC_test_diff_domain 0
-441:CALL 0 FUNC_test_expr 0
-442:CALL 0 FUNC_test_all_cond 0
-443:CALL 0 FUNC_test_scanf 0
-444:PUSH 0 97 0
-445:CALL 0 FUNC_echo_char 0
-446:CALL 0 FUNC_really_void 0
-447:CALL 0 FUNC_really_void2 0
-448:CALL 0 FUNC_really_void3 0
-449:SELEM chs 0 65
-450:SELEM chs 1 66
-451:SELEM chs 2 67
-452:SELEM chs 3 68
-453:SELEM chs 4 69
-454:OUTS 0 589 0
-455:OUTC 0 32 0
-456:PUSH 0 0 0
-457:PUSH 0 5 0
-458:CALL 0 FUNC_permutation 0
-459:EXIT 0 # 0
------------------------------------------
-
---------------------88-----------------
-def:
-use:
-in:
-out:
-pre:87 
-next:89 
-460:EXIT 0 0 0
------------------------------------------
+.data   
+$string: .asciiz "#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ !\0\0test of comp symbol\0\0a==b\0\0a<b\0\0c>a\0\0d\0\0error\0\0error\0\0a<=c\0\0error!\0\0error!\0\0test global variable and constance\0\0before change para=\0\0after change para=\0\0test for expression\0\0--12--12--12-+12+-12--12--12--12--12=\0\010*-5=\0\010/+4=\0\0fib(12)-fib(14)=\0\0c + 12 = \0\0c*12/1=\0\01-(((12+1)))=\0\0arr[1]*'b'+fib(3)=\0\0addone(g_v_char_h)+add(1, fib(5))/G_v_int_a1 - tag[6]=\0\0please input an integer\0\0please input 2 integers press enter for each integer\0\0error\0\0 \0\0input the number of fib you want(1~10)\0\0 \0\0 \0\0this is a permutation of ABCDE\0\0" 
+.text   
+li $fp 0x7fffeffc 
+subi $sp $fp 328
+j main  
+FUNC_foo1:   
+lw $t1 0($fp)
+lw $t2 -4($fp)
+lw $t3 4($sp)
+add $t3 $t1 $t2
+sw $t3 4($sp)
+lw $t4 4($sp)
+move $v0 $t4 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_add:   
+lw $t5 0($fp)
+lw $t6 -4($fp)
+lw $t0 4($sp)
+add $t0 $t5 $t6
+sw $t0 4($sp)
+lw $t1 4($sp)
+move $v0 $t1 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_addchar:   
+lw $t2 0($fp)
+lw $t3 -4($fp)
+lw $t4 4($sp)
+add $t4 $t2 $t3
+sw $t4 4($sp)
+lw $t5 4($sp)
+move $v0 $t5 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_addone:   
+lw $t6 0($fp)
+lw $t0 4($sp)
+addi $t0 $t6 1
+sw $t0 4($sp)
+lw $t1 4($sp)
+move $v0 $t1 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_addint:   
+lw $t2 0($fp)
+lw $t3 4($sp)
+addi $t3 $t2 1
+sw $t3 4($sp)
+lw $t4 4($sp)
+move $v0 $t4 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_foo2:   
+lw $t5 0($fp)
+li $t8 99 
+ble $t5 $t8 $LABEL0
+li $v0 47 
+jr $ra  
+j $LABEL1  
+$LABEL0:   
+li $v0 42 
+jr $ra  
+$LABEL1:   
+li $v0 0 
+jr $ra  
+FUNC_test_string_int:   
+lw $t6 0($fp)
+li $t6 1 
+sw $t6 0($fp)
+li $v0 1 
+lw $t0 0($fp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t1 0($fp)
+li $t1 0 
+sw $t1 0($fp)
+li $v0 1 
+lw $t2 0($fp)
+move $a0 $t2 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t3 4($sp)
+li $t3 0 
+sw $t3 4($sp)
+lw $t4 0($fp)
+lw $t5 4($sp)
+move $t4 $t5 
+sw $t4 0($fp)
+li $v0 1 
+lw $t6 0($fp)
+move $a0 $t6 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t0 8($sp)
+li $t0 0 
+sw $t0 8($sp)
+lw $t1 0($fp)
+lw $t2 8($sp)
+move $t1 $t2 
+sw $t1 0($fp)
+li $v0 1 
+lw $t3 0($fp)
+move $a0 $t3 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t4 12($sp)
+li $t4 12 
+sw $t4 12($sp)
+lw $t5 0($fp)
+lw $t6 12($sp)
+move $t5 $t6 
+sw $t5 0($fp)
+li $v0 1 
+lw $t0 0($fp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t1 16($sp)
+li $t1 -12 
+sw $t1 16($sp)
+lw $t2 0($fp)
+lw $t3 16($sp)
+move $t2 $t3 
+sw $t2 0($fp)
+li $v0 1 
+lw $t4 0($fp)
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 4 
+li $a0 268500992 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+jr $ra  
+jr $ra  
+FUNC_fib:   
+lw $t5 0($fp)
+li $t8 1 
+bne $t5 $t8 $LABEL2
+li $v0 1 
+jr $ra  
+j $LABEL3  
+$LABEL2:   
+lw $t6 0($fp)
+li $t8 2 
+bne $t6 $t8 $LABEL4
+li $v0 1 
+jr $ra  
+j $LABEL5  
+$LABEL4:   
+$LABEL5:   
+$LABEL3:   
+lw $t0 0($fp)
+lw $t1 12($sp)
+subi $t1 $t0 1
+sw $t1 12($sp)
+lw $t2 12($sp)
+sw $t2 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_fib  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t3 16($sp)
+move $t3 $v0 
+sw $t3 16($sp)
+lw $t4 0($fp)
+lw $t5 20($sp)
+subi $t5 $t4 2
+sw $t5 20($sp)
+lw $t6 20($sp)
+sw $t6 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_fib  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t0 24($sp)
+move $t0 $v0 
+sw $t0 24($sp)
+lw $t1 16($sp)
+lw $t2 24($sp)
+lw $t3 28($sp)
+add $t3 $t1 $t2
+sw $t3 28($sp)
+lw $t4 28($sp)
+move $v0 $t4 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_test_lots_paras:   
+lw $t5 0($fp)
+lw $t6 -4($fp)
+lw $t0 4($sp)
+add $t0 $t5 $t6
+sw $t0 4($sp)
+lw $t1 4($sp)
+lw $t2 -8($fp)
+lw $t3 8($sp)
+add $t3 $t1 $t2
+sw $t3 8($sp)
+lw $t4 8($sp)
+lw $t5 -12($fp)
+lw $t6 12($sp)
+sub $t6 $t4 $t5
+sw $t6 12($sp)
+lw $t0 12($sp)
+lw $t1 -16($fp)
+lw $t2 16($sp)
+add $t2 $t0 $t1
+sw $t2 16($sp)
+lw $t3 16($sp)
+move $v0 $t3 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_test_all_cond:   
+lw $t4 0($fp)
+li $t4 1 
+sw $t4 0($fp)
+lw $t5 -4($fp)
+li $t5 2 
+sw $t5 -4($fp)
+lw $t6 -8($fp)
+li $t6 2 
+sw $t6 -8($fp)
+lw $t0 -12($fp)
+li $t0 65 
+sw $t0 -12($fp)
+li $v0 4 
+li $a0 268501088 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t1 -4($fp)
+lw $t2 -8($fp)
+bne $t1 $t2 $LABEL6
+li $v0 4 
+li $a0 268501109 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL7  
+$LABEL6:   
+$LABEL7:   
+lw $t3 0($fp)
+lw $t4 -4($fp)
+bge $t3 $t4 $LABEL8
+li $v0 4 
+li $a0 268501115 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL9  
+$LABEL8:   
+$LABEL9:   
+lw $t5 -8($fp)
+lw $t6 0($fp)
+ble $t5 $t6 $LABEL10
+li $v0 4 
+li $a0 268501120 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL11  
+$LABEL10:   
+$LABEL11:   
+lw $t0 -12($fp)
+li $t8 0 
+beq $t0 $t8 $LABEL12
+li $v0 4 
+li $a0 268501125 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL13  
+$LABEL12:   
+$LABEL13:   
+lw $t1 0($fp)
+li $t8 1 
+bne $t1 $t8 $LABEL14
+li $v0 4 
+li $a0 268501128 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL15  
+$LABEL14:   
+$LABEL15:   
+lw $t2 0($fp)
+li $t8 1 
+beq $t2 $t8 $LABEL16
+li $v0 4 
+li $a0 268501135 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL17  
+$LABEL16:   
+$LABEL17:   
+lw $t3 0($fp)
+lw $t4 -8($fp)
+bgt $t3 $t4 $LABEL18
+li $v0 4 
+li $a0 268501142 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL19  
+$LABEL18:   
+$LABEL19:   
+lw $t5 0($fp)
+lw $t6 -8($fp)
+blt $t5 $t6 $LABEL20
+li $v0 4 
+li $a0 268501148 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL21  
+$LABEL20:   
+$LABEL21:   
+lw $t0 -12($fp)
+li $t8 66 
+ble $t0 $t8 $LABEL22
+li $v0 4 
+li $a0 268501156 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL23  
+$LABEL22:   
+$LABEL23:   
+jr $ra  
+jr $ra  
+FUNC_test_diff_domain:   
+li $v0 11 
+li $a0 98 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t1 -8($fp)
+li $t1 222 
+sw $t1 -8($fp)
+li $v0 1 
+lw $t2 -8($fp)
+move $a0 $t2 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 4 
+li $a0 268501164 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 1 
+li $a0 1 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 11 
+li $a0 102 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 11 
+li $a0 98 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 11 
+li $a0 98 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 1 
+li $a0 2 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 1 
+li $a0 3 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 2 
+sll $t8 $t8 2
+addi $t8 $t8 76
+add $t8 $gp $t8
+li $t9 72 
+sw $t9 0($t8)
+li $t8 2 
+sll $t8 $t8 2
+addi $t8 $t8 76
+add $t8 $gp $t8
+lw $t3 4($sp)
+lw $t3 0($t8)
+sw $t3 4($sp)
+li $v0 11 
+lw $t4 4($sp)
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 6 
+sll $t8 $t8 2
+addi $t8 $t8 28
+add $t8 $gp $t8
+li $t9 155 
+sw $t9 0($t8)
+li $t8 6 
+sll $t8 $t8 2
+addi $t8 $t8 28
+add $t8 $gp $t8
+lw $t5 8($sp)
+lw $t5 0($t8)
+sw $t5 8($sp)
+li $v0 1 
+lw $t6 8($sp)
+move $a0 $t6 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 4 
+li $a0 268501200 
+syscall   
+li $v0 1 
+lw $t0 0($fp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t1 0($fp)
+lw $t2 12($sp)
+mul $t2 $t1 2
+sw $t2 12($sp)
+lw $t3 0($fp)
+lw $t4 12($sp)
+move $t3 $t4 
+sw $t3 0($fp)
+li $v0 4 
+li $a0 268501221 
+syscall   
+li $v0 1 
+lw $t5 0($fp)
+move $a0 $t5 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t6 72($gp)
+li $t6 89 
+sw $t6 72($gp)
+li $v0 11 
+lw $t0 72($gp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+jr $ra  
+FUNC_test_expr:   
+li $v0 4 
+li $a0 268501241 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t1 4($sp)
+li $t1 12 
+sw $t1 4($sp)
+lw $t2 4($sp)
+lw $t3 8($sp)
+subi $t3 $t2 -12
+sw $t3 8($sp)
+lw $t4 8($sp)
+lw $t5 12($sp)
+subi $t5 $t4 -12
+sw $t5 12($sp)
+lw $t6 12($sp)
+lw $t0 16($sp)
+subi $t0 $t6 12
+sw $t0 16($sp)
+lw $t1 16($sp)
+lw $t2 20($sp)
+addi $t2 $t1 -12
+sw $t2 20($sp)
+lw $t3 20($sp)
+lw $t4 24($sp)
+subi $t4 $t3 -12
+sw $t4 24($sp)
+lw $t5 24($sp)
+lw $t6 28($sp)
+subi $t6 $t5 -12
+sw $t6 28($sp)
+lw $t0 28($sp)
+lw $t1 32($sp)
+subi $t1 $t0 -12
+sw $t1 32($sp)
+lw $t2 32($sp)
+lw $t3 36($sp)
+subi $t3 $t2 -12
+sw $t3 36($sp)
+lw $t4 0($fp)
+lw $t5 36($sp)
+move $t4 $t5 
+sw $t4 0($fp)
+li $v0 4 
+li $a0 268501262 
+syscall   
+li $v0 1 
+lw $t6 0($fp)
+move $a0 $t6 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t0 40($sp)
+li $t0 -50 
+sw $t0 40($sp)
+lw $t1 0($fp)
+lw $t2 40($sp)
+move $t1 $t2 
+sw $t1 0($fp)
+li $v0 4 
+li $a0 268501301 
+syscall   
+li $v0 1 
+lw $t3 0($fp)
+move $a0 $t3 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t4 44($sp)
+li $t4 2 
+sw $t4 44($sp)
+lw $t5 0($fp)
+lw $t6 44($sp)
+move $t5 $t6 
+sw $t5 0($fp)
+li $v0 4 
+li $a0 268501309 
+syscall   
+li $v0 1 
+lw $t0 0($fp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 12 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_fib  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t1 48($sp)
+move $t1 $v0 
+sw $t1 48($sp)
+li $t8 14 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_fib  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t2 52($sp)
+move $t2 $v0 
+sw $t2 52($sp)
+lw $t3 48($sp)
+lw $t4 52($sp)
+lw $t5 56($sp)
+sub $t5 $t3 $t4
+sw $t5 56($sp)
+lw $t6 0($fp)
+lw $t0 56($sp)
+move $t6 $t0 
+sw $t6 0($fp)
+li $v0 4 
+li $a0 268501317 
+syscall   
+li $v0 1 
+lw $t1 0($fp)
+move $a0 $t1 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t2 60($sp)
+li $t2 111 
+sw $t2 60($sp)
+lw $t3 0($fp)
+lw $t4 60($sp)
+move $t3 $t4 
+sw $t3 0($fp)
+li $v0 4 
+li $a0 268501335 
+syscall   
+li $v0 1 
+lw $t5 0($fp)
+move $a0 $t5 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t6 64($sp)
+li $t6 1188 
+sw $t6 64($sp)
+lw $t0 64($sp)
+lw $t1 68($sp)
+div $t1 $t0 1
+sw $t1 68($sp)
+lw $t2 0($fp)
+lw $t3 68($sp)
+move $t2 $t3 
+sw $t2 0($fp)
+li $v0 4 
+li $a0 268501346 
+syscall   
+li $v0 1 
+lw $t4 0($fp)
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t5 72($sp)
+li $t5 13 
+sw $t5 72($sp)
+lw $t6 72($sp)
+lw $t0 76($sp)
+sub $t0 $0 $t6
+addi $t0 $t0 1
+sw $t0 76($sp)
+lw $t1 0($fp)
+lw $t2 76($sp)
+move $t1 $t2 
+sw $t1 0($fp)
+li $v0 4 
+li $a0 268501355 
+syscall   
+li $v0 1 
+lw $t3 0($fp)
+move $a0 $t3 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 1 
+sll $t8 $t8 2
+addi $t8 $t8 4
+sub $t8 $fp $t8
+li $t9 15 
+sw $t9 0($t8)
+li $t8 1 
+sll $t8 $t8 2
+addi $t8 $t8 4
+sub $t8 $fp $t8
+lw $t4 80($sp)
+lw $t4 0($t8)
+sw $t4 80($sp)
+lw $t5 80($sp)
+lw $t6 84($sp)
+mul $t6 $t5 98
+sw $t6 84($sp)
+li $t8 3 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_fib  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t0 88($sp)
+move $t0 $v0 
+sw $t0 88($sp)
+lw $t1 84($sp)
+lw $t2 88($sp)
+lw $t3 92($sp)
+add $t3 $t1 $t2
+sw $t3 92($sp)
+lw $t4 0($fp)
+lw $t5 92($sp)
+move $t4 $t5 
+sw $t4 0($fp)
+li $v0 4 
+li $a0 268501370 
+syscall   
+li $v0 1 
+lw $t6 0($fp)
+move $a0 $t6 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t0 24($gp)
+li $t0 5 
+sw $t0 24($gp)
+li $t8 6 
+sll $t8 $t8 2
+addi $t8 $t8 52
+sub $t8 $fp $t8
+li $t9 12 
+sw $t9 0($t8)
+lw $t1 -80($fp)
+li $t1 104 
+sw $t1 -80($fp)
+lw $t2 -80($fp)
+sw $t2 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal FUNC_addone  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t3 96($sp)
+move $t3 $v0 
+sw $t3 96($sp)
+li $t8 5 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_fib  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t4 100($sp)
+move $t4 $v0 
+sw $t4 100($sp)
+li $t8 1 
+sw $t8 0($sp)
+lw $t5 100($sp)
+sw $t5 -4($sp)
+sw $8 -40($sp)
+sw $9 -44($sp)
+sw $10 -48($sp)
+sw $11 -52($sp)
+sw $12 -56($sp)
+sw $13 -60($sp)
+sw $14 -64($sp)
+sw $15 -68($sp)
+sw $24 -104($sp)
+sw $25 -108($sp)
+sw $26 -112($sp)
+sw $27 -116($sp)
+sw $28 -120($sp)
+sw $29 -124($sp)
+sw $30 -128($sp)
+sw $31 -132($sp)
+move $fp $sp 
+subi $sp $fp 140
+jal FUNC_add  
+lw $8 -40($fp)
+lw $9 -44($fp)
+lw $10 -48($fp)
+lw $11 -52($fp)
+lw $12 -56($fp)
+lw $13 -60($fp)
+lw $14 -64($fp)
+lw $15 -68($fp)
+lw $24 -104($fp)
+lw $25 -108($fp)
+lw $26 -112($fp)
+lw $27 -116($fp)
+lw $28 -120($fp)
+lw $29 -124($fp)
+lw $31 -132($fp)
+lw $fp -128($fp)
+lw $t6 104($sp)
+move $t6 $v0 
+sw $t6 104($sp)
+lw $t0 104($sp)
+lw $t1 24($gp)
+lw $t2 108($sp)
+div $t0 $t1 
+mflo $t2  
+sw $t2 108($sp)
+lw $t3 96($sp)
+lw $t4 108($sp)
+lw $t5 112($sp)
+add $t5 $t3 $t4
+sw $t5 112($sp)
+li $t8 6 
+sll $t8 $t8 2
+addi $t8 $t8 52
+sub $t8 $fp $t8
+lw $t6 116($sp)
+lw $t6 0($t8)
+sw $t6 116($sp)
+lw $t0 112($sp)
+lw $t1 116($sp)
+lw $t2 120($sp)
+sub $t2 $t0 $t1
+sw $t2 120($sp)
+lw $t3 0($fp)
+lw $t4 120($sp)
+move $t3 $t4 
+sw $t3 0($fp)
+li $v0 4 
+li $a0 268501390 
+syscall   
+li $v0 1 
+lw $t5 0($fp)
+move $a0 $t5 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+jr $ra  
+jr $ra  
+FUNC_test_scanf:   
+li $v0 4 
+li $a0 268501446 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 5 
+syscall   
+lw $t6 0($fp)
+move $t6 $v0 
+sw $t6 0($fp)
+li $v0 1 
+lw $t0 0($fp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 4 
+li $a0 268501471 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 5 
+syscall   
+lw $t1 0($fp)
+move $t1 $v0 
+sw $t1 0($fp)
+li $v0 5 
+syscall   
+lw $t2 -4($fp)
+move $t2 $v0 
+sw $t2 -4($fp)
+li $v0 1 
+lw $t3 0($fp)
+move $a0 $t3 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 1 
+lw $t4 -4($fp)
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+jr $ra  
+jr $ra  
+FUNC_echo_char:   
+li $v0 11 
+lw $t5 0($fp)
+move $a0 $t5 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t6 0($fp)
+move $v0 $t6 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_really_void:   
+jr $ra  
+FUNC_really_void2:   
+jr $ra  
+FUNC_really_void3:   
+jr $ra  
+FUNC_permutation:   
+lw $t0 -4($fp)
+lw $t1 4($sp)
+subi $t1 $t0 1
+sw $t1 4($sp)
+lw $t2 0($fp)
+lw $t3 4($sp)
+bge $t2 $t3 $LABEL24
+lw $t4 0($fp)
+lw $t5 12($sp)
+addi $t5 $t4 1
+sw $t5 12($sp)
+lw $t6 12($sp)
+sw $t6 0($sp)
+lw $t0 -4($fp)
+sw $t0 -4($sp)
+sw $8 -52($sp)
+sw $9 -56($sp)
+sw $10 -60($sp)
+sw $11 -64($sp)
+sw $12 -68($sp)
+sw $13 -72($sp)
+sw $14 -76($sp)
+sw $15 -80($sp)
+sw $24 -116($sp)
+sw $25 -120($sp)
+sw $26 -124($sp)
+sw $27 -128($sp)
+sw $28 -132($sp)
+sw $29 -136($sp)
+sw $30 -140($sp)
+sw $31 -144($sp)
+move $fp $sp 
+subi $sp $fp 212
+jal FUNC_permutation  
+lw $8 -52($fp)
+lw $9 -56($fp)
+lw $10 -60($fp)
+lw $11 -64($fp)
+lw $12 -68($fp)
+lw $13 -72($fp)
+lw $14 -76($fp)
+lw $15 -80($fp)
+lw $24 -116($fp)
+lw $25 -120($fp)
+lw $26 -124($fp)
+lw $27 -128($fp)
+lw $28 -132($fp)
+lw $29 -136($fp)
+lw $31 -144($fp)
+lw $fp -140($fp)
+lw $t1 0($fp)
+lw $t2 16($sp)
+addi $t2 $t1 1
+sw $t2 16($sp)
+lw $t3 -8($fp)
+lw $t4 16($sp)
+move $t3 $t4 
+sw $t3 -8($fp)
+$LABEL26:   
+lw $t5 -8($fp)
+lw $t6 -4($fp)
+bge $t5 $t6 $LABEL27
+lw $t0 0($fp)
+move $t8 $t0 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+lw $t1 24($sp)
+lw $t1 0($t8)
+sw $t1 24($sp)
+lw $t2 -12($fp)
+lw $t3 24($sp)
+move $t2 $t3 
+sw $t2 -12($fp)
+lw $t4 -8($fp)
+move $t8 $t4 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+lw $t5 28($sp)
+lw $t5 0($t8)
+sw $t5 28($sp)
+lw $t6 0($fp)
+lw $t0 28($sp)
+move $t8 $t6 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+sw $t0 0($t8)
+lw $t1 -8($fp)
+lw $t2 -12($fp)
+move $t8 $t1 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+sw $t2 0($t8)
+lw $t3 0($fp)
+lw $t4 32($sp)
+addi $t4 $t3 1
+sw $t4 32($sp)
+lw $t5 32($sp)
+sw $t5 0($sp)
+lw $t6 -4($fp)
+sw $t6 -4($sp)
+sw $8 -52($sp)
+sw $9 -56($sp)
+sw $10 -60($sp)
+sw $11 -64($sp)
+sw $12 -68($sp)
+sw $13 -72($sp)
+sw $14 -76($sp)
+sw $15 -80($sp)
+sw $24 -116($sp)
+sw $25 -120($sp)
+sw $26 -124($sp)
+sw $27 -128($sp)
+sw $28 -132($sp)
+sw $29 -136($sp)
+sw $30 -140($sp)
+sw $31 -144($sp)
+move $fp $sp 
+subi $sp $fp 212
+jal FUNC_permutation  
+lw $8 -52($fp)
+lw $9 -56($fp)
+lw $10 -60($fp)
+lw $11 -64($fp)
+lw $12 -68($fp)
+lw $13 -72($fp)
+lw $14 -76($fp)
+lw $15 -80($fp)
+lw $24 -116($fp)
+lw $25 -120($fp)
+lw $26 -124($fp)
+lw $27 -128($fp)
+lw $28 -132($fp)
+lw $29 -136($fp)
+lw $31 -144($fp)
+lw $fp -140($fp)
+lw $t0 0($fp)
+move $t8 $t0 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+lw $t1 36($sp)
+lw $t1 0($t8)
+sw $t1 36($sp)
+lw $t2 -12($fp)
+lw $t3 36($sp)
+move $t2 $t3 
+sw $t2 -12($fp)
+lw $t4 -8($fp)
+move $t8 $t4 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+lw $t5 40($sp)
+lw $t5 0($t8)
+sw $t5 40($sp)
+lw $t6 0($fp)
+lw $t0 40($sp)
+move $t8 $t6 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+sw $t0 0($t8)
+lw $t1 -8($fp)
+lw $t2 -12($fp)
+move $t8 $t1 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+sw $t2 0($t8)
+lw $t3 -8($fp)
+lw $t4 -8($fp)
+addi $t4 $t3 1
+sw $t4 -8($fp)
+j $LABEL26  
+$LABEL27:   
+j $LABEL25  
+$LABEL24:   
+lw $t5 -8($fp)
+li $t5 0 
+sw $t5 -8($fp)
+$LABEL28:   
+lw $t6 -8($fp)
+move $t8 $t6 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+lw $t0 44($sp)
+lw $t0 0($t8)
+sw $t0 44($sp)
+lw $t1 44($sp)
+sw $t1 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 132
+jal FUNC_echo_char  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t2 48($sp)
+move $t2 $v0 
+sw $t2 48($sp)
+lw $t3 -16($fp)
+lw $t4 48($sp)
+move $t3 $t4 
+sw $t3 -16($fp)
+lw $t5 -8($fp)
+move $t8 $t5 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+lw $t6 52($sp)
+lw $t6 0($t8)
+sw $t6 52($sp)
+lw $t0 -16($fp)
+lw $t1 52($sp)
+beq $t0 $t1 $LABEL29
+li $v0 4 
+li $a0 268501525 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL30  
+$LABEL29:   
+$LABEL30:   
+lw $t2 -8($fp)
+lw $t3 60($sp)
+addi $t3 $t2 1
+sw $t3 60($sp)
+lw $t4 -8($fp)
+lw $t5 60($sp)
+move $t4 $t5 
+sw $t4 -8($fp)
+lw $t6 -8($fp)
+li $t8 5 
+blt $t6 $t8 $LABEL28
+li $v0 4 
+li $a0 268501532 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+$LABEL25:   
+jr $ra  
+main:   
+lw $t0 -44($fp)
+li $t0 0 
+sw $t0 -44($fp)
+$LABEL31:   
+lw $t1 -44($fp)
+li $t8 10 
+bge $t1 $t8 $LABEL32
+lw $t2 -44($fp)
+lw $t3 72($sp)
+addi $t3 $t2 1
+sw $t3 72($sp)
+lw $t4 72($sp)
+sw $t4 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_fib  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t5 76($sp)
+move $t5 $v0 
+sw $t5 76($sp)
+lw $t6 -44($fp)
+lw $t0 76($sp)
+move $t8 $t6 
+sll $t8 $t8 2
+addi $t8 $t8 4
+sub $t8 $fp $t8
+sw $t0 0($t8)
+lw $t1 -44($fp)
+lw $t2 -44($fp)
+addi $t2 $t1 1
+sw $t2 -44($fp)
+j $LABEL31  
+$LABEL32:   
+li $v0 4 
+li $a0 268501535 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 5 
+syscall   
+lw $t3 -48($fp)
+move $t3 $v0 
+sw $t3 -48($fp)
+li $v0 5 
+syscall   
+lw $t4 -52($fp)
+move $t4 $v0 
+sw $t4 -52($fp)
+lw $t5 -48($fp)
+lw $t6 80($sp)
+subi $t6 $t5 1
+sw $t6 80($sp)
+lw $t0 -44($fp)
+lw $t1 80($sp)
+move $t0 $t1 
+sw $t0 -44($fp)
+$LABEL33:   
+li $v0 4 
+li $a0 268501575 
+syscall   
+lw $t2 -44($fp)
+move $t8 $t2 
+sll $t8 $t8 2
+addi $t8 $t8 4
+sub $t8 $fp $t8
+lw $t3 84($sp)
+lw $t3 0($t8)
+sw $t3 84($sp)
+li $v0 1 
+lw $t4 84($sp)
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t5 -44($fp)
+lw $t6 88($sp)
+addi $t6 $t5 1
+sw $t6 88($sp)
+lw $t0 -44($fp)
+lw $t1 88($sp)
+move $t0 $t1 
+sw $t0 -44($fp)
+lw $t2 -44($fp)
+lw $t3 -52($fp)
+blt $t2 $t3 $LABEL33
+lw $t4 -52($fp)
+lw $t5 96($sp)
+subi $t5 $t4 1
+sw $t5 96($sp)
+lw $t6 -44($fp)
+lw $t0 96($sp)
+move $t6 $t0 
+sw $t6 -44($fp)
+$LABEL34:   
+lw $t1 -48($fp)
+lw $t2 100($sp)
+subi $t2 $t1 1
+sw $t2 100($sp)
+lw $t3 -44($fp)
+lw $t4 100($sp)
+blt $t3 $t4 $LABEL35
+li $v0 4 
+li $a0 268501578 
+syscall   
+lw $t5 -44($fp)
+move $t8 $t5 
+sll $t8 $t8 2
+addi $t8 $t8 4
+sub $t8 $fp $t8
+lw $t6 108($sp)
+lw $t6 0($t8)
+sw $t6 108($sp)
+li $v0 1 
+lw $t0 108($sp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t1 -44($fp)
+lw $t2 -44($fp)
+subi $t2 $t1 1
+sw $t2 -44($fp)
+j $LABEL34  
+$LABEL35:   
+li $t8 1 
+sw $t8 0($sp)
+li $t8 98 
+sw $t8 -4($sp)
+sw $8 -40($sp)
+sw $9 -44($sp)
+sw $10 -48($sp)
+sw $11 -52($sp)
+sw $12 -56($sp)
+sw $13 -60($sp)
+sw $14 -64($sp)
+sw $15 -68($sp)
+sw $24 -104($sp)
+sw $25 -108($sp)
+sw $26 -112($sp)
+sw $27 -116($sp)
+sw $28 -120($sp)
+sw $29 -124($sp)
+sw $30 -128($sp)
+sw $31 -132($sp)
+move $fp $sp 
+subi $sp $fp 140
+jal FUNC_foo1  
+lw $8 -40($fp)
+lw $9 -44($fp)
+lw $10 -48($fp)
+lw $11 -52($fp)
+lw $12 -56($fp)
+lw $13 -60($fp)
+lw $14 -64($fp)
+lw $15 -68($fp)
+lw $24 -104($fp)
+lw $25 -108($fp)
+lw $26 -112($fp)
+lw $27 -116($fp)
+lw $28 -120($fp)
+lw $29 -124($fp)
+lw $31 -132($fp)
+lw $fp -128($fp)
+lw $t3 112($sp)
+move $t3 $v0 
+sw $t3 112($sp)
+li $v0 1 
+lw $t4 112($sp)
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+lw $t5 116($sp)
+li $t5 2 
+sw $t5 116($sp)
+li $t8 1 
+sw $t8 0($sp)
+lw $t6 116($sp)
+sw $t6 -4($sp)
+sw $8 -40($sp)
+sw $9 -44($sp)
+sw $10 -48($sp)
+sw $11 -52($sp)
+sw $12 -56($sp)
+sw $13 -60($sp)
+sw $14 -64($sp)
+sw $15 -68($sp)
+sw $24 -104($sp)
+sw $25 -108($sp)
+sw $26 -112($sp)
+sw $27 -116($sp)
+sw $28 -120($sp)
+sw $29 -124($sp)
+sw $30 -128($sp)
+sw $31 -132($sp)
+move $fp $sp 
+subi $sp $fp 140
+jal FUNC_add  
+lw $8 -40($fp)
+lw $9 -44($fp)
+lw $10 -48($fp)
+lw $11 -52($fp)
+lw $12 -56($fp)
+lw $13 -60($fp)
+lw $14 -64($fp)
+lw $15 -68($fp)
+lw $24 -104($fp)
+lw $25 -108($fp)
+lw $26 -112($fp)
+lw $27 -116($fp)
+lw $28 -120($fp)
+lw $29 -124($fp)
+lw $31 -132($fp)
+lw $fp -128($fp)
+lw $t0 120($sp)
+move $t0 $v0 
+sw $t0 120($sp)
+li $v0 1 
+lw $t1 120($sp)
+move $a0 $t1 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 97 
+sw $t8 0($sp)
+li $t8 98 
+sw $t8 -4($sp)
+sw $8 -40($sp)
+sw $9 -44($sp)
+sw $10 -48($sp)
+sw $11 -52($sp)
+sw $12 -56($sp)
+sw $13 -60($sp)
+sw $14 -64($sp)
+sw $15 -68($sp)
+sw $24 -104($sp)
+sw $25 -108($sp)
+sw $26 -112($sp)
+sw $27 -116($sp)
+sw $28 -120($sp)
+sw $29 -124($sp)
+sw $30 -128($sp)
+sw $31 -132($sp)
+move $fp $sp 
+subi $sp $fp 140
+jal FUNC_addchar  
+lw $8 -40($fp)
+lw $9 -44($fp)
+lw $10 -48($fp)
+lw $11 -52($fp)
+lw $12 -56($fp)
+lw $13 -60($fp)
+lw $14 -64($fp)
+lw $15 -68($fp)
+lw $24 -104($fp)
+lw $25 -108($fp)
+lw $26 -112($fp)
+lw $27 -116($fp)
+lw $28 -120($fp)
+lw $29 -124($fp)
+lw $31 -132($fp)
+lw $fp -128($fp)
+lw $t2 124($sp)
+move $t2 $v0 
+sw $t2 124($sp)
+li $v0 1 
+lw $t3 124($sp)
+move $a0 $t3 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 70 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal FUNC_addone  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t4 128($sp)
+move $t4 $v0 
+sw $t4 128($sp)
+li $v0 1 
+lw $t5 128($sp)
+move $a0 $t5 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 16 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal FUNC_addint  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t6 132($sp)
+move $t6 $v0 
+sw $t6 132($sp)
+li $v0 1 
+lw $t0 132($sp)
+move $a0 $t0 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 99 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal FUNC_foo2  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+lw $t1 136($sp)
+move $t1 $v0 
+sw $t1 136($sp)
+li $v0 11 
+lw $t2 136($sp)
+move $a0 $t2 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 148
+jal FUNC_test_string_int  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+li $t8 233 
+sw $t8 0($sp)
+sw $8 -44($sp)
+sw $9 -48($sp)
+sw $10 -52($sp)
+sw $11 -56($sp)
+sw $12 -60($sp)
+sw $13 -64($sp)
+sw $14 -68($sp)
+sw $15 -72($sp)
+sw $24 -108($sp)
+sw $25 -112($sp)
+sw $26 -116($sp)
+sw $27 -120($sp)
+sw $28 -124($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 152
+jal FUNC_test_diff_domain  
+lw $8 -44($fp)
+lw $9 -48($fp)
+lw $10 -52($fp)
+lw $11 -56($fp)
+lw $12 -60($fp)
+lw $13 -64($fp)
+lw $14 -68($fp)
+lw $15 -72($fp)
+lw $24 -108($fp)
+lw $25 -112($fp)
+lw $26 -116($fp)
+lw $27 -120($fp)
+lw $28 -124($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+sw $8 -116($sp)
+sw $9 -120($sp)
+sw $10 -124($sp)
+sw $11 -128($sp)
+sw $12 -132($sp)
+sw $13 -136($sp)
+sw $14 -140($sp)
+sw $15 -144($sp)
+sw $24 -180($sp)
+sw $25 -184($sp)
+sw $26 -188($sp)
+sw $27 -192($sp)
+sw $28 -196($sp)
+sw $29 -200($sp)
+sw $30 -204($sp)
+sw $31 -208($sp)
+move $fp $sp 
+subi $sp $fp 332
+jal FUNC_test_expr  
+lw $8 -116($fp)
+lw $9 -120($fp)
+lw $10 -124($fp)
+lw $11 -128($fp)
+lw $12 -132($fp)
+lw $13 -136($fp)
+lw $14 -140($fp)
+lw $15 -144($fp)
+lw $24 -180($fp)
+lw $25 -184($fp)
+lw $26 -188($fp)
+lw $27 -192($fp)
+lw $28 -196($fp)
+lw $29 -200($fp)
+lw $31 -208($fp)
+lw $fp -204($fp)
+sw $8 -48($sp)
+sw $9 -52($sp)
+sw $10 -56($sp)
+sw $11 -60($sp)
+sw $12 -64($sp)
+sw $13 -68($sp)
+sw $14 -72($sp)
+sw $15 -76($sp)
+sw $24 -112($sp)
+sw $25 -116($sp)
+sw $26 -120($sp)
+sw $27 -124($sp)
+sw $28 -128($sp)
+sw $29 -132($sp)
+sw $30 -136($sp)
+sw $31 -140($sp)
+move $fp $sp 
+subi $sp $fp 180
+jal FUNC_test_all_cond  
+lw $8 -48($fp)
+lw $9 -52($fp)
+lw $10 -56($fp)
+lw $11 -60($fp)
+lw $12 -64($fp)
+lw $13 -68($fp)
+lw $14 -72($fp)
+lw $15 -76($fp)
+lw $24 -112($fp)
+lw $25 -116($fp)
+lw $26 -120($fp)
+lw $27 -124($fp)
+lw $28 -128($fp)
+lw $29 -132($fp)
+lw $31 -140($fp)
+lw $fp -136($fp)
+sw $8 -40($sp)
+sw $9 -44($sp)
+sw $10 -48($sp)
+sw $11 -52($sp)
+sw $12 -56($sp)
+sw $13 -60($sp)
+sw $14 -64($sp)
+sw $15 -68($sp)
+sw $24 -104($sp)
+sw $25 -108($sp)
+sw $26 -112($sp)
+sw $27 -116($sp)
+sw $28 -120($sp)
+sw $29 -124($sp)
+sw $30 -128($sp)
+sw $31 -132($sp)
+move $fp $sp 
+subi $sp $fp 136
+jal FUNC_test_scanf  
+lw $8 -40($fp)
+lw $9 -44($fp)
+lw $10 -48($fp)
+lw $11 -52($fp)
+lw $12 -56($fp)
+lw $13 -60($fp)
+lw $14 -64($fp)
+lw $15 -68($fp)
+lw $24 -104($fp)
+lw $25 -108($fp)
+lw $26 -112($fp)
+lw $27 -116($fp)
+lw $28 -120($fp)
+lw $29 -124($fp)
+lw $31 -132($fp)
+lw $fp -128($fp)
+li $t8 97 
+sw $t8 0($sp)
+sw $8 -36($sp)
+sw $9 -40($sp)
+sw $10 -44($sp)
+sw $11 -48($sp)
+sw $12 -52($sp)
+sw $13 -56($sp)
+sw $14 -60($sp)
+sw $15 -64($sp)
+sw $24 -100($sp)
+sw $25 -104($sp)
+sw $26 -108($sp)
+sw $27 -112($sp)
+sw $28 -116($sp)
+sw $29 -120($sp)
+sw $30 -124($sp)
+sw $31 -128($sp)
+move $fp $sp 
+subi $sp $fp 132
+jal FUNC_echo_char  
+lw $8 -36($fp)
+lw $9 -40($fp)
+lw $10 -44($fp)
+lw $11 -48($fp)
+lw $12 -52($fp)
+lw $13 -56($fp)
+lw $14 -60($fp)
+lw $15 -64($fp)
+lw $24 -100($fp)
+lw $25 -104($fp)
+lw $26 -108($fp)
+lw $27 -112($fp)
+lw $28 -116($fp)
+lw $29 -120($fp)
+lw $31 -128($fp)
+lw $fp -124($fp)
+li $t8 1 
+sw $t8 0($sp)
+li $t8 2 
+sw $t8 -4($sp)
+li $t8 99 
+sw $t8 -8($sp)
+li $t8 100 
+sw $t8 -12($sp)
+li $t8 5 
+sw $t8 -16($sp)
+sw $8 -52($sp)
+sw $9 -56($sp)
+sw $10 -60($sp)
+sw $11 -64($sp)
+sw $12 -68($sp)
+sw $13 -72($sp)
+sw $14 -76($sp)
+sw $15 -80($sp)
+sw $24 -116($sp)
+sw $25 -120($sp)
+sw $26 -124($sp)
+sw $27 -128($sp)
+sw $28 -132($sp)
+sw $29 -136($sp)
+sw $30 -140($sp)
+sw $31 -144($sp)
+move $fp $sp 
+subi $sp $fp 164
+jal FUNC_test_lots_paras  
+lw $8 -52($fp)
+lw $9 -56($fp)
+lw $10 -60($fp)
+lw $11 -64($fp)
+lw $12 -68($fp)
+lw $13 -72($fp)
+lw $14 -76($fp)
+lw $15 -80($fp)
+lw $24 -116($fp)
+lw $25 -120($fp)
+lw $26 -124($fp)
+lw $27 -128($fp)
+lw $28 -132($fp)
+lw $29 -136($fp)
+lw $31 -144($fp)
+lw $fp -140($fp)
+lw $t3 140($sp)
+move $t3 $v0 
+sw $t3 140($sp)
+li $v0 1 
+lw $t4 140($sp)
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+sw $8 -32($sp)
+sw $9 -36($sp)
+sw $10 -40($sp)
+sw $11 -44($sp)
+sw $12 -48($sp)
+sw $13 -52($sp)
+sw $14 -56($sp)
+sw $15 -60($sp)
+sw $24 -96($sp)
+sw $25 -100($sp)
+sw $26 -104($sp)
+sw $27 -108($sp)
+sw $28 -112($sp)
+sw $29 -116($sp)
+sw $30 -120($sp)
+sw $31 -124($sp)
+move $fp $sp 
+subi $sp $fp 128
+jal FUNC_really_void  
+lw $8 -32($fp)
+lw $9 -36($fp)
+lw $10 -40($fp)
+lw $11 -44($fp)
+lw $12 -48($fp)
+lw $13 -52($fp)
+lw $14 -56($fp)
+lw $15 -60($fp)
+lw $24 -96($fp)
+lw $25 -100($fp)
+lw $26 -104($fp)
+lw $27 -108($fp)
+lw $28 -112($fp)
+lw $29 -116($fp)
+lw $31 -124($fp)
+lw $fp -120($fp)
+sw $8 -32($sp)
+sw $9 -36($sp)
+sw $10 -40($sp)
+sw $11 -44($sp)
+sw $12 -48($sp)
+sw $13 -52($sp)
+sw $14 -56($sp)
+sw $15 -60($sp)
+sw $24 -96($sp)
+sw $25 -100($sp)
+sw $26 -104($sp)
+sw $27 -108($sp)
+sw $28 -112($sp)
+sw $29 -116($sp)
+sw $30 -120($sp)
+sw $31 -124($sp)
+move $fp $sp 
+subi $sp $fp 128
+jal FUNC_really_void2  
+lw $8 -32($fp)
+lw $9 -36($fp)
+lw $10 -40($fp)
+lw $11 -44($fp)
+lw $12 -48($fp)
+lw $13 -52($fp)
+lw $14 -56($fp)
+lw $15 -60($fp)
+lw $24 -96($fp)
+lw $25 -100($fp)
+lw $26 -104($fp)
+lw $27 -108($fp)
+lw $28 -112($fp)
+lw $29 -116($fp)
+lw $31 -124($fp)
+lw $fp -120($fp)
+sw $8 -32($sp)
+sw $9 -36($sp)
+sw $10 -40($sp)
+sw $11 -44($sp)
+sw $12 -48($sp)
+sw $13 -52($sp)
+sw $14 -56($sp)
+sw $15 -60($sp)
+sw $24 -96($sp)
+sw $25 -100($sp)
+sw $26 -104($sp)
+sw $27 -108($sp)
+sw $28 -112($sp)
+sw $29 -116($sp)
+sw $30 -120($sp)
+sw $31 -124($sp)
+move $fp $sp 
+subi $sp $fp 128
+jal FUNC_really_void3  
+lw $8 -32($fp)
+lw $9 -36($fp)
+lw $10 -40($fp)
+lw $11 -44($fp)
+lw $12 -48($fp)
+lw $13 -52($fp)
+lw $14 -56($fp)
+lw $15 -60($fp)
+lw $24 -96($fp)
+lw $25 -100($fp)
+lw $26 -104($fp)
+lw $27 -108($fp)
+lw $28 -112($fp)
+lw $29 -116($fp)
+lw $31 -124($fp)
+lw $fp -120($fp)
+li $t8 0 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+li $t9 65 
+sw $t9 0($t8)
+li $t8 1 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+li $t9 66 
+sw $t9 0($t8)
+li $t8 2 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+li $t9 67 
+sw $t9 0($t8)
+li $t8 3 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+li $t9 68 
+sw $t9 0($t8)
+li $t8 4 
+sll $t8 $t8 2
+addi $t8 $t8 276
+add $t8 $gp $t8
+li $t9 69 
+sw $t9 0($t8)
+li $v0 4 
+li $a0 268501581 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 0 
+sw $t8 0($sp)
+li $t8 5 
+sw $t8 -4($sp)
+sw $8 -52($sp)
+sw $9 -56($sp)
+sw $10 -60($sp)
+sw $11 -64($sp)
+sw $12 -68($sp)
+sw $13 -72($sp)
+sw $14 -76($sp)
+sw $15 -80($sp)
+sw $24 -116($sp)
+sw $25 -120($sp)
+sw $26 -124($sp)
+sw $27 -128($sp)
+sw $28 -132($sp)
+sw $29 -136($sp)
+sw $30 -140($sp)
+sw $31 -144($sp)
+move $fp $sp 
+subi $sp $fp 212
+jal FUNC_permutation  
+lw $8 -52($fp)
+lw $9 -56($fp)
+lw $10 -60($fp)
+lw $11 -64($fp)
+lw $12 -68($fp)
+lw $13 -72($fp)
+lw $14 -76($fp)
+lw $15 -80($fp)
+lw $24 -116($fp)
+lw $25 -120($fp)
+lw $26 -124($fp)
+lw $27 -128($fp)
+lw $28 -132($fp)
+lw $29 -136($fp)
+lw $31 -144($fp)
+lw $fp -140($fp)
+li $v0 10 
+syscall   
+li $v0 10 
+syscall   

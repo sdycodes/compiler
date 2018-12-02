@@ -4,7 +4,7 @@
 #include "globalvar.h"
 #include "sign_table.h"
 vector<block> blocks;
-
+int name2reg[MAXSIGNNUM] = { 0 };
 #define isVar(x) (((x)[0]=='_'||((x)[0]>='a'&&(x)[0]<='z')||((x)[0]>='A'&&(x)[0]<='Z'))&&islocal)
 
 void init_block(block& b) {
@@ -244,6 +244,31 @@ void cal_in_out() {
 }
 
 
+void cal_alloc() {
+	cal_in_out();
+	int sregcnt = 16;
+	int func_begin, func_end;
+	bool islocal;
+	for (int i = 2;i < blocks.size() - 1;i++) {
+		//如果本块是一个函数的开始 那么可以从头分配寄存器
+		if (mc[blocks[i].start].op == "LABEL"&&mc[blocks[i].start].n1[0] != '$') {
+			sregcnt = 16;
+			func_begin = search_tab(mc[blocks[i].start].n1 == "main" ? "main" : mc[blocks[i].start].n1.substr(5), islocal);
+			func_end = func_begin + 1;
+			while (func_end < stp&&st[func_end].kind != ST_FUNC)
+				func_end++;	//一个函数在符号表中的范围 左闭右开区间
+		}
+		if (sregcnt > 23) continue;	//加速如果已经没有寄存器可分了那么在进入下一个函数之前没必要分了
+		for (int j = func_begin;j < func_end;j++) {
+			//如果某个变量是这个基本块的in变量
+			if (blocks[i].in[j]) {
+				//有寄存器并且此变量没分配过 则分配
+				if (sregcnt <= 23 && name2reg[j] == 0)
+					name2reg[j] = sregcnt++;
+			}
+		}
+	}
+}
 void dump_def_use() {
 	cal_in_out();
 	for (int i = 1;i < (int)blocks.size()-1;i++) {

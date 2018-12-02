@@ -54,8 +54,8 @@ void cal_func_size(int loc) {
 		i++;
 	}
 	st[loc].addr = size;
-	//size += 4 * tno;
 	size += 4 * 32;	//保存现场用
+	size += 4 * tno;	//中间变量存储空间
 	st[loc].size = size;
 }
 void dump_tab() {
