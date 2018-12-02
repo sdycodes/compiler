@@ -12,7 +12,7 @@ typedef struct block {
 }block;
 extern vector<block> blocks;
 extern int name2reg[MAXSIGNNUM];
-void dump_def_use();
+void dump_blocks();
 void init_block(block& b);
 void split_block();
 void gen_DAG();

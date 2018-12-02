@@ -249,7 +249,7 @@ void cal_alloc() {
 	int sregcnt = 16;
 	int func_begin, func_end;
 	bool islocal;
-	for (int i = 2;i < blocks.size() - 1;i++) {
+	for (int i = 2;i < (int)blocks.size() - 1;i++) {
 		//如果本块是一个函数的开始 那么可以从头分配寄存器
 		if (mc[blocks[i].start].op == "LABEL"&&mc[blocks[i].start].n1[0] != '$') {
 			sregcnt = 16;
@@ -258,18 +258,20 @@ void cal_alloc() {
 			while (func_end < stp&&st[func_end].kind != ST_FUNC)
 				func_end++;	//一个函数在符号表中的范围 左闭右开区间
 		}
-		if (sregcnt > 23) continue;	//加速如果已经没有寄存器可分了那么在进入下一个函数之前没必要分了
 		for (int j = func_begin;j < func_end;j++) {
 			//如果某个变量是这个基本块的in变量
 			if (blocks[i].in[j]) {
 				//有寄存器并且此变量没分配过 则分配
-				if (sregcnt <= 23 && name2reg[j] == 0)
+				if (sregcnt <= 21 && name2reg[j] == 0)
 					name2reg[j] = sregcnt++;
+				//如果没有寄存器且这个变量需要分配但是却无法分配，标记为-1
+				else if (sregcnt > 21 && name2reg[j] == 0)
+					name2reg[j] = -1;
 			}
 		}
 	}
 }
-void dump_def_use() {
+void dump_blocks() {
 	cal_in_out();
 	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		cout << "\n--------------------"<<blocks[i].no<<"-----------------\n";

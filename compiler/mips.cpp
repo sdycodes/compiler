@@ -3,46 +3,87 @@
 #include "stdHeader.h"
 #include "sign_table.h"
 #include "mips.h"
+#include "base_block.h"
 #define no2name(x) (x)>=16&&(x)<=23?"$s"+to_string(x-16):	\
 					(x)<16&&(x)>=8?"$t"+to_string(x-8): \
 					(x)==24||(x)==25?"$t"+to_string(x-16):"!!!"
 
 #define isCon(num) (isdigit(num[0])||num[0]=='-'||num[0]=='+')
-#define REG_NUM 10
-int stk[REG_NUM] = { 8,9,10,11,12,13,14,15,24,25 };	//t-register stack
-
-//map<int, string> alloc;	//record each t-register and its variable name
-//vector<string> midvar;
-
-int call_midvar_loc(string name) {
-	/*
-	int i;
-	for (i = midvar.size() - 1;i >= 0;i--)
-		if (midvar[i] == name)
-			break;
-	if (i == -1) {
-		gen_mips("subi", "$sp", "$sp", "4");
-		midvar.push_back(name);
-		return 4;
-	}
-	return (midvar.size() - i) * 4;*/
-	return (stoi(name.substr(1))<<2)+4;
-}
+#define REG_NUM 8
+int tstk[REG_NUM] = { 8,9,10,11,12,13,14,15 };
+map<int, string> t_alloc;
 string get_reg(string name, int def_loc) {
+	//#RET 直接返回v0
 	if (name == "#RET")
 		return "$v0";
-	static int n = 0;
-	n = (n + 1) % 7;
 	bool islocal;
+	string reg;
 	int loc = search_tab(name, islocal, def_loc);
-	if (loc != -1 && islocal)
-		gen_mips("lw", "$t" + to_string(n), "$fp", to_string(-st[loc].addr));
-	else if (loc != -1 && !islocal)
-		gen_mips("lw", "$t" + to_string(n), "$gp", to_string(st[loc].addr));
-	else if (loc == -1 && name[0] == '#') {
-		gen_mips("lw", "$t"+to_string(n), "$sp", to_string(call_midvar_loc(name)));
+	static int data_buffer = 6;
+	//一个全局变量 或者是一个未分配寄存器的跨基本块局部变量
+	if (loc != -1 && (!islocal|| name2reg[loc] == -1)) {	
+		reg = "$s" + to_string(data_buffer);
+		gen_mips("lw", reg, "$gp", to_string(loc));	//从内存中读取
+		data_buffer = data_buffer == 6 ? 7 : 6;
+		return reg;
 	}
-	return "$t" + to_string(n);
+	//如果是一个分配了s寄存器的跨基本块局部变量
+	if (loc != -1 && name2reg[loc]!=0&&name2reg[loc]!=-1) {
+		return "$s" + to_string(name2reg[loc]);
+	}
+	//如果是不跨基本块的局部变量或者中间变量 采用LRU算法
+	if(loc==-1||name2reg[loc]==0){
+		map<int, string>::iterator it = t_alloc.begin();
+		for (;it != t_alloc.end();it++) {
+			if (it->second == name)
+				break;
+		}
+		//如果当前变量已经分配了寄存器
+		if (it != t_alloc.end()) {
+			int v;
+			//寻找它对应的寄存器位置
+			for (v = 0;v < REG_NUM;v++) {
+				if (tstk[v] == it->first)
+					break;
+			}
+			int r = tstk[v];
+			//放到顶部 LRU算法
+			for (int w = v;w >= 1;w--)
+				tstk[w] = tstk[w - 1];
+			tstk[0] = r;
+			return no2name(r);
+		}
+		//如果没有分配寄存器
+		else {
+			string rec_name = "";
+			//如果栈底寄存器不空 说明寄存器全部被占用 需要弹出栈底
+			if (t_alloc.find(tstk[REG_NUM - 1]) != t_alloc.end() && t_alloc[tstk[REG_NUM - 1]] != "") {
+				rec_name = t_alloc[tstk[REG_NUM - 1]];
+			}
+			int r = tstk[REG_NUM - 1];
+			for (int k = REG_NUM - 1;k >= 1;k--)
+				tstk[k] = tstk[k - 1];
+			tstk[0] = r;	//栈底寄存器放到栈顶
+			t_alloc[r] = name;	//分配寄存器
+			//rec_name不空说明被挤掉了，需要回写
+			if (rec_name != "") {
+				int rec_loc = search_tab(rec_name, islocal, def_loc);
+				if (rec_loc == -1) 	//一个中间变量
+					gen_mips("sw", no2name(r), "$sp", to_string((stoi(rec_name.substr(1)) << 2) + 4));
+				else //一个不跨越基本块的局部变量
+					gen_mips("sw", no2name(r), "$fp", to_string(-st[rec_loc].addr));
+			}
+			//把新分配的load出来
+			if (loc == -1)
+				gen_mips("lw", no2name(r), "$sp", to_string((stoi(name.substr(1)) << 2) + 4));
+			else
+				gen_mips("lw", no2name(r), "$fp", to_string(-st[loc].addr));
+			return no2name(r);
+		}
+	}
+	else {
+		return "!!!";
+	}
 }
 void gen_mips(string op, string res, string n1, string n2) {
 	mce tmp;
@@ -74,12 +115,12 @@ void mc2mp() {
 	def_loc = search_tab("main", islocal, -1);
 	gen_mips("li", "$fp", "0x7fffeffc");
 	gen_mips("subi", "$sp", "$fp", to_string(st[def_loc].size));
+	int block_end = 0, block_no = 1;
 	for (int i = 0;i < (int)mc.size();i++) {
-		if (mc[i].op == "LABEL") {	//标签
+		//标签
+		if (mc[i].op == "LABEL") {	
 			gen_mips(mc[i].n1+':');
 			if (mc[i].n1[0] != '$') {	//是一个函数标签
-				//midvar.clear();	//清空中间变量
-				//alloc.clear();	//清空对应关系
 				def_loc = search_tab(mc[i].n1=="main"?"main":mc[i].n1.substr(5), islocal);
 			}
 		}
@@ -111,14 +152,16 @@ void mc2mp() {
 				string op = mc[i].op == "ADD" ? "add" : "sub";
 				gen_mips(op, numres, num1, num2);
 			}
+			/*
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && islocal)
 				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			else if (loc != -1 && !islocal)
 				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
 			else if (loc == -1 && mc[i].res[0] == '#') 
-				gen_mips("sw", numres, "$sp", to_string(call_midvar_loc(mc[i].res)));
+				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
 
+			*/
 		}
 		else if(mc[i].op=="MULT"||mc[i].op=="DIV"){
 			//都是常量 li
@@ -149,13 +192,15 @@ void mc2mp() {
 				gen_mips(op, num1, num2);
 				gen_mips("mflo", numres);
 			}
+			/*
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && islocal)
 				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			else if (loc != -1 && !islocal)
 				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
 			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string(call_midvar_loc(mc[i].res)));
+				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
+			*/
 		}
 		else if (mc[i].op == "PUSH") {
 			while (mc[i].op == "PUSH") {
@@ -177,18 +222,14 @@ void mc2mp() {
 					gen_mips("sw", get_reg(paras[j], def_loc), "$sp", to_string(-j * 4));
 			}
 			paras.clear();
-			for (int j = 8;j <= 15;j++)	//保存现场操作
-				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
-			for(int j=24;j<=31;j++)
+			for (int j = 8;j <= 31;j++)	//保存现场操作
 				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
 			//分配函数运行栈
 			gen_mips("move", "$fp", "$sp");
 			gen_mips("subi", "$sp", "$fp", to_string(st[loc].size));
 			//jump to function
 			gen_mips("jal", mc[i].n1);
-			for (int j = 8;j <= 15;j++)	//恢复现场操作
-				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
-			for(int j=24;j<=29;j++)
+			for (int j = 8;j <= 29;j++)	//恢复现场操作
 				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
 			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31*4));
 			gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));
@@ -283,17 +324,19 @@ void mc2mp() {
 			gen_mips("syscall");
 			string numres = get_reg(mc[i].n1, def_loc);
 			gen_mips("move", numres, "$v0");
-			//这里是对于全局变量的特殊操作 未来需要保留
-			/*int loc = search_tab(mc[i].n1, islocal, def_loc);
-			if (loc != -1 && !islocal)
-				gen_mips("sw", get_reg(mc[i].n1, def_loc), "$gp", to_string(st[loc].addr));*/
+			//这里是对于全局变量的特殊操作 
+			int loc = search_tab(mc[i].n1, islocal, def_loc);
+			if (loc != -1 && (!islocal||name2reg[loc]==-1))
+				gen_mips("sw", get_reg(mc[i].n1, def_loc), "$gp", to_string(st[loc].addr));
+			/*
 			int loc = search_tab(mc[i].n1, islocal, def_loc);
 			if (loc != -1 && islocal)
 				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			else if (loc != -1 && !islocal)
 				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
 			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string(call_midvar_loc(mc[i].res)));
+				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
+			*/
 		}
 		else if (mc[i].op == "GOTO") {
 			gen_mips("j", mc[i].n1);
@@ -305,17 +348,16 @@ void mc2mp() {
 			else
 				gen_mips("move", numres, get_reg(mc[i].n1, def_loc));
 			//对全局变量的特殊操作
-			/*
 			int loc = search_tab(mc[i].res, islocal, def_loc);
-			if (loc!=-1&&!islocal)
-				gen_mips("sw", get_reg(mc[i].res, def_loc), "$gp", to_string(st[loc].addr));*/
-			int loc = search_tab(mc[i].res, islocal, def_loc);
+			if (loc!=-1&&(!islocal||name2reg[loc]==-1))
+				gen_mips("sw", get_reg(mc[i].res, def_loc), "$gp", to_string(st[loc].addr));
+			/*int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && islocal)
 				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			else if (loc != -1 && !islocal)
 				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
 			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string(call_midvar_loc(mc[i].res)));
+				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));*/
 		}
 		else if (mc[i].op == "SELEM") { 
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
@@ -345,8 +387,12 @@ void mc2mp() {
 				gen_mips("sub", "$t8", "$fp", "$t8");
 			else
 				gen_mips("add", "$t8", "$gp", "$t8");
-			//这里是否也需要注意全局变量的问题
-			string numres = get_reg(mc[i].res);
+			//对全局变量的特殊操作
+			int loc = search_tab(mc[i].res, islocal, def_loc);
+			if (loc != -1 && (!islocal || name2reg[loc] == -1))
+				gen_mips("sw", get_reg(mc[i].res, def_loc), "$gp", to_string(st[loc].addr));
+
+			/*string numres = get_reg(mc[i].res);
 			gen_mips("lw", numres, "$t8", "0");
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && islocal)
@@ -354,7 +400,15 @@ void mc2mp() {
 			else if (loc != -1 && !islocal)
 				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
 			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string(call_midvar_loc(mc[i].res)));
+				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
+				*/
+		}
+		//一个基本块结束 清除t寄存器的对应关系  更新位置
+		if (i == block_end) {
+			t_alloc.clear();
+			block_no++;
+			if (block_no <= (int)blocks.size() - 1)
+				block_end = blocks[block_no].end;
 		}
 	}
 }
