@@ -177,18 +177,18 @@ void mc2mp() {
 					gen_mips("sw", get_reg(paras[j], def_loc), "$sp", to_string(-j * 4));
 			}
 			paras.clear();
-			for (int j = 8;j <= 15;j++)	//保存现场操作
-				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
-			for(int j=24;j<=31;j++)
+			//for (int j = 8;j <= 15;j++)	//保存现场操作
+				//gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
+			for(int j=29;j<=31;j++) //former 24
 				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
 			//分配函数运行栈
 			gen_mips("move", "$fp", "$sp");
 			gen_mips("subi", "$sp", "$fp", to_string(st[loc].size));
 			//jump to function
 			gen_mips("jal", mc[i].n1);
-			for (int j = 8;j <= 15;j++)	//恢复现场操作
-				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
-			for(int j=24;j<=29;j++)
+			//for (int j = 8;j <= 15;j++)	//恢复现场操作
+				//gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
+			for(int j=29;j<=29;j++) //former 24
 				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
 			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31*4));
 			gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));

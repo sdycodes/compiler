@@ -118,57 +118,57 @@ void cal_def_use() {
 				mc[j].op == "LE" || mc[j].op == "LT" || 
 				mc[j].op == "GE" || mc[j].op == "GT" || mc[j].op == "LELEM") {
 				islocal = false;
-				loc = search_tab(mc[j].res, islocal, def_loc);
-				if (rec.find(loc) == rec.end()&&isVar(mc[j].res)) {
-					rec.insert(pair<int, bool>(loc, true));
-				}
-				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].n2, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n2)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
+				}
+				islocal = false;
+				loc = search_tab(mc[j].res, islocal, def_loc);
+				if (rec.find(loc) == rec.end()&&isVar(mc[j].res)) {
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "ASSIGN") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].res, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].res)) {
-					rec.insert(pair<int, bool>(loc, true));
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "LELEM") {
 				islocal = false;
 				loc = search_tab(mc[j].n2, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n2)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].res, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].res)) {
-					rec.insert(pair<int, bool>(loc, true));
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "PUSH"||mc[j].op=="BEZ"||mc[j].op=="BNZ"||(mc[j].op == "RET"&&mc[j].n1 != "#")) {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 			}
 			else if (mc[j].op == "SELEM") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].n2, islocal, def_loc);
