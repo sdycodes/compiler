@@ -21,4 +21,5 @@ void unionset(bool a[], bool b[], bool c[], int size = MAXSIGNNUM);
 void substract(bool a[], bool b[], bool c[], int size = MAXSIGNNUM);
 bool assign_and_check_change(bool a[], bool b[], int size = MAXSIGNNUM);
 void cal_in_out();
+void cal_alloc();
 #endif

@@ -12,7 +12,7 @@
 #define REG_NUM 8
 int tstk[REG_NUM] = { 8,9,10,11,12,13,14,15 };
 map<int, string> t_alloc;
-string get_reg(string name, int def_loc) {
+string get_reg(string name, bool assign, int def_loc) {
 	//#RET 直接返回v0
 	if (name == "#RET")
 		return "$v0";
@@ -23,13 +23,16 @@ string get_reg(string name, int def_loc) {
 	//一个全局变量 或者是一个未分配寄存器的跨基本块局部变量
 	if (loc != -1 && (!islocal|| name2reg[loc] == -1)) {	
 		reg = "$s" + to_string(data_buffer);
-		gen_mips("lw", reg, "$gp", to_string(loc));	//从内存中读取
+		if (!islocal)
+			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//从内存中读取
+		else
+			gen_mips("lw", reg, "$fp", to_string(-st[loc].addr));
 		data_buffer = data_buffer == 6 ? 7 : 6;
 		return reg;
 	}
 	//如果是一个分配了s寄存器的跨基本块局部变量
 	if (loc != -1 && name2reg[loc]!=0&&name2reg[loc]!=-1) {
-		return "$s" + to_string(name2reg[loc]);
+		return no2name(name2reg[loc]);
 	}
 	//如果是不跨基本块的局部变量或者中间变量 采用LRU算法
 	if(loc==-1||name2reg[loc]==0){
@@ -73,16 +76,18 @@ string get_reg(string name, int def_loc) {
 				else //一个不跨越基本块的局部变量
 					gen_mips("sw", no2name(r), "$fp", to_string(-st[rec_loc].addr));
 			}
-			//把新分配的load出来
-			if (loc == -1)
-				gen_mips("lw", no2name(r), "$sp", to_string((stoi(name.substr(1)) << 2) + 4));
-			else
-				gen_mips("lw", no2name(r), "$fp", to_string(-st[loc].addr));
+			//把新分配的load出来 如果不是被赋值的话
+			if (!assign) {
+				if (loc == -1)
+					gen_mips("lw", no2name(r), "$sp", to_string((stoi(name.substr(1)) << 2) + 4));
+				else
+					gen_mips("lw", no2name(r), "$fp", to_string(-st[loc].addr));
+			}
 			return no2name(r);
 		}
 	}
 	else {
-		return "!!!";
+		return "!!!!!!!";
 	}
 }
 void gen_mips(string op, string res, string n1, string n2) {
@@ -122,12 +127,18 @@ void mc2mp() {
 			gen_mips(mc[i].n1+':');
 			if (mc[i].n1[0] != '$') {	//是一个函数标签
 				def_loc = search_tab(mc[i].n1=="main"?"main":mc[i].n1.substr(5), islocal);
+				int k = def_loc + 1;
+				while (k < stp&&st[k].kind == ST_PARA) {
+					if (name2reg[k] != -1)
+						gen_mips("lw", no2name(name2reg[k]), "$fp", to_string(-st[k].addr));
+					k++;
+				}
 			}
 		}
 		else if (mc[i].op == "ADD"||mc[i].op=="SUB") {
-			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
-			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
-			string numres = get_reg(mc[i].res, def_loc);
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
+			string numres = get_reg(mc[i].res, true, def_loc);
 			//都是常量 li
 			if (isCon(mc[i].n1)&&isCon(mc[i].n2)) {
 				int res = mc[i].op == "ADD" ? stoi(num1) + stoi(num2) : stoi(num1) - stoi(num2);
@@ -152,22 +163,12 @@ void mc2mp() {
 				string op = mc[i].op == "ADD" ? "add" : "sub";
 				gen_mips(op, numres, num1, num2);
 			}
-			/*
-			int loc = search_tab(mc[i].res, islocal, def_loc);
-			if (loc != -1 && islocal)
-				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
-			else if (loc != -1 && !islocal)
-				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
-			else if (loc == -1 && mc[i].res[0] == '#') 
-				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
-
-			*/
 		}
 		else if(mc[i].op=="MULT"||mc[i].op=="DIV"){
 			//都是常量 li
-			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
-			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
-			string numres = get_reg(mc[i].res, def_loc);
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
+			string numres = get_reg(mc[i].res, true, def_loc);
 			if (isCon(mc[i].n1)&&isCon(mc[i].n2)) {
 				int res = mc[i].op == "MULT" ? stoi(num1) * stoi(num2) : stoi(num1) / stoi(num2);
 				gen_mips("li", numres, to_string(res));
@@ -192,15 +193,6 @@ void mc2mp() {
 				gen_mips(op, num1, num2);
 				gen_mips("mflo", numres);
 			}
-			/*
-			int loc = search_tab(mc[i].res, islocal, def_loc);
-			if (loc != -1 && islocal)
-				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
-			else if (loc != -1 && !islocal)
-				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
-			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
-			*/
 		}
 		else if (mc[i].op == "PUSH") {
 			while (mc[i].op == "PUSH") {
@@ -219,27 +211,55 @@ void mc2mp() {
 					gen_mips("sw", "$t8", "$sp", to_string(-j * 4));
 				}
 				else
-					gen_mips("sw", get_reg(paras[j], def_loc), "$sp", to_string(-j * 4));
+					gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
 			}
 			paras.clear();
+			//个性化保存现场
+			for (int j = 8;j < 16;j++) 
+				if (t_alloc.find(j)!=t_alloc.end()&&t_alloc[j]!="")
+					gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
+			int j = def_loc + 1;
+			while (j < stp&&st[j].kind !=ST_FUNC) {
+				if (name2reg[j]>0)
+					gen_mips("sw", no2name(name2reg[j]), "$sp", to_string(-context_offset-name2reg[j]*4));
+				j++;
+			}
+			for(int j=29;j<32;j++)
+				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
+			/*
 			for (int j = 8;j <= 31;j++)	//保存现场操作
 				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
+			*/
 			//分配函数运行栈
 			gen_mips("move", "$fp", "$sp");
 			gen_mips("subi", "$sp", "$fp", to_string(st[loc].size));
 			//jump to function
 			gen_mips("jal", mc[i].n1);
+			//个性化恢复现场
+			for (int j = 8;j < 16;j++)
+				if (t_alloc.find(j) != t_alloc.end() && t_alloc[j] != "")
+					gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
+			j = def_loc + 1;
+			while (j < stp&&st[j].kind != ST_FUNC) {
+				if (name2reg[j]>0)
+					gen_mips("lw", no2name(name2reg[j]), "$fp", to_string(-context_offset - name2reg[j] * 4));
+				j++;
+			}
+			gen_mips("lw", "$" + to_string(29), "$fp", to_string(-context_offset - 29 * 4));
+			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31 * 4));
+			gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));
+			/*
 			for (int j = 8;j <= 29;j++)	//恢复现场操作
 				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
 			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31*4));
-			gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));
+			gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));*/
 		}
 		else if (mc[i].op == "RET") {
 			//put the result on $v0
 			if (isCon(mc[i].n1))
 				gen_mips("li", "$v0", mc[i].n1);
 			else if (mc[i].n1 != "#")
-				gen_mips("move", "$v0", get_reg(mc[i].n1, def_loc));
+				gen_mips("move", "$v0", get_reg(mc[i].n1, false, def_loc));
 			gen_mips("jr", "$ra");
 		}
 		else if (mc[i].op == "OUTS"|| mc[i].op == "OUTV"|| mc[i].op == "OUTC") {
@@ -254,7 +274,7 @@ void mc2mp() {
 					gen_mips("syscall");
 				}
 				else {
-					gen_mips("move", "$a0", get_reg(mc[i].n1, def_loc));
+					gen_mips("move", "$a0", get_reg(mc[i].n1, false, def_loc));
 					gen_mips("syscall");
 				}
 			}
@@ -264,8 +284,8 @@ void mc2mp() {
 			gen_mips("syscall");
 		}
 		else if (mc[i].op == "LT" || mc[i].op == "LE" || mc[i].op == "GT" || mc[i].op == "GE" || mc[i].op == "EQ" || mc[i].op == "NE") {
-			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
-			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);	
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);	
 			i++;
 			if (isCon(mc[i-1].n1)&&isCon(mc[i-1].n2)) {
 				if ((mc[i - 1].op == "LT"&&stoi(num1) < stoi(num2))||
@@ -322,86 +342,89 @@ void mc2mp() {
 		else if (mc[i].op == "INC"||mc[i].op=="INV") {
 			gen_mips("li", "$v0", mc[i].op=="INV"?"5":"12");
 			gen_mips("syscall");
-			string numres = get_reg(mc[i].n1, def_loc);
+			string numres = get_reg(mc[i].n1, true, def_loc);
 			gen_mips("move", numres, "$v0");
 			//这里是对于全局变量的特殊操作 
 			int loc = search_tab(mc[i].n1, islocal, def_loc);
-			if (loc != -1 && (!islocal||name2reg[loc]==-1))
-				gen_mips("sw", get_reg(mc[i].n1, def_loc), "$gp", to_string(st[loc].addr));
-			/*
-			int loc = search_tab(mc[i].n1, islocal, def_loc);
-			if (loc != -1 && islocal)
-				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
-			else if (loc != -1 && !islocal)
-				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
-			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
-			*/
+			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
+				if (!islocal)
+					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				else
+					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
+			}
 		}
 		else if (mc[i].op == "GOTO") {
 			gen_mips("j", mc[i].n1);
 		}
 		else if (mc[i].op == "ASSIGN") {
-			string numres = get_reg(mc[i].res, def_loc);
+			string numres = get_reg(mc[i].res, true, def_loc);
 			if (isCon(mc[i].n1))
 				gen_mips("li", numres, mc[i].n1);
 			else
-				gen_mips("move", numres, get_reg(mc[i].n1, def_loc));
+				gen_mips("move", numres, get_reg(mc[i].n1, false, def_loc));
 			//对全局变量的特殊操作
 			int loc = search_tab(mc[i].res, islocal, def_loc);
-			if (loc!=-1&&(!islocal||name2reg[loc]==-1))
-				gen_mips("sw", get_reg(mc[i].res, def_loc), "$gp", to_string(st[loc].addr));
-			/*int loc = search_tab(mc[i].res, islocal, def_loc);
-			if (loc != -1 && islocal)
-				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
-			else if (loc != -1 && !islocal)
-				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
-			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));*/
+			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
+				if(!islocal)
+					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				else
+					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
+			}
 		}
 		else if (mc[i].op == "SELEM") { 
-			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, def_loc);
-			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
 			int arr_loc = search_tab(mc[i].res, islocal, def_loc);
-			if (isCon(mc[i].n1))
-				gen_mips("li", "$t8", num1);
-			else
-				gen_mips("move", "$t8", num1);
-			gen_mips("sll", "$t8", "$t8", "2");
-			gen_mips("addi", "$t8", "$t8", to_string(st[arr_loc].addr));
-			if (islocal)
-				gen_mips("sub", "$t8", "$fp", "$t8");
-			else
-				gen_mips("add", "$t8", "$gp", "$t8");
-			if (isCon(mc[i].n2))
-				gen_mips("li", "$t9", mc[i].n2);
-			gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$t8", "0");
+			if (isCon(mc[i].n1)) {
+				int offset = stoi(num1) * 4 + st[arr_loc].addr;
+				if (isCon(mc[i].n2)) {
+					gen_mips("li", "$t9", mc[i].n2);
+					if (islocal)
+						gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$fp", to_string(-offset));
+					else
+						gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$gp", to_string(offset));
+				}
+			}
+			else {
+				gen_mips("sll", "$t8", num1, "2");
+				gen_mips("addi", "$t8", "$t8", to_string(st[arr_loc].addr));
+				if (islocal)
+					gen_mips("sub", "$t8", "$fp", "$t8");
+				else
+					gen_mips("add", "$t8", "$gp", "$t8");
+				if (isCon(mc[i].n2))
+					gen_mips("li", "$t9", mc[i].n2);
+				gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$t8", "0");
+			}
 		}
 		else if (mc[i].op == "LELEM") {
 			int arr_loc = search_tab(mc[i].n1, islocal, def_loc);
-			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, def_loc);
-			gen_mips(isCon(mc[i].n2)?"li":"move", "$t8", num2);
-			gen_mips("sll", "$t8", "$t8", "2");
-			gen_mips("addi", "$t8", "$t8", to_string(st[arr_loc].addr));
-			if (islocal)
-				gen_mips("sub", "$t8", "$fp", "$t8");
-			else
-				gen_mips("add", "$t8", "$gp", "$t8");
+			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
+			string numres = get_reg(mc[i].res, true, def_loc);
+			if (isCon(mc[i].n2)) {
+				int offset = stoi(mc[i].n2) * 4 + st[arr_loc].addr;
+				if (islocal)
+					gen_mips("lw", numres, "$fp", to_string(-offset));
+				else
+					gen_mips("lw", numres, "$gp", to_string(offset));
+			}
+			else {
+				gen_mips("sll", "$t8", num2, "2");
+				gen_mips("addi", "$t8", "$t8", to_string(st[arr_loc].addr));
+				if (islocal)
+					gen_mips("sub", "$t8", "$fp", "$t8");
+				else
+					gen_mips("add", "$t8", "$gp", "$t8");
+				gen_mips("lw", numres, "$t8", "0");
+			}
 			//对全局变量的特殊操作
 			int loc = search_tab(mc[i].res, islocal, def_loc);
-			if (loc != -1 && (!islocal || name2reg[loc] == -1))
-				gen_mips("sw", get_reg(mc[i].res, def_loc), "$gp", to_string(st[loc].addr));
-
-			/*string numres = get_reg(mc[i].res);
-			gen_mips("lw", numres, "$t8", "0");
-			int loc = search_tab(mc[i].res, islocal, def_loc);
-			if (loc != -1 && islocal)
-				gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
-			else if (loc != -1 && !islocal)
-				gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
-			else if (loc == -1 && mc[i].res[0] == '#')
-				gen_mips("sw", numres, "$sp", to_string((stoi(mc[i].res.substr(1)) << 2) + 4));
-				*/
+			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
+				if (!islocal)
+					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				else
+					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
+			}
 		}
 		//一个基本块结束 清除t寄存器的对应关系  更新位置
 		if (i == block_end) {

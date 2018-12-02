@@ -1,0 +1,352 @@
+.data   
+$string: .asciiz "New Line.\0\0New Line.\0\0New Line.\0\0Result is \0\0" 
+.text   
+li $fp 0x7fffeffc 
+subi $sp $fp 280
+j main  
+FUNC_swap_arrangement:   
+lw $s0 0($fp)
+lw $s1 -4($fp)
+sll $t8 $s0 2
+addi $t8 $t8 20
+add $t8 $gp $t8
+lw $t7 0($t8)
+move $t6 $t7 
+sll $t8 $s1 2
+addi $t8 $t8 20
+add $t8 $gp $t8
+lw $t5 0($t8)
+sll $t8 $s0 2
+addi $t8 $t8 20
+add $t8 $gp $t8
+sw $t5 0($t8)
+sll $t8 $s1 2
+addi $t8 $t8 20
+add $t8 $gp $t8
+sw $t6 0($t8)
+jr $ra  
+FUNC_print_chars:   
+lw $s6 12($gp)
+subi $t7 $s6 97
+move $s0 $t7 
+lw $s7 16($gp)
+subi $t5 $s7 97
+move $s1 $t5 
+move $s2 $s0 
+$LABEL0:   
+sll $t8 $s2 2
+addi $t8 $t8 60
+add $t8 $gp $t8
+lw $t4 0($t8)
+li $v0 1 
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+addi $t3 $s2 1
+move $s2 $t3 
+ble $s2 $s1 $LABEL0
+li $v0 4 
+li $a0 268500992 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+sub $t2 $s1 $s0
+addi $t1 $t2 97
+move $v0 $t1 
+jr $ra  
+li $v0 0 
+jr $ra  
+FUNC_full_arrange:   
+lw $s0 0($fp)
+lw $s6 8($gp)
+subi $t0 $s6 1
+bne $s0 $t0 $LABEL1
+li $s1 0 
+$LABEL3:   
+lw $s7 8($gp)
+bge $s1 $s7 $LABEL4
+sll $t8 $s1 2
+addi $t8 $t8 20
+add $t8 $gp $t8
+lw $t6 0($t8)
+li $v0 1 
+move $a0 $t6 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+addi $s1 $s1 1
+j $LABEL3  
+$LABEL4:   
+li $v0 4 
+li $a0 268501003 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+j $LABEL2  
+$LABEL1:   
+move $s1 $s0 
+$LABEL5:   
+lw $s6 8($gp)
+bge $s1 $s6 $LABEL6
+sw $s1 0($sp)
+sw $s0 -4($sp)
+sw $s0 -76($sp)
+sw $s1 -80($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 148
+jal FUNC_swap_arrangement  
+lw $s0 -76($fp)
+lw $s1 -80($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+addi $t7 $s0 1
+sw $t7 0($sp)
+sw $15 -68($sp)
+sw $s0 -72($sp)
+sw $s1 -76($sp)
+sw $29 -124($sp)
+sw $30 -128($sp)
+sw $31 -132($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_full_arrange  
+lw $15 -68($fp)
+lw $s0 -72($fp)
+lw $s1 -76($fp)
+lw $29 -124($fp)
+lw $31 -132($fp)
+lw $fp -128($fp)
+sw $s1 0($sp)
+sw $s0 -4($sp)
+sw $15 -72($sp)
+sw $s0 -76($sp)
+sw $s1 -80($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 148
+jal FUNC_swap_arrangement  
+lw $15 -72($fp)
+lw $s0 -76($fp)
+lw $s1 -80($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+addi $s1 $s1 1
+j $LABEL5  
+$LABEL6:   
+$LABEL2:   
+jr $ra  
+FUNC_calc:   
+lw $s0 0($fp)
+lw $s1 -4($fp)
+lw $s2 -8($fp)
+li $t8 3 
+ble $s0 $t8 $LABEL7
+div $s2 $s1 
+mflo $t5  
+sub $t4 $s1 $s2
+mult $t5 $t4 
+mflo $t3  
+add $t2 $s2 $s1
+mult $t3 $t2 
+mflo $t1  
+add $t0 $s1 $t1
+mul $t6 $s1 2
+sub $t7 $s2 $t6
+sw $t5 8($sp)
+div $s1 $t7 
+mflo $t5  
+sw $t4 16($sp)
+sub $t4 $t0 $t5
+move $v0 $t4 
+jr $ra  
+j $LABEL8  
+$LABEL7:   
+li $t8 1 
+blt $s0 $t8 $LABEL9
+li $t3 18 
+mult $t3 $s2 
+mflo $t2  
+div $t2 $s1 
+mflo $t1  
+sub $t6 $t1 $s1
+sub $t7 $t6 $s2
+move $v0 $t7 
+jr $ra  
+j $LABEL10  
+$LABEL9:   
+li $t0 -4 
+bge $s0 $t0 $LABEL11
+mult $s1 $s1 
+mflo $t5  
+mult $t5 $s2 
+mflo $t4  
+mul $t3 $t4 7
+move $v0 $t3 
+jr $ra  
+j $LABEL12  
+$LABEL11:   
+li $t2 -2 
+bgt $s0 $t2 $LABEL13
+addi $t1 $s2 1
+div $s1 $t1 
+mflo $t6  
+move $v0 $t6 
+jr $ra  
+j $LABEL14  
+$LABEL13:   
+li $t8 0 
+beq $s0 $t8 $LABEL15
+move $v0 $s1 
+jr $ra  
+j $LABEL16  
+$LABEL15:   
+move $v0 $s2 
+jr $ra  
+$LABEL16:   
+$LABEL14:   
+$LABEL12:   
+$LABEL10:   
+$LABEL8:   
+li $v0 0 
+jr $ra  
+main:   
+li $v0 5 
+syscall   
+lw $s7 8($gp)
+move $s7 $v0 
+sw $s7 8($gp)
+li $s0 0 
+$LABEL17:   
+lw $s6 8($gp)
+bge $s0 $s6 $LABEL18
+addi $t7 $s0 1
+sll $t8 $s0 2
+addi $t8 $t8 20
+add $t8 $gp $t8
+sw $t7 0($t8)
+addi $s0 $s0 1
+j $LABEL17  
+$LABEL18:   
+li $t8 0 
+sw $t8 0($sp)
+sw $s0 -72($sp)
+sw $29 -124($sp)
+sw $30 -128($sp)
+sw $31 -132($sp)
+move $fp $sp 
+subi $sp $fp 160
+jal FUNC_full_arrange  
+lw $s0 -72($fp)
+lw $29 -124($fp)
+lw $31 -132($fp)
+lw $fp -128($fp)
+li $s0 0 
+$LABEL19:   
+li $t8 26 
+bge $s0 $t8 $LABEL20
+addi $t0 $s0 97
+sll $t8 $s0 2
+addi $t8 $t8 60
+add $t8 $gp $t8
+sw $t0 0($t8)
+addi $s0 $s0 1
+j $LABEL19  
+$LABEL20:   
+li $v0 12 
+syscall   
+lw $s7 12($gp)
+move $s7 $v0 
+sw $s7 12($gp)
+li $v0 12 
+syscall   
+lw $s6 16($gp)
+move $s6 $v0 
+sw $s6 16($gp)
+sw $s0 -76($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 168
+jal FUNC_print_chars  
+lw $s0 -76($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+move $t5 $v0 
+move $t4 $t5 
+li $v0 1 
+move $a0 $t4 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 4 
+li $a0 268501014 
+syscall   
+lw $s7 16($gp)
+lw $s6 12($gp)
+sub $t3 $s7 $s6
+li $v0 1 
+move $a0 $t3 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+$LABEL21:   
+li $v0 5 
+syscall   
+move $t2 $v0 
+sw $t2 0($sp)
+li $t8 26 
+sw $t8 -4($sp)
+li $t8 97 
+sw $t8 -8($sp)
+sw $10 -52($sp)
+sw $s0 -76($sp)
+sw $29 -128($sp)
+sw $30 -132($sp)
+sw $31 -136($sp)
+move $fp $sp 
+subi $sp $fp 248
+jal FUNC_calc  
+lw $10 -52($fp)
+lw $s0 -76($fp)
+lw $29 -128($fp)
+lw $31 -136($fp)
+lw $fp -132($fp)
+move $t1 $v0 
+move $t6 $t1 
+li $v0 4 
+li $a0 268501025 
+syscall   
+li $v0 1 
+move $a0 $t6 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $v0 1 
+move $a0 $t6 
+syscall   
+li $v0 11 
+li $a0 32 
+syscall   
+li $t8 0 
+bne $t2 $t8 $LABEL21
+li $v0 10 
+syscall   
+li $v0 10 
+syscall   

@@ -118,76 +118,76 @@ void cal_def_use() {
 				mc[j].op == "LE" || mc[j].op == "LT" || 
 				mc[j].op == "GE" || mc[j].op == "GT" || mc[j].op == "LELEM") {
 				islocal = false;
-				loc = search_tab(mc[j].res, islocal, def_loc);
-				if (rec.find(loc) == rec.end()&&isVar(mc[j].res)) {
-					rec.insert(pair<int, bool>(loc, true));
-				}
-				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].n2, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n2)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
+				}
+				islocal = false;
+				loc = search_tab(mc[j].res, islocal, def_loc);
+				if (rec.find(loc) == rec.end() && isVar(mc[j].res)) {
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "ASSIGN") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].res, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].res)) {
-					rec.insert(pair<int, bool>(loc, true));
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "LELEM") {
 				islocal = false;
 				loc = search_tab(mc[j].n2, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n2)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].res, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].res)) {
-					rec.insert(pair<int, bool>(loc, true));
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "PUSH"||mc[j].op=="BEZ"||mc[j].op=="BNZ"||(mc[j].op == "RET"&&mc[j].n1 != "#")) {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 			}
 			else if (mc[j].op == "SELEM") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 				islocal = false;
 				loc = search_tab(mc[j].n2, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n2)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 			}
 			else if (mc[j].op == "INC" || mc[j].op == "INV") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, true));
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "OUTV" || mc[j].op == "OUTC") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 			}
 		}
@@ -249,7 +249,7 @@ void cal_alloc() {
 	int sregcnt = 16;
 	int func_begin, func_end;
 	bool islocal;
-	for (int i = 2;i < (int)blocks.size() - 1;i++) {
+	for (int i = 1;i < (int)blocks.size() - 1;i++) {
 		//如果本块是一个函数的开始 那么可以从头分配寄存器
 		if (mc[blocks[i].start].op == "LABEL"&&mc[blocks[i].start].n1[0] != '$') {
 			sregcnt = 16;
@@ -272,7 +272,6 @@ void cal_alloc() {
 	}
 }
 void dump_blocks() {
-	cal_in_out();
 	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		cout << "\n--------------------"<<blocks[i].no<<"-----------------\n";
 		cout << "def:";
