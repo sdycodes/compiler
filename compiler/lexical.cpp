@@ -5,7 +5,7 @@
 #include "error.h"
 //load the file into char array code
 void readFile(char code[]) {
-	printf("input the directory fo source code(only the first 128 chars will be recognnized):\n");
+	printf("input the directory of source code(only the first 128 chars will be recognnized):\n");
 	char dir[129];
 	cin.getline(dir, 128);
 	//char dir[] = "/Users/sdy/projects/compilerAssign/test_sharing/16721145_test.txt";

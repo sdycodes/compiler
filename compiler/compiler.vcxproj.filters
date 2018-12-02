@@ -112,5 +112,20 @@
     <Text Include="lru.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="public_test1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="public_test2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="public_test3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="public_test4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="public_test5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

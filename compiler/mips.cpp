@@ -98,7 +98,7 @@ void mc2mp() {
 			else if (isCon(mc[i].n1)) {
 				if (mc[i].op == "SUB") {
 					gen_mips("sub", numres, "$0", num2);
-					gen_mips("addi", numres, get_reg(mc[i].res, def_loc),num1);
+					gen_mips("addi", numres, numres, num1);
 				}
 				else {
 					gen_mips("addi", numres, num2, num1);

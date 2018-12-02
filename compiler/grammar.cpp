@@ -158,7 +158,7 @@ void funcCall(int ident_idx) {
 				onlyChar = true;
 				rec = expr(onlyChar);
 				paras.push_back(rec);
-				if ((onlyChar&&st[para].type == ST_CHAR) || (!onlyChar&&st[para].type == ST_INT)) {
+				if (true||(onlyChar&&st[para].type == ST_CHAR) || (!onlyChar&&st[para].type == ST_INT)) {
 					if (type == COMMA || type == RPAR) {
 						if (type == RPAR) {
 							nextsym(type, val, name);
@@ -195,7 +195,7 @@ void assignstmt(int ident_idx) {
 		if (st[ident_idx].kind == ST_VAR||st[ident_idx].kind==ST_PARA) {
 			nextsym(type, val, name);
 			rec_val = expr(onlyChar);
-			if (onlyChar&&st[ident_idx].type == ST_CHAR || !onlyChar&&st[ident_idx].type != ST_CHAR) {
+			if (true||onlyChar&&st[ident_idx].type == ST_CHAR || !onlyChar&&st[ident_idx].type != ST_CHAR) {
 				genmc("ASSIGN", rec_val, "0", st[ident_idx].name);
 			}
 			else_ERR("type not match", 2)
@@ -213,7 +213,7 @@ void assignstmt(int ident_idx) {
 					nextsym(type, val, name);
 					onlyChar = true;
 					rec_val = expr(onlyChar);
-					if ((onlyChar&&st[ident_idx].type == ST_CHAR) || (!onlyChar&&st[ident_idx].type != ST_CHAR)) {
+					if (true||(onlyChar&&st[ident_idx].type == ST_CHAR) || (!onlyChar&&st[ident_idx].type != ST_CHAR)) {
 						genmc("SELEM", rec_idx, rec_val, st[ident_idx].name);
 					}
 					else_ERR("type not match", 2);
@@ -341,13 +341,13 @@ void printfstmt() {
 				rec_val = expr(onlyChar);
 				genmc(onlyChar?"OUTC":"OUTV",rec_val, "0", "0");
 				if(type==RPAR){
-					genmc("OUTC", "10", "0", "0");
+					genmc("OUTC", "32", "0", "0");
 					nextsym(type, val, name);
 				}
 				else_ERR("expect a right parent", 2)
 			}
 			else if (type == RPAR) {
-				genmc("OUTC", "10", "0", "0");
+				genmc("OUTC", "32", "0", "0");
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a comma or a right parent", 2)
@@ -356,7 +356,7 @@ void printfstmt() {
 			rec_val = expr(onlyChar);
 			genmc(onlyChar ? "OUTC" : "OUTV", rec_val, "0", "0");
 			if (type == RPAR) {
-				genmc("OUTC", "10", "0", "0");
+				genmc("OUTC", "32", "0", "0");
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a right parent", 2)

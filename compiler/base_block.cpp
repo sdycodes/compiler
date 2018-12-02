@@ -26,16 +26,16 @@ void split_block() {
 	init.no = cnt++;
 	blocks.push_back(init);
 	block tmp;
-	int i = 0;
-	while (i < mc.size()) {
+	int i = 1;
+	while (i < (int)mc.size()) {
 		init_block(tmp);
 		tmp.no = cnt++;
 		tmp.start = i;
-		int j = i + 1;
+		int j = i;
 		//找到本块的结束或下一块的开始
-		while (j < mc.size() &&
+		while (j < (int)mc.size() &&
 			mc[j].op != "BNZ"&&mc[j].op != "BEZ"&&mc[j].op != "GOTO" &&
-			!(mc[j].op == "LABEL"&&mc[j].n1[0] == '$') &&
+			!(i!=j&&mc[j].op == "LABEL"&&mc[j].n1[0] == '$') &&
 			mc[j].op != "EXIT"&&mc[j].op!="RET")
 			j++;
 		if (j == mc.size()) {
@@ -43,7 +43,7 @@ void split_block() {
 			blocks.push_back(tmp);
 			break;
 		}
-		else if (mc[j].op == "BNZ" || mc[j].op == "BEZ" || mc[j].op == "GOTO"||mc[j].op=="EXIT"||mc[j].op=="RET") {
+		else if (mc[j].op == "BNZ" || mc[j].op == "BEZ" || mc[j].op == "GOTO" || mc[j].op == "EXIT" || mc[j].op == "RET") {
 			tmp.end = j;
 			blocks.push_back(tmp);
 			i = j;
@@ -64,16 +64,16 @@ void split_block() {
 void gen_DAG() {
 	//计算每个块的后继
 	blocks[0].next.push_back(1);
-	for (int i = 1;i < blocks.size() - 1;i++) {
+	for (int i = 1;i < (int)blocks.size() - 1;i++) {
 		if (mc[blocks[i].end].op == "GOTO") {
-			for (int j = 1;j < blocks.size()-1;j++)
-				if (mc[blocks[j].start].n1 == mc[blocks[i].end].n1)
+			for (int j = 1;j < (int)blocks.size()-1;j++)
+				if (mc[blocks[j].start].n1 == mc[blocks[i].end].n1&&mc[blocks[j].start].op=="LABEL")
 					blocks[i].next.push_back(j);
 		}
 		else if (mc[blocks[i].end].op == "BEZ" || mc[blocks[i].end].op == "BNZ") {
 			blocks[i].next.push_back(i + 1);
-			for (int j = 1;j < blocks.size()-1;j++)
-				if (mc[blocks[j].start].n1 == mc[blocks[i].end].res)
+			for (int j = 1;j < (int)blocks.size()-1;j++)
+				if (mc[blocks[j].start].n1 == mc[blocks[i].end].res&&mc[blocks[j].start].op == "LABEL")
 					blocks[i].next.push_back(j);
 		}
 		else if (mc[blocks[i].end].op == "EXIT"||mc[blocks[i].end].op=="RET")
@@ -83,28 +83,31 @@ void gen_DAG() {
 	}
 	//计算每个块的前驱
 	blocks[1].pre.push_back(0);
-	for (int i = 1;i < blocks.size()-1;i++) {
+	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		if (i != 1) {
 			if (mc[blocks[i - 1].end].op != "GOTO" && mc[blocks[i - 1].end].op != "RET")
 				blocks[i].pre.push_back(i-1);
 		}
-		for (int j = 1;j < blocks.size() - 1;j++) {
+		for (int j = 1;j < (int)blocks.size() - 1;j++) {
 			if (mc[blocks[j].end].op == "BNZ" || mc[blocks[j].end].op == "BEZ") {
-				if (mc[blocks[j].end].res == mc[blocks[i].start].n1)
+				if (mc[blocks[j].end].res == mc[blocks[i].start].n1&&mc[blocks[i].start].op == "LABEL")
 					blocks[i].pre.push_back(j);
 			}
-			else if (mc[blocks[j].end].op == "GOTO"&&mc[blocks[j].end].n1 == mc[blocks[i].start].n1)
+			else if (mc[blocks[j].end].op == "GOTO"&&mc[blocks[j].end].n1 == mc[blocks[i].start].n1&&mc[blocks[i].start].op == "LABEL")
 				blocks[i].pre.push_back(j);
-			else if (mc[blocks[j].end].op == "RET"||mc[blocks[j].end].op=="EXIT")
-				blocks.back().pre.push_back(blocks.size()-1);
 		}
+	}
+	//计算exit块的前驱
+	for (int j = 1;j < (int)blocks.size() - 1;j++) {
+		if (mc[blocks[j].end].op == "RET" || mc[blocks[j].end].op == "EXIT")
+			blocks.back().pre.push_back(j);
 	}
 }
 
 void cal_def_use() {
 	int def_loc, loc;
 	bool islocal;
-	for (int i = 1;i < blocks.size() - 1;i++) {
+	for (int i = 1;i < (int)blocks.size() - 1;i++) {
 		map<int, bool> rec;
 		for (int j = blocks[i].start;j <= blocks[i].end;j++) {
 			if (mc[j].op == "LABEL"&&mc[j].n1[0]!='$') {
@@ -198,11 +201,52 @@ void cal_def_use() {
 	}
 }
 
-void dump_def_use() {
+void unionset(bool a[], bool b[], bool c[], int size) {
+	for (int i = 0;i < size;i++)
+		c[i] = a[i] || b[i];
+}
+
+void substract(bool a[], bool b[], bool c[], int size) {
+	for (int i = 0;i < size;i++)
+		c[i] = b[i] ? false : a[i];
+}
+
+bool assign_and_check_change(bool a[], bool b[], int size) {
+	bool change = false;
+	for (int i = 0;i < size;i++)
+		if (a[i] != b[i]) {
+			change = true;
+			b[i] = a[i];
+		}
+	return change;
+}
+
+
+void cal_in_out() {
 	split_block();
 	gen_DAG();
 	cal_def_use();
-	for (int i = 1;i < blocks.size()-1;i++) {
+	bool change = false;
+	bool tmp[MAXSIGNNUM];
+	do {
+		change = false;
+		for (int i = 1;i < (int)blocks.size()-1;i++) {
+			memset(tmp, 0, sizeof(tmp));
+			for (int j = 0;j < (int)blocks[i].next.size();j++) {
+				unionset(blocks[blocks[i].next[j]].in, tmp, tmp);
+			}
+			change = !change ? assign_and_check_change(tmp, blocks[i].out) : true;
+			substract(blocks[i].out, blocks[i].def, tmp);
+			unionset(tmp, blocks[i].use, tmp);
+			change = !change ? assign_and_check_change(tmp, blocks[i].in) : true;
+		}
+	} while (change);
+}
+
+
+void dump_def_use() {
+	cal_in_out();
+	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		cout << "\n--------------------"<<blocks[i].no<<"-----------------\n";
 		cout << "def:";
 		for (int j = 0;j<MAXSIGNNUM;j++)
@@ -210,11 +254,17 @@ void dump_def_use() {
 		cout << "\nuse:";
 		for (int j = 0;j < MAXSIGNNUM;j++)
 			if (blocks[i].use[j]) cout << st[j].name << " ";
+		cout << "\nin:";
+		for (int j = 0;j < MAXSIGNNUM;j++)
+			if (blocks[i].in[j]) cout << st[j].name << " ";
+		cout << "\nout:";
+		for (int j = 0;j < MAXSIGNNUM;j++)
+			if (blocks[i].out[j]) cout << st[j].name << " ";
 		cout << "\npre:";
-		for (int j = 0;j < blocks[i].pre.size();j++)
+		for (int j = 0;j < (int)blocks[i].pre.size();j++)
 			cout << blocks[i].pre[j] << " ";
 		cout << "\nnext:";
-		for (int j = 0;j < blocks[i].next.size();j++)
+		for (int j = 0;j < (int)blocks[i].next.size();j++)
 			cout << blocks[i].next[j] << " ";
 		cout << "\n";
 		for (int j = blocks[i].start;j <= blocks[i].end;j++)
@@ -223,13 +273,3 @@ void dump_def_use() {
 	}
 }
 
-void cal_in_out(){
-	bool change = false;
-	do {
-		for (int i = 0;i < blocks.size();i++) {
-			for (int j = 0;j < blocks[i].next.size();j++) {
-				
-			}
-		}
-	} while (change);
-}

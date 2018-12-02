@@ -190,6 +190,11 @@
     <Text Include="grammar_test.txt" />
     <Text Include="lru.txt" />
     <Text Include="part.txt" />
+    <Text Include="public_test1.txt" />
+    <Text Include="public_test2.txt" />
+    <Text Include="public_test3.txt" />
+    <Text Include="public_test4.txt" />
+    <Text Include="public_test5.txt" />
     <Text Include="result.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
