@@ -341,13 +341,13 @@ void printfstmt() {
 				rec_val = expr(onlyChar);
 				genmc(onlyChar?"OUTC":"OUTV",rec_val, "0", "0");
 				if(type==RPAR){
-					genmc("OUTC", "32", "0", "0");
+					//genmc("OUTC", "32", "0", "0");
 					nextsym(type, val, name);
 				}
 				else_ERR("expect a right parent", 2)
 			}
 			else if (type == RPAR) {
-				genmc("OUTC", "32", "0", "0");
+				//genmc("OUTC", "32", "0", "0");
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a comma or a right parent", 2)
@@ -356,7 +356,7 @@ void printfstmt() {
 			rec_val = expr(onlyChar);
 			genmc(onlyChar ? "OUTC" : "OUTV", rec_val, "0", "0");
 			if (type == RPAR) {
-				genmc("OUTC", "32", "0", "0");
+				//genmc("OUTC", "32", "0", "0");
 				nextsym(type, val, name);
 			}
 			else_ERR("expect a right parent", 2)

@@ -158,6 +158,7 @@
     <ClInclude Include="lexical.h" />
     <ClInclude Include="midcode.h" />
     <ClInclude Include="mips.h" />
+    <ClInclude Include="optimize.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="sign_table.h" />
     <ClInclude Include="stdHeader.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="globalvar.cpp" />
     <ClCompile Include="grammar.cpp" />
     <ClCompile Include="lexical.cpp" />
+    <ClCompile Include="optimize.cpp" />
     <ClCompile Include="midcode.cpp" />
     <ClCompile Include="mips.cpp" />
     <ClCompile Include="pch.cpp">

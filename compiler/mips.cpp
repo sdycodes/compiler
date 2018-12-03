@@ -12,6 +12,24 @@
 #define REG_NUM 8
 int tstk[REG_NUM] = { 8,9,10,11,12,13,14,15 };
 map<int, string> t_alloc;
+void reset_midvar() {
+	for (map<int, string>::iterator it = t_alloc.begin();it != t_alloc.end();it++) {
+		if (it->second[0] == '#') {
+			it->second = "";
+			int r = it->first;
+			int i = 0;
+			for (;i < REG_NUM;i++)
+				if (tstk[i] == r)
+					break;
+			int j = i;
+			while (j < REG_NUM-1) {
+				tstk[j] = tstk[j+1];
+				j++;
+			}
+			tstk[REG_NUM - 1] = r;
+		}
+	}
+}
 string get_reg(string name, bool assign, int def_loc) {
 	//#RET 直接返回v0
 	if (name == "#RET")
@@ -358,10 +376,11 @@ void mc2mp() {
 		}
 		else if (mc[i].op == "ASSIGN") {
 			string numres = get_reg(mc[i].res, true, def_loc);
+			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
 			if (isCon(mc[i].n1))
 				gen_mips("li", numres, mc[i].n1);
 			else
-				gen_mips("move", numres, get_reg(mc[i].n1, false, def_loc));
+				gen_mips("move", numres, num1);
 			//对全局变量的特殊操作
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
@@ -370,6 +389,9 @@ void mc2mp() {
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
+			//reset midvar
+			if(num1!="$v0")
+				reset_midvar();
 		}
 		else if (mc[i].op == "SELEM") { 
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
@@ -426,6 +448,8 @@ void mc2mp() {
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
 		}
+		else if(mc[i].op=="NULL")
+			;
 		//一个基本块结束 清除t寄存器的对应关系  更新位置
 		if (i == block_end) {
 			t_alloc.clear();
