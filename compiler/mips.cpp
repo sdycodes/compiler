@@ -242,8 +242,11 @@ void mc2mp() {
 					gen_mips("sw", no2name(name2reg[j]), "$sp", to_string(-context_offset-name2reg[j]*4));
 				j++;
 			}
+			gen_mips("sw", "$31", "$sp", to_string(-context_offset - 124));
+			/*
 			for(int j=29;j<32;j++)
 				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
+			*/
 			/*
 			for (int j = 8;j <= 31;j++)	//保存现场操作
 				gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
@@ -263,9 +266,11 @@ void mc2mp() {
 					gen_mips("lw", no2name(name2reg[j]), "$fp", to_string(-context_offset - name2reg[j] * 4));
 				j++;
 			}
-			gen_mips("lw", "$" + to_string(29), "$fp", to_string(-context_offset - 29 * 4));
+			//gen_mips("lw", "$" + to_string(29), "$fp", to_string(-context_offset - 29 * 4));
 			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31 * 4));
-			gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));
+			//gen_mips("lw", "$fp", "$fp", to_string(-context_offset - 120));
+			gen_mips("move", "$sp", "$fp");
+			gen_mips("addi", "$fp", "$sp", to_string(st[def_loc].size));
 			/*
 			for (int j = 8;j <= 29;j++)	//恢复现场操作
 				gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
@@ -399,13 +404,12 @@ void mc2mp() {
 			int arr_loc = search_tab(mc[i].res, islocal, def_loc);
 			if (isCon(mc[i].n1)) {
 				int offset = stoi(num1) * 4 + st[arr_loc].addr;
-				if (isCon(mc[i].n2)) {
+				if (isCon(mc[i].n2)) 
 					gen_mips("li", "$t9", mc[i].n2);
-					if (islocal)
-						gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$fp", to_string(-offset));
-					else
-						gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$gp", to_string(offset));
-				}
+				if (islocal)
+					gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$fp", to_string(-offset));
+				else
+					gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$gp", to_string(offset));
 			}
 			else {
 				gen_mips("sll", "$t8", num1, "2");

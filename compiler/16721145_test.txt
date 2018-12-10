@@ -227,7 +227,7 @@ void main() {
 	test_all_cond();
 	test_scanf();
 	echo_char('a');
-	printf(test_lots_paras(1,2,'c', 'd', 5));
+	printf(test_lots_paras(1,2, 'c', 'd', 5));
 	really_void();
 	really_void2();
 	really_void3();

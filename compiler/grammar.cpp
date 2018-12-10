@@ -269,7 +269,9 @@ void forstmt() {
 												if (type == RPAR) {
 													nextsym(type, val, name);
 													state();
-													genmc(op, name2, rec_step, name2);
+													string t = gent();
+													genmc(op, name2, rec_step, t);
+													genmc("ASSIGN", t, "", name2);
 													genmc("GOTO", label_judge, "0", "0");
 													genmc("LABEL", label_end, "0", "0");
 													if (DUMP_GREAMMAR) printf("%d %d this is a for statement\n", lc, cc);

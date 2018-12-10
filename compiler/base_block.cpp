@@ -4,6 +4,7 @@
 #include "globalvar.h"
 #include "sign_table.h"
 vector<block> blocks;
+bool conflictG[MAXSIGNNUM][MAXSIGNNUM];
 int name2reg[MAXSIGNNUM] = { 0 };
 #define isVar(x) (((x)[0]=='_'||((x)[0]>='a'&&(x)[0]<='z')||((x)[0]>='A'&&(x)[0]<='Z'))&&islocal)
 
@@ -18,6 +19,22 @@ void init_block(block& b) {
 		b.out[i] = false;
 	}
 }
+
+void cal_ConfG() {
+	memset(conflictG, 0, sizeof(conflictG));
+	for (int i = 1;i < (int)blocks.size();i++) {
+		for (int j = 0;j < stp;j++) {
+			if (!blocks[i].in[j])
+				continue;
+			for (int k = j + 1;k < stp;k++) {
+				if (blocks[i].in[j] && blocks[i].in[k])
+					conflictG[j][k] = true;
+			}
+		}
+	}
+}
+
+//计算基本块
 void split_block() {
 	int cnt = 0;
 	//入口块
@@ -61,6 +78,7 @@ void split_block() {
 	blocks.push_back(exit);
 }
 
+//计算流图
 void gen_DAG() {
 	//计算每个块的后继
 	blocks[0].next.push_back(1);
@@ -104,6 +122,7 @@ void gen_DAG() {
 	}
 }
 
+//计算def use
 void cal_def_use() {
 	int def_loc, loc;
 	bool islocal;
@@ -201,6 +220,7 @@ void cal_def_use() {
 	}
 }
 
+//一些几何计算的辅助函数
 void unionset(bool a[], bool b[], bool c[], int size) {
 	for (int i = 0;i < size;i++)
 		c[i] = a[i] || b[i];
@@ -221,7 +241,7 @@ bool assign_and_check_change(bool a[], bool b[], int size) {
 	return change;
 }
 
-
+//计算in out
 void cal_in_out() {
 	split_block();
 	gen_DAG();
@@ -243,10 +263,86 @@ void cal_in_out() {
 	} while (change);
 }
 
+//冲突图着色分配
+void colorAlloc() {
+	//计算冲突图
+	cal_ConfG();
+	bool islocal;
+	int sregtot = 6;	//总数	
+	for (int i = 1;i < (int)blocks.size();i++) {
+		//是一个函数
+		if (mc[blocks[i].start].op == "LABEL"&&mc[blocks[i].start].n1[0] != '$') {
+			//通过符号表找到这个函数的所有局部变量
+			string funcname = mc[blocks[i].start].n1 == "main" ? "main" : mc[blocks[i].start].n1.substr(5);
+			int loc = search_tab(funcname, islocal);
+			int end = loc+1;
+			while (end < stp&&st[end].kind != ST_FUNC)
+				end++;
+			//通过冲突图构造关于度的map
+			map<int, int> loc2deg;
+			vector<int> vars;	//变量的编号
+			for (int j = loc+1;j < end;j++) {
+				loc2deg[j] = 0;
+				vars.push_back(j);
+				for (int k = j;k < end;k++)
+					if (conflictG[j][k])
+						loc2deg[j]++;
+			}
+			//开始分配
+			stack<int> rec;
+			int lasttime = 0;
+			while (vars.size() > 1) {
+				do {
+					lasttime = rec.size();
+					for (int j = 0;j < (int)vars.size()&&vars.size()>1;j++) {
+						if (loc2deg[vars[j]] < sregtot) {
+							//更新度
+							for (int x = loc + 1;x < end;x++)
+								if (conflictG[vars[j]][x])
+									loc2deg[x]--;
+							rec.push(vars[j]);
+							vars.erase(vars.begin() + j);
+							j--;
+						}
+					}
+				}while (rec.size() != lasttime && vars.size() > 1);
+				if (vars.size() >= 2) {
+					//get the one who has the biggest deg
+					int max = -1;
+					int not_alloc = -1;
+					for (int x = 0;x < (int)vars.size();x++)
+						if (max < loc2deg[vars[x]]) {
+							max = loc2deg[vars[x]];
+							not_alloc = x;
+						}
+					//标记为不分配
+					name2reg[not_alloc] = -1;
+					//更新度
+					for (int x = loc + 1;x < end;x++) {
+						if (conflictG[not_alloc][x])
+							loc2deg[x]--;
+					}
+					vars.erase(vars.begin()+not_alloc);
+				}
+			}
+			//着色
+			name2reg[vars[0]] = 16;
+			int canUse[6];
+			while (!rec.empty()) {
+				memset(canUse, 0, sizeof(canUse));
+				int t = rec.top();
+				rec.pop();
+				for (int x = loc;x < end;x++)
+					if (conflictG[t][x])
+						canUse[name2reg[x]] = false;
+			}
+		}
+	}
 
-void cal_alloc() {
-	cal_in_out();
-	int sregcnt = 16;
+}
+//朴素的顺序分配
+void inOrderAlloc() {
+	int sregcnt = 16;	//编号 从16-21
 	int func_begin, func_end;
 	bool islocal;
 	for (int i = 1;i < (int)blocks.size() - 1;i++) {
@@ -270,6 +366,10 @@ void cal_alloc() {
 			}
 		}
 	}
+}
+void cal_alloc() {
+	cal_in_out();
+	inOrderAlloc();
 }
 void dump_blocks() {
 	for (int i = 1;i < (int)blocks.size()-1;i++) {

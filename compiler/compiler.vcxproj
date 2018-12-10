@@ -189,6 +189,8 @@
     <Text Include="16231129_test.txt" />
     <Text Include="16231281_test.txt" />
     <Text Include="16721145_test.txt" />
+    <Text Include="gg.txt" />
+    <Text Include="gg3.txt" />
     <Text Include="grammar_test.txt" />
     <Text Include="lru.txt" />
     <Text Include="part.txt" />

@@ -29,6 +29,7 @@ void readFile(char code[]) {
 				code[i] = ch;
 				i++;
 			}
+			
 		}
 		code[i] = '\0';
 	}
