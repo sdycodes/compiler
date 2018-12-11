@@ -27,6 +27,9 @@ map<string, int> stidx;
 vector<mce> mc;
 int tno = 0;
 int lno = 0;
+//after opt
+vector<mce> nmc;
+
 
 //target code data structure
 vector<mce> mp;
