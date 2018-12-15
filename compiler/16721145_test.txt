@@ -87,7 +87,7 @@ void test_all_cond(){
 		printf("a<=c");
 	if(a>=c)
 		printf("error!");
-	if(d>66)
+	if(d>'B')
 		printf("error!");
 	return;
 }

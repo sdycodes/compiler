@@ -391,6 +391,7 @@ void inOrderAlloc() {
 void cal_alloc() {
 	cal_in_out();
 	inOrderAlloc();
+	//colorAlloc();
 }
 void dump_blocks() {
 	for (int i = 1;i < (int)blocks.size()-1;i++) {

@@ -139,5 +139,11 @@
     <Text Include="gg3.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="unlimitedcall.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="jsh.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

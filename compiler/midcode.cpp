@@ -14,6 +14,16 @@ void genmc(string op, string n1, string n2, string res) {
 	return;
 }
 
+void genNewmc(string op, string n1, string n2, string res) {
+	mce tmp;
+	tmp.op = op;
+	tmp.n1 = n1;
+	tmp.n2 = n2;
+	tmp.res = res;
+	nmc.push_back(tmp);
+	return;
+}
+
 string genlabel() {
 	lno++;
 	return "$LABEL"+to_string(lno-1);

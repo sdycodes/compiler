@@ -192,6 +192,7 @@
     <Text Include="gg.txt" />
     <Text Include="gg3.txt" />
     <Text Include="grammar_test.txt" />
+    <Text Include="jsh.txt" />
     <Text Include="lru.txt" />
     <Text Include="part.txt" />
     <Text Include="public_test1.txt" />
@@ -200,6 +201,7 @@
     <Text Include="public_test4.txt" />
     <Text Include="public_test5.txt" />
     <Text Include="result.txt" />
+    <Text Include="unlimitedcall.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

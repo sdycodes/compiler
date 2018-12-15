@@ -12,24 +12,7 @@
 #define REG_NUM 8
 int tstk[REG_NUM] = { 8,9,10,11,12,13,14,15 };
 map<int, string> t_alloc;
-void reset_midvar() {
-	for (map<int, string>::iterator it = t_alloc.begin();it != t_alloc.end();it++) {
-		if (it->second[0] == '#') {
-			it->second = "";
-			int r = it->first;
-			int i = 0;
-			for (;i < REG_NUM;i++)
-				if (tstk[i] == r)
-					break;
-			int j = i;
-			while (j < REG_NUM-1) {
-				tstk[j] = tstk[j+1];
-				j++;
-			}
-			tstk[REG_NUM - 1] = r;
-		}
-	}
-}
+
 string get_reg(string name, bool assign, int def_loc) {
 	//#RET Ö±½Ó·µ»Øv0
 	if (name == "#RET")
@@ -380,9 +363,6 @@ void mc2mp() {
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
-			//reset midvar
-			if(num1!="$v0")
-				reset_midvar();
 		}
 		else if (mc[i].op == "SELEM") { 
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
