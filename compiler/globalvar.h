@@ -64,6 +64,6 @@ extern vector<mce> mc;
 extern int tno;
 extern int lno;
 
-extern vector<mce> nmc;
+extern vector<mce> omc;
 extern vector<mce> mp;
 #endif

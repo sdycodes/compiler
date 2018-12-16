@@ -250,8 +250,6 @@ bool assign_and_check_change(bool a[], bool b[], int size) {
 
 //º∆À„in out
 void cal_in_out() {
-	split_block();
-	gen_DAG();
 	cal_def_use();
 	bool change = false;
 	bool tmp[MAXSIGNNUM];

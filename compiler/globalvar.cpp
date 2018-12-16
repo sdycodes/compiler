@@ -28,7 +28,7 @@ vector<mce> mc;
 int tno = 0;
 int lno = 0;
 //after opt
-vector<mce> nmc;
+vector<mce> omc;
 
 
 //target code data structure

@@ -14,15 +14,6 @@ void genmc(string op, string n1, string n2, string res) {
 	return;
 }
 
-void genNewmc(string op, string n1, string n2, string res) {
-	mce tmp;
-	tmp.op = op;
-	tmp.n1 = n1;
-	tmp.n2 = n2;
-	tmp.res = res;
-	nmc.push_back(tmp);
-	return;
-}
 
 string genlabel() {
 	lno++;
@@ -34,7 +25,7 @@ string gent() {
 	return "#"+to_string(tno-1);
 }
 
-void dumpmc() {
+void dumpmc(vector<mce> mc) {
 	int i=0, loc;
 	bool islocal;
 	//output global variables
@@ -124,10 +115,7 @@ void dumpmc() {
 			printf("OUTS %s\n", &strtab[atoi(mc[j].n1.c_str())]);
 		else if (mc[j].op == "EXIT")
 			printf("EXIT\n");
-		else if (mc[j].op == "NULL")
-			;
-		else {
+		else if (mc[j].op != "NULL")
 			printf("!!!!!!!!!%s\n", mc[j].op.c_str());
-		}
 	}
 }
