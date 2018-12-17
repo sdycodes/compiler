@@ -600,7 +600,7 @@ int paraList() {
 			nextsym(type, val, name);
 			if (type == IDEN) {
 				para_name = name;
-				insert_tab(false, para_name, ST_PARA, para_type, -1, 4, -1);
+				insert_tab(true, para_name, ST_PARA, para_type, -1, 4, -1);
 				nextsym(type, val, name);
 				if (type == COMMA) {
 					nextsym(type, val, name);
@@ -657,7 +657,7 @@ void varDecl(int var_type, bool islocal) {
 			if (type == LBRACKET) {
 				ident_kind = ST_ARR;
 				nextsym(type, val, name);
-				if (type == NUM && val != 0) {
+				if (type == NUM && val > 0) {
 					ident_val = val;
 					nextsym(type, val, name);
 					if (type == RBRACKET) {
@@ -767,7 +767,7 @@ void program() {
 					if (type == LBRACKET) {
 						ident_kind = ST_ARR;
 						nextsym(type, val, name);
-						if (type == NUM && val != 0) {
+						if (type == NUM && val > 0) {
 							ident_val = val;
 							nextsym(type, val, name);
 							if (type == RBRACKET) {

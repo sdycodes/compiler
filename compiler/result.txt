@@ -272,8 +272,8 @@ li $v0 1
 li $a0 3 
 syscall   
 li $t9 72 
-sw $t9 84($gp)
-lw $t3 84($gp)
+sw $t9 104($gp)
+lw $t3 104($gp)
 li $v0 11 
 move $a0 $t3 
 syscall   
@@ -297,11 +297,11 @@ syscall
 li $v0 1 
 move $a0 $s0 
 syscall   
-lw $s6 72($gp)
+lw $s6 92($gp)
 li $s6 89 
-sw $s6 72($gp)
+sw $s6 92($gp)
 li $v0 11 
-lw $s7 72($gp)
+lw $s7 92($gp)
 move $a0 $s7 
 syscall   
 jr $ra  
@@ -699,20 +699,20 @@ move $s0 $t1
 $LABEL26:   
 bge $s0 $s1 $LABEL27
 sll $t8 $s2 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 lw $t4 0($t8)
 move $t0 $t4 
 sll $t8 $s0 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 lw $t5 0($t8)
 sll $t8 $s2 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 sw $t5 0($t8)
 sll $t8 $s0 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 sw $t0 0($t8)
 addi $t6 $s2 1
@@ -746,20 +746,20 @@ lw $31 -144($fp)
 move $sp $fp 
 addi $fp $sp 236
 sll $t8 $s2 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 lw $t2 0($t8)
 move $t0 $t2 
 sll $t8 $s0 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 lw $t1 0($t8)
 sll $t8 $s2 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 sw $t1 0($t8)
 sll $t8 $s0 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 sw $t0 0($t8)
 sw $t4 32($sp)
@@ -772,7 +772,7 @@ $LABEL24:
 li $s0 0 
 $LABEL28:   
 sll $t8 $s0 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 lw $t5 0($t8)
 move $t6 $t5 
@@ -797,7 +797,7 @@ addi $fp $sp 236
 move $t7 $v0 
 move $t3 $t7 
 sll $t8 $s0 2
-addi $t8 $t8 276
+addi $t8 $t8 72
 add $t8 $gp $t8
 lw $t2 0($t8)
 beq $t3 $t2 $LABEL29
@@ -1454,15 +1454,15 @@ lw $31 -124($fp)
 move $sp $fp 
 addi $fp $sp 436
 li $t9 65 
-sw $t9 276($gp)
+sw $t9 72($gp)
 li $t9 66 
-sw $t9 280($gp)
+sw $t9 76($gp)
 li $t9 67 
-sw $t9 284($gp)
+sw $t9 80($gp)
 li $t9 68 
-sw $t9 288($gp)
+sw $t9 84($gp)
 li $t9 69 
-sw $t9 292($gp)
+sw $t9 88($gp)
 li $v0 4 
 li $a0 268501581 
 syscall   

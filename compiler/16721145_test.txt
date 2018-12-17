@@ -5,8 +5,9 @@ const int _c_int2 = 2, _g_10 = 3;
 
 int G_v_int_a1;
 int g_v_int_arr2[10], g_v_int_b;
-char g_v_char_b, g_v_char_arr[50];
 char chs[5];
+char g_v_char_b, g_v_char_arr[50];
+
 
 int foo1(int a, char b){
 	return(a+b);

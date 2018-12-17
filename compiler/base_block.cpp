@@ -29,9 +29,12 @@ void cal_ConfG() {
 					conflictG[j][k] = true;
 					conflictG[k][j] = true;
 				}
+				if (blocks[i].def[j] && blocks[i].def[k]) { //def集合两两冲突
+					conflictG[j][k] = true;
+					conflictG[k][j] = true;
+				}
 			}
 		}
-		
 	}
 }
 

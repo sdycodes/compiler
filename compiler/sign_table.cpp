@@ -2,7 +2,15 @@
 #include "globalvar.h"
 #include "stdHeader.h"
 #include "sign_table.h"
+#include "error.h"
 int insert_tab(bool islocal, string name, int kind, int type, int val, int size, int addr) {
+	//插入符号表之前 需要先检查先前是否定义过
+	bool prevlocal;
+	int prevloc = search_tab(name, prevlocal);
+	if (prevloc != -1 && ((prevlocal&&islocal) || (!prevlocal && !islocal))) {
+		errmsg("redefined variable or const", 0);
+		return prevloc;
+	}
 	st[stp].name = name;
 	st[stp].kind = kind;
 	st[stp].type = type;
@@ -29,7 +37,7 @@ int search_tab(string name, bool &islocal, int def_loc) {
 	int loc = def_loc==-1?stp - 1:def_loc+1;
 	while (st[loc].kind != ST_FUNC && loc>=0 && loc<stp) {
 		if (st[loc].name == name) {
-			islocal = true;
+			islocal = st[loc].islocal;
 			return loc;
 		}
 		if (def_loc == -1)
