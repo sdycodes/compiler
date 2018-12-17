@@ -15,6 +15,7 @@
 
 void errmsg(string err, int strategy) {
 	printf("ERROR: line:%d, col:%d\t", lc, cc);
+	isError = true;
 	cout << err << '\n';
 	switch (strategy) {
 	case 0:

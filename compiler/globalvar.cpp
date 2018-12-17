@@ -34,6 +34,8 @@ vector<mce> omc;
 //target code data structure
 vector<mce> mp;
 
+bool isError;
+
 void init_gvar() {
 	reserve_tab["+"] = PLUS;
 	reserve_tab["-"] = MINUS;

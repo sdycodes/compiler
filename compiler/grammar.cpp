@@ -9,6 +9,10 @@
 #define else_ERR(x,y) else{errmsg(x, y);}
 #define else_ERR_break(x,y) else{errmsg(x, y);break;}
 #define DUMP_GREAMMAR false
+
+bool hasReturn;
+bool only_jier;
+bool isvoid;
 string factor(bool &onlyChar) {
 	int co = 1;
 	//char tc;
@@ -23,7 +27,7 @@ string factor(bool &onlyChar) {
 			t = to_string(co*val);
 			nextsym(type, val, name);
 		}
-		else_ERR("expect a integer", 0)
+		else_ERR("expect a integer", 1)
 		break;
 	case NUM:
 		onlyChar = false;
@@ -42,7 +46,7 @@ string factor(bool &onlyChar) {
 			t = rec;
 			nextsym(type, val, name);
 		}
-		else_ERR("expect a right parent", 0)
+		else_ERR("expect a right parent", 1)
 		break;
 	case IDEN:
 		int ident_idx;
@@ -64,7 +68,7 @@ string factor(bool &onlyChar) {
 					if ((rec[0] == '-' || rec[0] == '+' || isdigit(rec[0])) 
 						&& (stoi(rec) >= st[ident_idx].val||stoi(rec)<0)) {
 						t = "0";
-						errmsg("index out of length", 0);
+						errmsg("index out of length", 1);
 					}
 					if (type == RBRACKET) {
 						if (st[ident_idx].type != ST_VOID) {
@@ -176,10 +180,10 @@ void funcCall(int ident_idx) {
 			}
 			//judge number can match
 			if ((int)paras.size() > st[ident_idx].val) {
-				errmsg("too many paras", 0);
+				errmsg("too many paras", 1);
 			}
 			else if ((int)paras.size() < st[ident_idx].val) {
-				errmsg("too few paras", 0);
+				errmsg("too few paras", 1);
 			}
 			else {
 				for (int i = 0;i < (int)paras.size();i++) {
@@ -209,7 +213,11 @@ void assignstmt(int ident_idx) {
 		if (st[ident_idx].kind == ST_ARR) {
 			nextsym(type, val, name);
 			rec_idx = expr(onlyChar);
-			if (onlyChar)	errmsg("illegal index of array", 0);
+			if (onlyChar)	errmsg("illegal index of array", 2);
+			if ((rec_idx[0] == '-' || rec_idx[0] == '+' || isdigit(rec_idx[0]))
+				&& (stoi(rec_idx) >= st[ident_idx].val || stoi(rec_idx) < 0)) {
+				errmsg("index out of length", 1);
+			}
 			if (type == RBRACKET) {
 				nextsym(type, val, name);
 				if (type == BECOMES) {
@@ -370,22 +378,24 @@ void printfstmt() {
 	else_ERR("expect a left parent", 2)
 }
 void returnstmt() {
-	bool onlyChar = true;
+	only_jier = true;
+	hasReturn = true;
 	string rec_val;
 	if (type == SEMICOLON) {
 		genmc("RET", "#", "0", "0");
 		return;
 	}
 	else if (type == LPAR) {
+		if (isvoid)	errmsg("void function no value", 0);
 		nextsym(type, val, name);
-		rec_val = expr(onlyChar);
+		rec_val = expr(only_jier);
 		if (type == RPAR) {
 			genmc("RET", rec_val, "0", "0");
 			nextsym(type, val, name);
 		}
 		else_ERR("expect a right parent", 2)
 	}
-	else_ERR("unexpected sign", 1)
+	else_ERR("unexpected sign", 2)
 }
 string conditions() {
 	string t, rec_val1, rec_val2, op;
@@ -610,8 +620,10 @@ int paraList() {
 	else_ERR("expect a type identifier", 1)
 	return cnt;
 }
+
 void funcDef(int loc) {
 	tno = 0;
+	hasReturn = false;
 	int num = paraList();
 	st[loc].val = num;
 	genmc("LABEL", "FUNC_" + st[loc].name, "0", "0");
@@ -624,8 +636,12 @@ void funcDef(int loc) {
 	else_ERR("expect a left brace", 1);
 	if (st[loc].type == ST_VOID)
 		genmc("RET", "#", "0", "0");
-	else
+	else if (hasReturn) {
 		genmc("RET", "0", "0", "0");
+		if (!only_jier&&st[loc].type == ST_CHAR)
+			errmsg("type not match", 0);
+	}
+	else_ERR("expect a return statement", 0);
 	if (DUMP_GREAMMAR) printf("%d %d this is a function definition\n", lc, cc);
 }
 void varDecl(int var_type, bool islocal) {
@@ -709,13 +725,15 @@ void constDef(bool islocal) {
 							}
 							else_ERR("expect a integer", 1)
 						}
-						else if (type == NUM || type == CHAR)
+						else if (type == NUM || type == CHAR) {
 							errmsg("type does not match", 1);
+							break;
+						}
 						else_ERR("expect a number or character", 1)
 					}
-					else_ERR("expect becomes", 1)
+					else_ERR("expect becomes", 2)
 				}
-				else_ERR("expect an identifier", 1)
+				else_ERR("expect an identifier", 2)
 			} while (type == COMMA);
 				if (type == SEMICOLON) {
 					if (DUMP_GREAMMAR) printf("%d %d this is a const declaration\n", lc, cc);
@@ -739,6 +757,7 @@ void program() {
 	}
 	while (type == INTSY || type == CHARSY || type == VOIDSY) {
 		if (type == INTSY || type == CHARSY) {
+			isvoid = false;
 			ident_type = (type == INTSY) ? ST_INT : ST_CHAR;
 			nextsym(type, val, name);
 			if (type == IDEN) {
@@ -799,6 +818,7 @@ void program() {
 					}
 					else if (type == COMMA || type == SEMICOLON || type == LBRACKET) {
 						errmsg("displaced variable declaration", 1);
+						break;
 					}
 					else_ERR("illegal sign after an identifier", 1)
 				}
@@ -809,6 +829,7 @@ void program() {
 			ident_type = ST_VOID;
 			ident_kind = ST_FUNC;
 			canVar = false;
+			isvoid = true;
 			nextsym(type, val, name);
 			ident_name = name;
 			if (type == MAINSY) {

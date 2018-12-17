@@ -14,7 +14,7 @@ void midcode_opt() {
 	//copy_spread();	//做复制传播
 	const_spread();	//做常量传播
 	//kk_opt();	//窥孔优化
-	modify();	//整理紧凑
+	//modify();	//整理紧凑
 }
 
 void modify() {
