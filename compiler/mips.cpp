@@ -4,6 +4,8 @@
 #include "sign_table.h"
 #include "mips.h"
 #include "base_block.h"
+#include "reg_distribution.h"
+
 #define no2name(x) (x)>=16&&(x)<=23?"$s"+to_string(x-16):	\
 					(x)<16&&(x)>=8?"$t"+to_string(x-8): \
 					(x)==24||(x)==25?"$t"+to_string(x-16):"!!!"
@@ -121,7 +123,8 @@ void mc2mp() {
 	def_loc = search_tab("main", islocal, -1);
 	gen_mips("li", "$fp", "0x7fffeffc");
 	gen_mips("subi", "$sp", "$fp", to_string(st[def_loc].size));
-	int block_end = 0, block_no = 1;
+	int block_no = 1;
+	int block_end = blocks[block_no].end;
 	for (int i = 0;i < (int)mc.size();i++) {
 		//标签
 		if (mc[i].op == "LABEL") {	
@@ -139,7 +142,8 @@ void mc2mp() {
 		else if (mc[i].op == "ADD"||mc[i].op=="SUB") {
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
 			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
-			string numres = get_reg(mc[i].res, true, def_loc);
+			string numres = mc[i].n1==mc[i].res?num1:
+							mc[i].n2==mc[i].res?num2:get_reg(mc[i].res, true, def_loc);
 			//都是常量 li
 			if (isCon(mc[i].n1)&&isCon(mc[i].n2)) {
 				int res = mc[i].op == "ADD" ? stoi(num1) + stoi(num2) : stoi(num1) - stoi(num2);
@@ -164,12 +168,21 @@ void mc2mp() {
 				string op = mc[i].op == "ADD" ? "add" : "sub";
 				gen_mips(op, numres, num1, num2);
 			}
+			//这里是对于全局变量的特殊操作 
+			int loc = search_tab(mc[i].res, islocal, def_loc);
+			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
+				if (!islocal)
+					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				else
+					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
+			}
 		}
 		else if(mc[i].op=="MULT"||mc[i].op=="DIV"){
 			//都是常量 li
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
 			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
-			string numres = get_reg(mc[i].res, true, def_loc);
+			string numres = mc[i].n1 == mc[i].res ? num1 :
+							mc[i].n2 == mc[i].res ? num2 : get_reg(mc[i].res, true, def_loc);
 			if (isCon(mc[i].n1)&&isCon(mc[i].n2)) {
 				int res = mc[i].op == "MULT" ? stoi(num1) * stoi(num2) : stoi(num1) / stoi(num2);
 				gen_mips("li", numres, to_string(res));
@@ -190,9 +203,16 @@ void mc2mp() {
 			}
 			//都是变量
 			else {
-				string op = mc[i].op == "MULT" ? "mult" : "div";
-				gen_mips(op, num1, num2);
-				gen_mips("mflo", numres);
+				string op = mc[i].op == "MULT" ? "mul" : "div";
+				gen_mips(op, numres, num1, num2);
+			}
+			//这里是对于全局变量的特殊操作 
+			int loc = search_tab(mc[i].res, islocal, def_loc);
+			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
+				if (!islocal)
+					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				else
+					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
 		}
 		else if (mc[i].op == "PUSH") {
@@ -288,9 +308,8 @@ void mc2mp() {
 					(mc[i - 1].op == "NE"&&stoi(num1)!=stoi(num2)))
 					if (mc[i].op == "BEZ") {
 						gen_mips("j", mc[i].res);
-						continue;
 					}
-				if ((mc[i - 1].op == "LT"&&stoi(num1) >= stoi(num2)) ||
+				else if ((mc[i - 1].op == "LT"&&stoi(num1) >= stoi(num2)) ||
 					(mc[i - 1].op == "LE"&&stoi(num1) > stoi(num2)) ||
 					(mc[i - 1].op == "GT"&&stoi(num1) <= stoi(num2)) ||
 					(mc[i - 1].op == "GE"&&stoi(num1) < stoi(num2)) ||
@@ -298,7 +317,6 @@ void mc2mp() {
 					(mc[i - 1].op == "NE"&&stoi(num1) == stoi(num2)))
 					if (mc[i].op == "BNZ") {
 						gen_mips("j", mc[i].res);
-						continue;
 					}
 			}
 			if (isCon(mc[i-1].n1) || isCon(mc[i-1].n2)) {
@@ -418,8 +436,7 @@ void mc2mp() {
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
 		}
-		else if(mc[i].op=="NULL")
-			;
+		//else if(mc[i].op=="NULL");
 		//一个基本块结束 清除t寄存器的对应关系  更新位置
 		if (i == block_end) {
 			t_alloc.clear();
@@ -437,7 +454,7 @@ void dump_mips() {
 			printf("%s %s %s %s\n", mp[i].op.c_str(), mp[i].n1.c_str(), mp[i].n2.c_str(), mp[i].res.c_str());
 		else if (mp[i].op == "sw" || mp[i].op == "lw")
 			printf("%s %s %s(%s)\n", mp[i].op.c_str(), mp[i].res.c_str(), mp[i].n2.c_str(), mp[i].n1.c_str());
-		else
+		else if(mp[i].op!="nop")
 			printf("%s %s %s %s\n", mp[i].op.c_str(), mp[i].res.c_str(), mp[i].n1.c_str(), mp[i].n2.c_str());
 	}
 }

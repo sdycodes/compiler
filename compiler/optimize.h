@@ -3,8 +3,8 @@
 
 void mips_opt(void);
 void midcode_opt(void);
-void copy_spread(void);
-void const_spread(void);
+void const_copy_spread(void);
+void local_var_spread(void);
 void kk_opt(void);
-void modify(void);
+
 #endif

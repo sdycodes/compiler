@@ -160,6 +160,7 @@
     <ClInclude Include="mips.h" />
     <ClInclude Include="optimize.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="reg_distribution.h" />
     <ClInclude Include="sign_table.h" />
     <ClInclude Include="stdHeader.h" />
   </ItemGroup>
@@ -179,6 +180,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="reg_distribution.cpp" />
     <ClCompile Include="sign_table.cpp" />
   </ItemGroup>
   <ItemGroup>
