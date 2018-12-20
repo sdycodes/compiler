@@ -133,7 +133,7 @@ void mc2mp() {
 				def_loc = search_tab(mc[i].n1=="main"?"main":mc[i].n1.substr(5), islocal);
 				int k = def_loc + 1;
 				while (k < stp&&st[k].kind == ST_PARA) {
-					if (name2reg[k] != -1)
+					if (name2reg[k] >0)
 						gen_mips("lw", no2name(name2reg[k]), "$fp", to_string(-st[k].addr));
 					k++;
 				}

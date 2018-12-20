@@ -154,5 +154,74 @@
     <Text Include="dag_common_expr.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="web1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web6.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web7.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web8.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web9.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web10.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web11.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web12.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web14.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web15.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web16.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web17.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web18.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web19.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web20.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web21.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web22.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="comment.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="tests.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

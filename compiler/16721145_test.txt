@@ -78,7 +78,7 @@ void test_all_cond(){
 		printf("a<b");
 	if(c>a)
 		printf("c>a");
-	if(d)
+	if((d))
 		printf("d");
 	if(a==1)
 		printf("error");

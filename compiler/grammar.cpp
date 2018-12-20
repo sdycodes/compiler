@@ -417,11 +417,14 @@ string conditions() {
 		t = gent();
 		if ((onlyChar&&onlyChar2) || (!onlyChar && !onlyChar2))
 			genmc(op, rec_val1, rec_val2, t);
-		else_ERR("type not match", 1)
+		else_ERR("type not match", 0)
 	}
 	else {
-		t = gent();
-		genmc("NE", rec_val1, "0", t);
+		if (!onlyChar) {
+			t = gent();
+			genmc("NE", rec_val1, "0", t);
+		}
+		else_ERR("type not match", 0)
 	}
 	return t;
 }
@@ -529,10 +532,10 @@ void state() {
 				need_semicolon = true;
 			}
 		}
-		else_ERR("undefined identifier", 2)
+		else_ERR("undefined identifier", 21)
 		break;
 	default:
-		errmsg("illegal beginning of a statement", 2);
+		errmsg("illegal beginning of a statement", 21);
 		return;
 	}
 	if (type == SEMICOLON) {
@@ -681,11 +684,11 @@ void varDecl(int var_type, bool islocal) {
 				else_ERR("array length should not be 0", 1)
 			}
 			else if (type == COMMA) {
-				insert_tab(islocal, ident_name, ident_kind, ident_type, 0, 4, 0);
+				insert_tab(islocal, ident_name, ST_VAR, ident_type, 0, 4, 0);
 				nextsym(type, val, name);
 			}
 			else if (type == SEMICOLON) {
-				insert_tab(islocal, ident_name, ident_kind, ident_type, 0, 4, 0);
+				insert_tab(islocal, ident_name, ST_VAR, ident_type, 0, 4, 0);
 				if (DUMP_GREAMMAR) printf("%d %d this is a variable declaration\n", lc, cc);
 				nextsym(type, val, name);
 				return;
@@ -846,11 +849,13 @@ void program() {
 					loc = insert_tab(false, ident_name, ident_kind, ident_type);
 					funcDef(loc);
 				}
-				else_ERR("expect left parent", 1)
+				else_ERR("expect left parent", 6)
 			}
-			else_ERR("expect a identifier or main", 1)
+			else_ERR("expect a identifier or main", 6)
 		}
-		else_ERR("illegal type identifier", 1)
+		//else_ERR("illegal type identifier", 6)
+		if (type != VOIDSY && type != INTSY && type != CHARSY && type != END)
+			errmsg("illegal begining of function def(maybe because brace not match)", 6);
 	}
 	if (!have_main) {
 		errmsg("should have a main function");

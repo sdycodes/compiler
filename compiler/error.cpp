@@ -13,6 +13,7 @@
 //5-跳到右小括号
 //51-跳到右小括号的下一个
 
+
 void errmsg(string err, int strategy) {
 	printf("ERROR: line:%d, col:%d\t", lc, cc);
 	isError = true;
@@ -27,6 +28,13 @@ void errmsg(string err, int strategy) {
 		while (type != END && type != SEMICOLON) {
 			nextsym(type, val, name);
 		}
+		break;
+	case 21:
+		while (type != END && type != SEMICOLON) {
+			nextsym(type, val, name);
+		}
+		if (type != END)
+			nextsym(type, val, name);
 		break;
 	case 3:
 		while (type != END && type != RBRACE) {
@@ -49,12 +57,18 @@ void errmsg(string err, int strategy) {
 		while (type != END && type != RPAR) {
 			nextsym(type, val, name);
 		}
+		break;
 	case 51:
 		while (type != END && type != RPAR) {
 			nextsym(type, val, name);
 		}
 		if (type != END)
 			nextsym(type, val, name);
+		break;
+	case 6:
+		while (type != END && type != INTSY&&type!=CHARSY&&type!=CHARSY) {
+			nextsym(type, val, name);
+		}
 		break;
 	default:
 		break;

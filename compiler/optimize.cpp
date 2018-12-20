@@ -203,12 +203,13 @@ void mips_opt() {
 				i--;
 			}
 		}
-		//如果一条lw下面lw的被改掉 那么删除这条lw
+		//如果一条lw下面lw的被改掉 那么删除这条lw 而且必须保证这个寄存器没有被使用
 		else if (i < (int)mp.size() - 1 && mp[i].op == "lw") {
 			if (mp[i + 1].res == mp[i].res&&
 				(mp[i+1].op=="add"||mp[i+1].op=="sub"||mp[i+1].op=="mul"||mp[i+1].op=="div"||
 					mp[i+1].op=="addi"||mp[i+1].op=="subi"||mp[i+1].op=="lw"||
-					mp[i+1].op=="move"||mp[i+1].op=="li"||mp[i+1].op=="sll"))
+					mp[i+1].op=="move"||mp[i+1].op=="li"||mp[i+1].op=="sll")&&
+				(mp[i+1].n1!=mp[i].res&&mp[i+1].n2!=mp[i].res))
 				mp[i].op = "nop";
 		}
 

@@ -191,6 +191,7 @@
     <Text Include="16231129_test.txt" />
     <Text Include="16231281_test.txt" />
     <Text Include="16721145_test.txt" />
+    <Text Include="comment.txt" />
     <Text Include="dag_common_expr.txt" />
     <Text Include="gg.txt" />
     <Text Include="gg3.txt" />
@@ -204,7 +205,29 @@
     <Text Include="public_test4.txt" />
     <Text Include="public_test5.txt" />
     <Text Include="result.txt" />
+    <Text Include="tests.txt" />
     <Text Include="unlimitedcall.txt" />
+    <Text Include="web1.txt" />
+    <Text Include="web10.txt" />
+    <Text Include="web11.txt" />
+    <Text Include="web12.txt" />
+    <Text Include="web14.txt" />
+    <Text Include="web15.txt" />
+    <Text Include="web16.txt" />
+    <Text Include="web17.txt" />
+    <Text Include="web18.txt" />
+    <Text Include="web19.txt" />
+    <Text Include="web2.txt" />
+    <Text Include="web20.txt" />
+    <Text Include="web21.txt" />
+    <Text Include="web22.txt" />
+    <Text Include="web3.txt" />
+    <Text Include="web4.txt" />
+    <Text Include="web5.txt" />
+    <Text Include="web6.txt" />
+    <Text Include="web7.txt" />
+    <Text Include="web8.txt" />
+    <Text Include="web9.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

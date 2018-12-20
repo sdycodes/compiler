@@ -29,7 +29,10 @@ void readFile(char code[]) {
 				code[i] = ch;
 				i++;
 			}
-			
+			else {
+				cout << "unexpected char!\n";
+				i++;
+			}
 		}
 		code[i] = '\0';
 	}
