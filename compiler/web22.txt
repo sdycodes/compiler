@@ -115,7 +115,7 @@ void main()
     else testresult[0]='F';
     if(testwhile())testresult[1]='T';
     else testresult[1]='F';
-    if(testfactorial()=='T')testresult[2]='T';
+    if((testfactorial())==('T'))testresult[2]='T';
     else testresult[2]='F';
     if(testexpression())testresult[3]='T';
     else testresult[3]='F';

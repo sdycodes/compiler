@@ -51,7 +51,7 @@ void colorAlloc() {
 			memset(tmp, 0, sizeof(tmp));
 			//所有的跨块变量都在集合tmp中
 			for (int j = i;j < n;j++) {
-				unionset(blocks[j].in, tmp, tmp);
+				unionset(blocks[j].in, tmp, tmp, stp);
 			}
 			vector<int> vars;	//变量的编号
 			for (int j = loc + 1;j < end;j++)
@@ -158,5 +158,15 @@ void inOrderAlloc() {
 }
 void cal_alloc() {
 	//inOrderAlloc();
+	//全局变量的独家处理
+	int i = 0, cnt = 0;
+	int regNo = 5;
+	while (i < stp&&cnt < 3 && st[i].kind != ST_FUNC) {
+		if (st[i].kind == ST_VAR) {
+			name2reg[i] = regNo++;
+			cnt++;
+		}
+		i++;
+	}
 	colorAlloc();
 }

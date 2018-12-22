@@ -11,7 +11,7 @@ void init_block(block& b) {
 	b.no = 0;
 	b.start = 0;
 	b.end = 0;
-	for (int i = 0;i < MAXSIGNNUM;i++) {
+	for (int i = 0;i < stp;i++) {
 		b.use[i] = false;
 		b.def[i] = false;
 		b.in[i] = false;
@@ -201,13 +201,15 @@ void cal_def_use() {
 				}
 			}
 		}
-		for (map<int, bool>::iterator it = rec.begin();it!=rec.end();it++) {
+		for (map<int, bool>::iterator it = rec.begin();it!=rec.end();it++) 
 			if (it->second) {
 				blocks[i].def[it->first] = true;
 			}
-			else
+		for (map<int, bool>::iterator it = rec.begin();it != rec.end();it++) 
+			if (!it->second&&!blocks[i].def[it->first]) {	//出现在def里就不能在use里
 				blocks[i].use[it->first] = true;
-		}
+			}
+		
 	}
 }
 
@@ -242,12 +244,12 @@ void cal_in_out() {
 		for (int i = 1;i < (int)blocks.size()-1;i++) {
 			memset(tmp, 0, sizeof(tmp));
 			for (int j = 0;j < (int)blocks[i].next.size();j++) {
-				unionset(blocks[blocks[i].next[j]].in, tmp, tmp);
+				unionset(blocks[blocks[i].next[j]].in, tmp, tmp, stp);
 			}
-			change = !change ? assign_and_check_change(tmp, blocks[i].out) : true;
-			substract(blocks[i].out, blocks[i].def, tmp);
-			unionset(tmp, blocks[i].use, tmp);
-			change = !change ? assign_and_check_change(tmp, blocks[i].in) : true;
+			change = !change ? assign_and_check_change(tmp, blocks[i].out, stp) : true;
+			substract(blocks[i].out, blocks[i].def, tmp, stp);
+			unionset(tmp, blocks[i].use, tmp, stp);
+			change = !change ? assign_and_check_change(tmp, blocks[i].in, stp) : true;
 		}
 	} while (change);
 }
@@ -256,16 +258,16 @@ void dump_blocks() {
 	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		cout << "\n--------------------"<<blocks[i].no<<"-----------------\n";
 		cout << "def:";
-		for (int j = 0;j<MAXSIGNNUM;j++)
+		for (int j = 0;j<stp;j++)
 			if(blocks[i].def[j]) cout << st[j].name<<" ";
 		cout << "\nuse:";
-		for (int j = 0;j < MAXSIGNNUM;j++)
+		for (int j = 0;j < stp;j++)
 			if (blocks[i].use[j]) cout << st[j].name << " ";
 		cout << "\nin:";
-		for (int j = 0;j < MAXSIGNNUM;j++)
+		for (int j = 0;j < stp;j++)
 			if (blocks[i].in[j]) cout << st[j].name << " ";
 		cout << "\nout:";
-		for (int j = 0;j < MAXSIGNNUM;j++)
+		for (int j = 0;j < stp;j++)
 			if (blocks[i].out[j]) cout << st[j].name << " ";
 		cout << "\npre:";
 		for (int j = 0;j < (int)blocks[i].pre.size();j++)
@@ -283,7 +285,7 @@ void dump_blocks() {
 void cal_isOB() {
 	memset(isOB, 0, sizeof(isOB));
 	for (int i = 0;i < (int)blocks.size();i++) {
-		for (int j = 0;j < MAXSIGNNUM;j++)
+		for (int j = 0;j < stp;j++)
 			isOB[j] = isOB[j] || blocks[i].in[j];
 	}
 }

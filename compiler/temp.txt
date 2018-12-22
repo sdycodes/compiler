@@ -1,0 +1,59 @@
+int p;
+char str[100];
+
+void AllValidCharInt(char min, char max, int a1, int a2, int a3, int a4, int x){
+    char c;
+    int signal;
+    signal=0;
+    p = a3+a4/a2;
+    c=min;
+    if((c)<=(max)){
+	do{
+        if (c+0!=34){
+            if (c+0>=32){
+                    if(c-95+95 == 95)
+                        signal = 1;
+                    else if(c-95+95 == 43)
+                        signal = 1;
+                    else if(c-95+95==45)
+                        signal = 1;
+					else if( c-95+95==42)
+                        signal = 1;
+                    else if( c-95+95==47)
+                        signal = 1;
+                    else
+                    {
+                        if (c-'0'>=0){
+                            if (c-'9'<=0){
+                                signal = 1;
+                            }
+                        }
+                        if (c-'A'>=0){
+                            if (c-'Z'<=0){
+                                signal = 1;
+                            }
+                        }
+                        if (c-'a'>=0){
+                            if (c-'z'<=0){
+                                signal = 1;
+                            }
+                        }
+                    }
+            }
+            str[c-min]=c;
+            if (signal==1){
+                printf("A valid <zi fu>",str[c-min]);
+                signal=0;
+            }
+        }
+        if (c+0==34+-34+34)
+            printf("char 34 is not included!");
+        c = 'c';
+    }while((c)<=(max))
+	}
+    return;
+}                   
+void main(){      
+	AllValidCharInt('a','b', 9, 10, 11, 12, 13);        
+    return;                             
+}

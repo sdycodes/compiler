@@ -110,7 +110,7 @@ int testcase1(int x)
 int testcase2(char x)
 {
 	{
-        if(x== 'a')return (1);
+        if((x)== ('a'))return (1);
         else return (2);
     }
 }

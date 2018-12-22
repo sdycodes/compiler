@@ -193,7 +193,6 @@
     <Text Include="16721145_test.txt" />
     <Text Include="comment.txt" />
     <Text Include="dag_common_expr.txt" />
-    <Text Include="gg.txt" />
     <Text Include="gg3.txt" />
     <Text Include="grammar_test.txt" />
     <Text Include="jsh.txt" />
@@ -205,7 +204,9 @@
     <Text Include="public_test4.txt" />
     <Text Include="public_test5.txt" />
     <Text Include="result.txt" />
+    <Text Include="temp.txt" />
     <Text Include="tests.txt" />
+    <Text Include="test_global.txt" />
     <Text Include="unlimitedcall.txt" />
     <Text Include="web1.txt" />
     <Text Include="web10.txt" />

@@ -8,7 +8,8 @@
 
 #define no2name(x) (x)>=16&&(x)<=23?"$s"+to_string(x-16):	\
 					(x)<16&&(x)>=8?"$t"+to_string(x-8): \
-					(x)==24||(x)==25?"$t"+to_string(x-16):"!!!"
+					(x)==24||(x)==25?"$t"+to_string(x-16): \
+					(x)>=5&&(x)<=7?"$a"+to_string(x-4):"!!!"
 
 #define isCon(num) (isdigit(num[0])||num[0]=='-'||num[0]=='+')
 #define REG_NUM 8
@@ -24,7 +25,8 @@ string get_reg(string name, bool assign, int def_loc) {
 	int loc = search_tab(name, islocal, def_loc);
 	static int data_buffer = 6;
 	//一个全局变量 或者是一个未分配寄存器的跨基本块局部变量
-	if (loc != -1 && (!islocal|| name2reg[loc] == -1)) {	
+	if (loc != -1 && (!islocal|| name2reg[loc] == -1)) {
+		if (!islocal&&name2reg[loc] > 0)	return no2name(name2reg[loc]);
 		reg = "$s" + to_string(data_buffer);
 		if (!islocal)
 			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//从内存中读取
@@ -130,10 +132,10 @@ void mc2mp() {
 		if (mc[i].op == "LABEL") {	
 			gen_mips(mc[i].n1+':');
 			if (mc[i].n1[0] != '$') {	//是一个函数标签
-				def_loc = search_tab(mc[i].n1=="main"?"main":mc[i].n1.substr(5), islocal);
+				def_loc = search_tab(mc[i].n1 == "main" ? "main" : mc[i].n1.substr(5), islocal);
 				int k = def_loc + 1;
 				while (k < stp&&st[k].kind == ST_PARA) {
-					if (name2reg[k] >0)
+					if (name2reg[k] > 0)
 						gen_mips("lw", no2name(name2reg[k]), "$fp", to_string(-st[k].addr));
 					k++;
 				}
@@ -171,8 +173,10 @@ void mc2mp() {
 			//这里是对于全局变量的特殊操作 
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
-				if (!islocal)
-					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				if (!islocal) {
+					if(!(name2reg[loc]>0))
+						gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				}
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
@@ -209,8 +213,10 @@ void mc2mp() {
 			//这里是对于全局变量的特殊操作 
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
-				if (!islocal)
-					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				if (!islocal) {
+					if (!(name2reg[loc] > 0))
+						gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				}
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
@@ -357,8 +363,10 @@ void mc2mp() {
 			//这里是对于全局变量的特殊操作 
 			int loc = search_tab(mc[i].n1, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
-				if (!islocal)
-					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				if (!islocal) {
+					if (!(name2reg[loc] > 0))
+						gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				}
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
@@ -376,8 +384,10 @@ void mc2mp() {
 			//对全局变量的特殊操作
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
-				if(!islocal)
-					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				if (!islocal) {
+					if (!(name2reg[loc] > 0))
+						gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				}
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
@@ -430,8 +440,10 @@ void mc2mp() {
 			//对全局变量的特殊操作
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
-				if (!islocal)
-					gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				if (!islocal) {
+					if (!(name2reg[loc] > 0))
+						gen_mips("sw", numres, "$gp", to_string(st[loc].addr));
+				}
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}

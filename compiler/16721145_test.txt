@@ -25,7 +25,7 @@ int addint(int a){
 	return(a+1);
 }
 char foo2(char c){
-	if(c > 'c'){
+	if((c) > ('c')){
 		return('/');
 	}
 	else{
@@ -88,7 +88,7 @@ void test_all_cond(){
 		printf("a<=c");
 	if(a>=c)
 		printf("error!");
-	if(d>'B')
+	if((d)>('B'))
 		printf("error!");
 	return;
 }
@@ -188,7 +188,7 @@ void permutation(int m, int n){
 		i = 0;
 		do{			
 			r = echo_char(chs[i]);
-			if(r!=chs[i])
+			if((r)!=(chs[i]))
 				printf("error");
 			i = i + 1;
 		}while(i<5)			

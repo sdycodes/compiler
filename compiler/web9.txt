@@ -102,10 +102,10 @@ void main(){
     
     do{
         if(-1){
-            if(op== 'e')    {printf(foo_expr());}
-            else if(op=='r')    {{foo_recursion();}}
-            else if(op=='n')    {{{do_nothing();}}}
-            else if(op=='v')     {{{{value();}}}}
+            if((op)== ('e'))    {printf(foo_expr());}
+            else if((op)==('r'))    {{foo_recursion();}}
+            else if((op)==('n'))    {{{do_nothing();}}}
+            else if((op)==('v'))     {{{{value();}}}}
             else    printf("Please input e/r/n/v instead of ",op);
         }else;
     }while(0);

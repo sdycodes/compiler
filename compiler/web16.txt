@@ -262,11 +262,11 @@ void testSwitch() {
         }
         }
         {
-        if(char_1== 'a') {
+        if((char_1)== ('a')) {
             int_1 = i + 1;
             printf(int_1);
         }
-        else if(char_1=='b') {
+        else if((char_1)==('b')) {
             int_1 = sum;
             printf(int_1);
         }

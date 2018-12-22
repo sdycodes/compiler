@@ -19,11 +19,30 @@ bool modified(mce x, string src) {
 		return true;
 	return false;
 }
+bool used(mce x, string src) {
+	if (x.op != "INC"&&x.op != "INV"&&(x.n1 == src || x.n2 == src))
+		return true;
+	return false;
+}
 
+void label_modify() {
+	for (int i = 0;i < (int)mc.size()-1;i++) {
+		if (mc[i].op == mc[i + 1].op&&mc[i].op == "LABEL"&&mc[i].n1[0]=='$'&&mc[i+1].n1[0]=='$') {
+			mc[i].op = "NULL";
+			string dst = mc[i+1].n1;
+			string src = mc[i].n1;
+			for (int j = 0;j < (int)mc.size();j++) {
+				if (mc[j].n1 == src)	mc[j].n1 = dst;
+				if (mc[j].res == src)	mc[j].res = dst;
+			}
+		}
+	}
+}
 void midcode_opt() {
 	omc = mc;	//深拷贝 mc将保存优化后的中间代码 omc存储过去的
 	const_copy_spread();
-	local_var_spread();
+	//local_var_spread();
+	label_modify();
 	kk_opt();	//窥孔优化
 }
 
@@ -56,6 +75,9 @@ void const_copy_spread() {
 				//中间变量复制了一个不是常数的变量
 				string src = mc[j].n1;	//复制来源
 				string dst = mc[j].res;//复制目标
+				//复制了全局变量不做传播
+				search_tab(mc[j].n1, islocal, def_loc);
+				if (!islocal)	continue;
 				bool change = false, canDelete = true;
 				for (int k = j + 1;k <= blocks[i].end;k++) {	//从下一条指令开始
 					if (!change&&!modified(mc[k], src)) {	//来源没有被改变 使用的目标都可以替换
@@ -88,11 +110,45 @@ void const_copy_spread() {
 					j--;
 				}	
 			}
+			else if (mc[j].op == "ASSIGN"&&mc[j].res[0] != '#'&&isCon(mc[j].n1)) {
+				loc = search_tab(mc[j].res, islocal, def_loc);
+				if (isOB[loc]||!islocal)	continue;	//此操作只针对不跨块的局部变量
+				//局部变量可能被改值 
+				string src = mc[j].n1;
+				string dst = mc[j].res;
+				for (int k = j + 1;k <= blocks[i].end;k++) {
+					if (!modified(mc[k], dst)) {
+						if (mc[k].n1 == dst)
+							mc[k].n1 = src;
+						if (mc[k].n2 == dst)
+							mc[k].n2 = src;
+					}
+					else
+						break;
+				}
+			}
+		}
+		
+		for (int j = blocks[i].start;j <= blocks[i].end;j++) {	//重新扫描这个块
+			//有些不跨块的局部变量可能可以删除
+			if (mc[j].op == "ASSIGN") {
+				if (mc[j].res[0] == '#')	continue;
+				loc = search_tab(mc[j].res, islocal, def_loc);
+				if (isOB[loc]||!islocal)	continue;	//此操作只针对不跨块的局部变量
+				bool canDelete = true;
+				for (int k = j + 1;k <= blocks[i].end;k++) {
+					if (used(mc[k], mc[j].res)) {
+						canDelete = false;
+						break;
+					}
+				}
+				if(canDelete) mc[j].op = "NULL";
+			}
 		}
 	}
 }
 
-//局部变量的常量传播算法
+//局部变量的常量传播算法 have problem
 void local_var_spread() {
 	bool islocal;
 	int def_loc;
@@ -105,6 +161,8 @@ void local_var_spread() {
 			while (j < (int)mc.size() && !(mc[j].op == "LABEL"&&mc[j].n1[0] != '$')) {
 				if (mc[j].op == "ASSIGN"&&isCon(mc[j].n1)) {
 					loc = search_tab(mc[j].res, islocal, def_loc);
+					if (isOB[loc]|| !islocal) { j++; continue; } //跨块全局变量不要乱优化
+					loc = search_tab(mc[j].n1, islocal, def_loc);
 					if (!islocal) { j++; continue; }	//全局变量不要乱优化
 					if (isOB[loc]) { j++; continue; }		//跨块变量不要乱优化
 					int k = j + 1;
@@ -138,13 +196,15 @@ void kk_opt() {
 			}
 			i++;
 		}
-		//优化2 GOTO到下一个label之间的代码删除
+		//优化2 GOTO到下一个label之间的代码删除 相邻则可以删除GOTO
 		else if (mc[i].op == "GOTO") {
 			int j = i + 1;
 			while (mc[j].op != "LABEL") {
 				mc[j].op = "NULL";
 				j++;
 			}
+			if (mc[j].op == "LABEL"&&mc[i].n1 == mc[j].n1)
+				mc[i].op = "NULL";
 			i = j - 1;
 		}
 		//优化3 先LELEM后SELEM SELEM可以去除
@@ -204,6 +264,7 @@ void mips_opt() {
 			}
 		}
 		//如果一条lw下面lw的被改掉 那么删除这条lw 而且必须保证这个寄存器没有被使用
+		/*
 		else if (i < (int)mp.size() - 1 && mp[i].op == "lw") {
 			if (mp[i + 1].res == mp[i].res&&
 				(mp[i+1].op=="add"||mp[i+1].op=="sub"||mp[i+1].op=="mul"||mp[i+1].op=="div"||
@@ -211,7 +272,7 @@ void mips_opt() {
 					mp[i+1].op=="move"||mp[i+1].op=="li"||mp[i+1].op=="sll")&&
 				(mp[i+1].n1!=mp[i].res&&mp[i+1].n2!=mp[i].res))
 				mp[i].op = "nop";
-		}
+		}*/
 
 	}
 }

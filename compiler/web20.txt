@@ -87,11 +87,11 @@ int test_case(int c, char _c, int d)
         else
         {
             {
-                if(_c== 'a')
+                if((_c)== ('a'))
                 {
                     flag = 97;
                 }
-                else if(_c== 'b')
+                else if((_c)== ('b'))
                 {
                     flag = 98;
                 }
@@ -148,9 +148,9 @@ void test_tao(int a, char b)
     {
 
         {
-            if(b== 'x')
+            if((b)== ('x'))
                 printf('x');
-			else if(b== 'y')
+			else if((b)== ('y'))
                 printf(('y'));
             else
                 printf("default");

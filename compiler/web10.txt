@@ -114,13 +114,13 @@ void test(){
     i = 10;
 
     {
-        if(char_test== 'A')
+        if((char_test)== ('A'))
         do{
             int_test = 133 - 1 * 2 * 3 / (4 - 1) + char_test + letters[1] - letters[0] - letters[2] + i * (1) + 2 / 3;
             i = i - 1;
         }while(i >= 0)
 
-        else if(char_test=='a')
+        else if((char_test)==('a'))
         int_test = 223 - 1 * 2 * 3 / (4 - 1) + char_test + letters[1] - letters[0] - letters[2] + i * (1);
 
         else

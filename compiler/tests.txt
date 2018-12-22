@@ -1,4 +1,4 @@
-No.1   no problem!
+﻿No.1  done!
 input:
 0
 
@@ -12,9 +12,9 @@ output:
 30
 11
 -1
-a
+a 
 
-input:	//this test has been removed
+input:
 1
 
 output:
@@ -70,39 +70,40 @@ output:
 e
 
 -------------------------------------
-No. 2
-输入�?
-输出�?test_expression c=0 test_expression c=49 test_expression c=98
-输入�?
-输出�?test_if output the less one output 2 test_while output a[0] a[1] a[2]:0  0  6 test_switch input one char:a or b 
-    输入：a  
-    输出：a 162
+No. 2 done!  optimize the error
+input 1
+ test_expression c=0 test_expression c=49 test_expression c=98
+input 2
+test_if output the less one output 2 test_while output a[0] a[1] a[2]:0  0  6 test_switch input one char:a or b 
+    a  
+    a 162
 
-    输入：b 
-    输出�?b 164 
+    b 
+    b 164 
 
-输入�?
-输出�?enter:
-    输入：ab 
-    输出�?65  66
+input 3
+enter:
+    ab 
+    65  66
 
-    输入：mg 
-    输出�?77  71
+    mg 
+    77  71
 
-输入�?
-输出�?test_switch input one char:a or b     
-    输入：a 
-    输出�?a 162  F
+input 4
+test_switch input one char:a or b     
+    a 
+    a 162  F
 
-     输入：b 
-    输出�? b 164  F
+    b 
+     b 164  F
 
-输入�?
-输出：error input!@#$%%^&/|{[('')]}~
+input 5
+error input!@#$%%^&/|{[('')]}~
 
 
 -------------------------------------
-No.3
+No.3 done!  found reg distribution bug !=-1change to >0
+found reg bug use def 
 
 Input two numbers to calculate GCD
 **** user input : 100
@@ -137,10 +138,11 @@ if & switch & condition is a relation expression & all valid string & valid char
 A valid <zi fu>a
 
 -------------------------------------
-No.4
+No.4 done!  found insert table bug kind didnot update timely
 
-测试�?输入�?2
-输入：asThe 0-th Fibonacci sequence number is:0
+
+12
+asThe 0-th Fibonacci sequence number is:0
 The 1-th Fibonacci sequence number is:1
 The 2-th Fibonacci sequence number is:1
 The 3-th Fibonacci sequence number is:2
@@ -158,8 +160,8 @@ s
 i is Bigger than 200
 The current character is:o
 i is Bigger than 200
-输入�?2+23+34+6   85
-输入�?2+23+45+8     173
+input 12+23+34+6   85
+input 12+23+45+8     173
 
  a is1
  b is35
@@ -167,23 +169,24 @@ i is Bigger than 200
  d is3
  e is68
  f is34
- g is4
+ g is4 this is undefined
 
 only_letter is:-49
 letter_only is:162
 The second g is: 581
-输入�?2+23+34+6
+???12+23+34+6
 Calculate the result_2 is: 1826
 Calculate the result_3 is: 1746
-输入�?2+32+34+8
+???12+32+34+8
 Calculate the result_1 is: 7038
 Calculate the result_4 is: 96
 
--------------------------------------------
-No.5 
 
-1. 输入 60 48
-   输出
+-------------------------------------------
+No.5  same as No.3
+
+1. ËæìÂÖ• 60 48
+   ËæìÂá∫
         Input two numbers to calculate GCD
         60 48
         Two input for GCD 60
@@ -192,8 +195,8 @@ No.5
         48
         is 12
 
-2. 输入 100 200
-   输出
+2. ËæìÂÖ• 100 200
+   ËæìÂá∫
         Input two numbers to calculate GCD
         100 200
         Two input for GCD 100
@@ -281,8 +284,8 @@ No.5
         A valid <zi fu> 121
         A valid <zi fu> 122
 
-3. 输入 101 200
-   输出
+3. ËæìÂÖ• 101 200
+   ËæìÂá∫
         Input two numbers to calculate GCD
         101 200
         Two input for GCD 101
@@ -292,8 +295,8 @@ No.5
         is 1
         Empty Default Case
 
-4. 输入 50 1400
-   输出 
+4. ËæìÂÖ• 50 1400
+   ËæìÂá∫ 
         Input two numbers to calculate GCD
         50 100
         Two input for GCD 50
@@ -302,8 +305,8 @@ No.5
         100
         is 50
 
-5. 输入 600 26
-   输出
+5. ËæìÂÖ• 600 26
+   ËæìÂá∫
         Input two numbers to calculate GCD
         600 26
         Two input for GCD 600
@@ -314,29 +317,28 @@ No.5
 
 
 ------------------------------------------
-No.6
+No.6  done! found mips opt bug use after def
 
-输入
 1 1 +
-输出
+
 print string and expr, got char: l
 test expr\n
 58
 11
 2
 
-输入
+
 11 10 -
-输出
+
  !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 test expr\n
 58
 11
 8
 
-输入
+
 1 -1 =
-输出
+
 print string and expr, got char: o
 test expr\n
 58
@@ -344,7 +346,7 @@ test expr\n
 21
 
 -------------------------------------------
-No.7
+No.7    done! Wow takes 13s has been optimized
 
 INPUT:
 12
@@ -363,32 +365,32 @@ test printf:-4318
 12ax123
 all test:2668
 ---------------------------------------
-No.8
+No.8    
 
-输入1�?2
+2
 h
 0
 2
 4
-输出1�?""" !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+""" !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 "IO i:"2hh103208
 "beq0bgt?"0
 "result"98010
 "fibo(fn):"3
 
-输入2�?5
+5
 a
 3
 3
 10
-输出2�?""" !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+""" !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 "IO i:"5aa96194
 "bge1"0
 "result"98010
 "fibo(fn):"55
 
 -----------------------------------------
-No.9
+No.9 done!
 
 ==========================Example 1================================
 > input:
@@ -423,9 +425,9 @@ No.9
     Please input e/r/n/v instead of w
 
 -------------------------------------
-No.10
+No.10  done! fix bug about label optimized
 
-一
+
 Input:3 7 Q
 
 Output:
@@ -443,7 +445,7 @@ Error Type Not Define.
 Final i = 1
 Register_Disater = 12
 **************************************************
-�?Input:10 5 C
+ÔøΩ?Input:10 5 C
 
 Output:
 Please Input Lower Bound and Upper Bound:10 3
@@ -460,7 +462,7 @@ Error Type Not Define.
 Final i = 1
 Register_Disater = 12
 **************************************************
-�?Input:-5 5 c
+ÔøΩ?Input:-5 5 c
 
 Output:
 Please Input Lower Bound and Upper Bound:-5 5
@@ -478,7 +480,7 @@ Final i = 1
 Register_Disater = 12
 
 -------------------------------------
-No.11
+No.11 done!
 testcase 1:
 input : 2 1 + 2
 
@@ -595,8 +597,7 @@ ___________
 
 
 -----------------------------------
-No.12
-
+No.12   done!
 ##input
 1 8
 ##output
@@ -696,31 +697,31 @@ a
 15
 
 -----------------------------------
-No.13
+No.13  done!
 
-（二�?个测试样例，输入输出如下�?
-===========测试1===========
-输入：（注意mars中输入时应是这个顺序�?1 enter 5 enter bc6 enter�?1 5bc6
-输出�?588___ !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~___\n\t\\\'___@@@@@b
-
-
-===========测试2===========
-输入�?2
-输出�?-3304 2585 1 ojbk ojbk 10186
+//for must execute once 
+===========ÊµãËØï1===========
+1 enter 5 enter bc6 enter ?1 5bc6
+588___ !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~___\n\t\\\'___@@@@@
 
 
-===========测试3===========
-输入�?3
-输出�?123b-300_ff4_1686722hg1142
+===========ÊµãËØï2===========
+ËæìÂÖ•ÔøΩ?2
+ËæìÂá∫ÔøΩ?-3304 2585 1 ojbk ojbk 10186
+
+
+===========ÊµãËØï3===========
+ËæìÂÖ•ÔøΩ?3
+ËæìÂá∫ÔøΩ?123b-300_ff4_1686722hg1142
 ---------------------------------------
-No.14
-先输�?!@#$%abcd114514ABCD963287~;: 
+No.14 done!
+ÂÖàËæìÔøΩ?!@#$%abcd114514ABCD963287~;: 
 720
 17
 65
 121
 
-之后根据输入，可得相应输出为->下边的部�?1
+‰πãÂêéÊ†πÊçÆËæìÂÖ•ÔºåÂèØÂæóÁõ∏Â∫îËæìÂá∫‰∏∫->‰∏ãËæπÁöÑÈÉ®ÔøΩ?1
 3
 ->
 1 hit
@@ -755,29 +756,28 @@ No.14
 -1
 
 ---------------------------------------
-No.15
+No.15 done!
 
-测试一�?输入�?1 2 3
-期望输出�?j != 4  wrong! 30 -6 216 0 this is temp:-44
+-1 2 3
+j != 4  wrong! 30 -6 216 0 this is temp:-44
 
-测试二：
-输入�? 2 1
-期望输出�?j != 4 1 28 -4 192 0 in1>=in2! this is temp:-20
+0 2 1
+j != 4 1 28 -4 192 0 in1>=in2! this is temp:-20
 
-测试三：
-输入�? 3 1
-期望输出�?4 29 -3 208 0 in1>=in2! in1>=in2! this is temp:40
+
+4 3 1
+34 29 -3 208 0 in1>=in2! in1>=in2! this is temp:40
 
 ------------------------------------------
-No.16
+No.16 done!
 
-输入�?1
+ËæìÂÖ•ÔøΩ?1
 a
 1
 a
 a1
 
-输出�?默认每次输出后换行）
+ËæìÂá∫ÔøΩ?ÈªòËÆ§ÊØèÊ¨°ËæìÂá∫ÂêéÊç¢Ë°åÔºâ
 ************************************************
 Start testing recursion:
 take
@@ -972,14 +972,14 @@ A
 ************************************************
 
 -----------------------------------------
-No.17
-//for 循环实现执行第一次的
+No.17 done!
+//for must execute onece
 
-按顺序分别输入var_1,var_2,char_1,char_2的值�?
-分支1�?输入�?var_1,var_2中有不是整数的，或char_1,char_2中有不是字符�?输出�?报错
+ÊåâÈ°∫Â∫èÂàÜÂà´ËæìÂÖ•var_1,var_2,char_1,char_2ÁöÑÂÄºÔøΩ?
+ÂàÜÊîØ1ÔøΩ?ËæìÂÖ•ÔøΩ?var_1,var_2‰∏≠Êúâ‰∏çÊòØÊï¥Êï∞ÁöÑÔºåÊàñchar_1,char_2‰∏≠Êúâ‰∏çÊòØÂ≠óÁ¨¶ÔøΩ?ËæìÂá∫ÔøΩ?Êä•Èîô
 
 
-分支3:�?输入�?var_1�?或负数，var_2为任意支持的整数，char_1为c1，char_2为c2，（c1、c2是符合文法的任意单个字符�?输出�?n:'为行数，为了方便说明而标注，实际输出没有该项）：
+ÂàÜÊîØ3:ÔøΩ?ËæìÂÖ•ÔøΩ?var_1ÔøΩ?ÊàñË¥üÊï∞Ôºåvar_2‰∏∫‰ªªÊÑèÊîØÊåÅÁöÑÊï¥Êï∞Ôºåchar_1‰∏∫c1Ôºåchar_2‰∏∫c2ÔºåÔºàc1„ÄÅc2ÊòØÁ¨¶ÂêàÊñáÊ≥ïÁöÑ‰ªªÊÑèÂçï‰∏™Â≠óÁ¨¶ÔøΩ?ËæìÂá∫ÔøΩ?n:'‰∏∫Ë°åÊï∞Ôºå‰∏∫‰∫ÜÊñπ‰æøËØ¥ÊòéËÄåÊ†áÊ≥®ÔºåÂÆûÈôÖËæìÂá∫Ê≤°ÊúâËØ•È°πÔºâÔºö
 1 :Hello world!
 2 :var_1 is not positive
 3 :var_2 is 5
@@ -993,7 +993,7 @@ No.17
 11:ascii no.70 is F
 
 
-分支2�?输入�?var_1为正数，var_2为任意支持的整数，char_1为c1，char_2为c2，（c1、c2是符合文法的任意单个字符�?输出�?n:'为行数，为了方便说明而标注，实际输出没有该项）：
+ÂàÜÊîØ2ÔøΩ?ËæìÂÖ•ÔøΩ?var_1‰∏∫Ê≠£Êï∞Ôºåvar_2‰∏∫‰ªªÊÑèÊîØÊåÅÁöÑÊï¥Êï∞Ôºåchar_1‰∏∫c1Ôºåchar_2‰∏∫c2ÔºåÔºàc1„ÄÅc2ÊòØÁ¨¶ÂêàÊñáÊ≥ïÁöÑ‰ªªÊÑèÂçï‰∏™Â≠óÁ¨¶ÔøΩ?ËæìÂá∫ÔøΩ?n:'‰∏∫Ë°åÊï∞Ôºå‰∏∫‰∫ÜÊñπ‰æøËØ¥ÊòéËÄåÊ†áÊ≥®ÔºåÂÆûÈôÖËæìÂá∫Ê≤°ÊúâËØ•È°πÔºâÔºö
 1 :Hello world!
 2 :var_1 is positive
 3 :var_2 is 5
@@ -1006,18 +1006,18 @@ No.17
 10:c times pai is 297
 11:ascii no.70 is F
 
-说明�?�?行中�?c1,*c2为输入的c1、c2�?s为c1+c2的�?输出的第一行测试了直接写入字符串语句的
-输出的第二行根据var_1是否为正数输出相应信息，测试了读入int，if条件语句的正确�?输出的第三行测试了while循环以及表达式计算的正确�?输出的第四行测试了输出表达式，以及while循环、数组元素赋值以及调用的正确�?输出的第五行测试了有参数的函数声明以及调用，以及函数的递归调用的正确�?输出的第六行测试了字符读入，字符变量输出，以及字符计算的正确�?输出的第七行到第十行测试了无返回值的函数的声明以及调用的正确性，无参数的函数的声明以及调用，while循环，字符计算的正确性�?输出的第十行测试了返回值为char类型的函数的正确性�?变量声明、主函数等基础语法成分的测试包含在以上内容中，不再单独列出
+ËØ¥ÊòéÔøΩ?ÔøΩ?Ë°å‰∏≠ÔøΩ?c1,*c2‰∏∫ËæìÂÖ•ÁöÑc1„ÄÅc2ÔøΩ?s‰∏∫c1+c2ÁöÑÔøΩ?ËæìÂá∫ÁöÑÁ¨¨‰∏ÄË°åÊµãËØï‰∫ÜÁõ¥Êé•ÂÜôÂÖ•Â≠óÁ¨¶‰∏≤ËØ≠Âè•ÁöÑ
+ËæìÂá∫ÁöÑÁ¨¨‰∫åË°åÊ†πÊçÆvar_1ÊòØÂê¶‰∏∫Ê≠£Êï∞ËæìÂá∫Áõ∏Â∫î‰ø°ÊÅØÔºåÊµãËØï‰∫ÜËØªÂÖ•intÔºåifÊù°‰ª∂ËØ≠Âè•ÁöÑÊ≠£Á°ÆÔøΩ?ËæìÂá∫ÁöÑÁ¨¨‰∏âË°åÊµãËØï‰∫ÜwhileÂæ™ÁéØ‰ª•ÂèäË°®ËææÂºèËÆ°ÁÆóÁöÑÊ≠£Á°ÆÔøΩ?ËæìÂá∫ÁöÑÁ¨¨ÂõõË°åÊµãËØï‰∫ÜËæìÂá∫Ë°®ËææÂºèÔºå‰ª•ÂèäwhileÂæ™ÁéØ„ÄÅÊï∞ÁªÑÂÖÉÁ¥†ËµãÂÄº‰ª•ÂèäË∞ÉÁî®ÁöÑÊ≠£Á°ÆÔøΩ?ËæìÂá∫ÁöÑÁ¨¨‰∫îË°åÊµãËØï‰∫ÜÊúâÂèÇÊï∞ÁöÑÂáΩÊï∞Â£∞Êòé‰ª•ÂèäË∞ÉÁî®Ôºå‰ª•ÂèäÂáΩÊï∞ÁöÑÈÄíÂΩíË∞ÉÁî®ÁöÑÊ≠£Á°ÆÔøΩ?ËæìÂá∫ÁöÑÁ¨¨ÂÖ≠Ë°åÊµãËØï‰∫ÜÂ≠óÁ¨¶ËØªÂÖ•ÔºåÂ≠óÁ¨¶ÂèòÈáèËæìÂá∫Ôºå‰ª•ÂèäÂ≠óÁ¨¶ËÆ°ÁÆóÁöÑÊ≠£Á°ÆÔøΩ?ËæìÂá∫ÁöÑÁ¨¨‰∏ÉË°åÂà∞Á¨¨ÂçÅË°åÊµãËØï‰∫ÜÊó†ËøîÂõûÂÄºÁöÑÂáΩÊï∞ÁöÑÂ£∞Êòé‰ª•ÂèäË∞ÉÁî®ÁöÑÊ≠£Á°ÆÊÄßÔºåÊó†ÂèÇÊï∞ÁöÑÂáΩÊï∞ÁöÑÂ£∞Êòé‰ª•ÂèäË∞ÉÁî®ÔºåwhileÂæ™ÁéØÔºåÂ≠óÁ¨¶ËÆ°ÁÆóÁöÑÊ≠£Á°ÆÊÄßÔøΩ?ËæìÂá∫ÁöÑÁ¨¨ÂçÅË°åÊµãËØï‰∫ÜËøîÂõûÂÄº‰∏∫charÁ±ªÂûãÁöÑÂáΩÊï∞ÁöÑÊ≠£Á°ÆÊÄßÔøΩ?ÂèòÈáèÂ£∞Êòé„ÄÅ‰∏ªÂáΩÊï∞Á≠âÂü∫Á°ÄËØ≠Ê≥ïÊàêÂàÜÁöÑÊµãËØïÂåÖÂê´Âú®‰ª•‰∏äÂÜÖÂÆπ‰∏≠Ôºå‰∏çÂÜçÂçïÁã¨ÂàóÂá∫
 ------------------------------------------
-No.18
-
-点（注：实现的时候在每个printf语句后面手动输出一个换行方便检查使用）
+No.18 done!
+//for must execute once
+ÁÇπÔºàÊ≥®ÔºöÂÆûÁé∞ÁöÑÊó∂ÂÄôÂú®ÊØè‰∏™printfËØ≠Âè•ÂêéÈù¢ÊâãÂä®ËæìÂá∫‰∏Ä‰∏™Êç¢Ë°åÊñπ‰æøÊ£ÄÊü•‰ΩøÁî®Ôºâ
 case 1
-输入:
+ËæìÂÖ•:
 9
 1
 10
-输出:
+ËæìÂá∫:
 -31
 ...for loop work well
 ...fibo result is :1
@@ -1029,11 +1029,11 @@ T
 
 
 case2:
-输入:
+ËæìÂÖ•:
 5
 2
 0
-输出�?-31
+ËæìÂá∫ÔøΩ?-31
 ...for loop work well
 ...fibo result is :1
 ...abs is: 0
@@ -1043,11 +1043,11 @@ T
 
 
 case3:
-输入:
+ËæìÂÖ•:
 0
 5
 -9
-输出�?-31
+ËæìÂá∫ÔøΩ?-31
 ...for loop work well
 ...fibo result is :5
 ...abs is: 9
@@ -1056,10 +1056,9 @@ T
 0
 
 ------------------------------------------
-No.19
-测试用例和预期结果：
-第一组：
-输入�?0 1 2 3（输入一个数字马上会打印对应输出�?输出�?0
+No.19  done!
+0 1 2 3
+0
 test_recursion begin:
 success!
 *********************
@@ -1077,8 +1076,8 @@ test_switch begin:
 success!
 *********************
 
-第二组：
-输入�?4 yes 5 6 7 8（输入一个数字马上会打印对应输出�?输出�?4
+4 yes 5 6 7 8
+4
 test_scanf_printf begin:
 yesInput is:
 y
@@ -1116,14 +1115,14 @@ the global scope_var = 20
 success!
 *********************
 
-第三组：
-输入�?0 1 2 3 4 yes 5 6 7 8（输入一个数字马上会打印对应输出�?输出�?前面第一，二组的输出再加上以下输�?ch=_
+0 1 2 3 4 yes 5 6 7 8
+ch=_
 @#$$&*^^^^test end
 
 -----------------------------------------------------
-No.20
-分支1�?    输入:a 5 7 1 x
-    输出:176 
+No.20 done!
+ÂàÜÊîØ1ÔøΩ?    ËæìÂÖ•:a 5 7 1 x
+    ËæìÂá∫:176 
          55 
          97 
          a 
@@ -1131,16 +1130,16 @@ No.20
          This is A String ! #$%&'()*+,-./0123456789:<^_~|`
          x 
          25
-分支2�?    输入:a 15 0 0 x
-    输出:176
+ÂàÜÊîØ2ÔøΩ?    ËæìÂÖ•:a 15 0 0 x
+    ËæìÂá∫:176
          55
          -15
          a
          10
          This is A String ! #$%&'()*+,-./0123456789:<^_~|`
          25
-分支3�?    输入:c 5 -1 10 a
-    输出�?76
+ÂàÜÊîØ3ÔøΩ?    ËæìÂÖ•:c 5 -1 10 a
+    ËæìÂá∫ÔøΩ?76
          55
          0
          c
@@ -1149,36 +1148,33 @@ No.20
          default
          25
 
-
 -----------------------------------------------
-No.21
+No.21 done!
 
-输入1�?5
+5
 2
 a
-a//注意这两个a的输入不要打回车
-输出�?right\n
--3
-输入2�?5
+a
+right\n-3
+5
 1
-输出�?wrong10
+wrong10
 wrong12
-继续输入�?a
+a
 b
-输出�?wrongt7t8neq\n\t\r
+wrongt7t8neq\n\t\r
 wrong\n
-输入3�?10
+10
 5
 wrong10
 wrong11
 wrong12
-继续输入�?b
 b
-输出�?wrong\n
-
+b
+wrong\n
 --------------------------------------------------
 No.22
-//for先执行第一�?
+//for must excute once
 
 =============================================================
 input:

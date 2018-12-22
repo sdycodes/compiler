@@ -68,7 +68,7 @@ void AllValidCharInt(char min, char max, int a1, int a2, int a3, int a4, int x){
 
     c=min;
     printf("if & switch & condition is a relation expression & all valid string & valid char,num");
-    if(c<=max){
+    if((c)<=(max)){
 	do{
         if (c+0!=34){
             if (c+0>=32){
@@ -112,7 +112,7 @@ void AllValidCharInt(char min, char max, int a1, int a2, int a3, int a4, int x){
         if (c+0==34+-34+34)
             printf("char 34 is not included!");
         c = 'c';
-    }while(c<=max)
+    }while((c)<=(max))
 	}
     p=p+1;
     y='a';

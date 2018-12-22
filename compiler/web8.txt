@@ -79,11 +79,11 @@ void testSwitch(){
         else ch='_';
     }
     {
-        if(ch== '+') a2var=100;
-        else if(ch=='-') a2var=50;
-        else if(ch=='*') a2var=25;
-        else if(ch=='/') a2var=10;
-        else if(ch=='_') {
+        if((ch)== ('+')) a2var=100;
+        else if((ch)==('-')) a2var=50;
+        else if((ch)==('*')) a2var=25;
+        else if((ch)==('/')) a2var=10;
+        else if((ch)==('_')) {
             x=x*x;
             if(x-y==0)
                 a2var=9;

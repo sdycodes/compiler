@@ -46,7 +46,7 @@ string factor(bool &onlyChar) {
 			t = rec;
 			nextsym(type, val, name);
 		}
-		else_ERR("expect a right parent", 1)
+		else_ERR("expect a right parent", 0)
 		break;
 	case IDEN:
 		int ident_idx;
@@ -68,7 +68,7 @@ string factor(bool &onlyChar) {
 					if ((rec[0] == '-' || rec[0] == '+' || isdigit(rec[0])) 
 						&& (stoi(rec) >= st[ident_idx].val||stoi(rec)<0)) {
 						t = "0";
-						errmsg("index out of length", 1);
+						errmsg("index out of length", 0);
 					}
 					if (type == RBRACKET) {
 						if (st[ident_idx].type != ST_VOID) {
@@ -83,7 +83,12 @@ string factor(bool &onlyChar) {
 				else_ERR("expect a left bracket", 2)
 			}
 			else if (st[ident_idx].kind == ST_VAR || st[ident_idx].kind == ST_PARA) {
-				t = st[ident_idx].name;
+				if (st[ident_idx].islocal)
+					t = st[ident_idx].name;
+				else {
+					t = gent();
+					genmc("ASSIGN", st[ident_idx].name, "0", t);
+				}
 				nextsym(type, val, name);
 			}
 			else if (st[ident_idx].kind == ST_CONST) {
@@ -216,7 +221,7 @@ void assignstmt(int ident_idx) {
 			if (onlyChar)	errmsg("illegal index of array", 2);
 			if ((rec_idx[0] == '-' || rec_idx[0] == '+' || isdigit(rec_idx[0]))
 				&& (stoi(rec_idx) >= st[ident_idx].val || stoi(rec_idx) < 0)) {
-				errmsg("index out of length", 1);
+				errmsg("index out of length", 0);
 			}
 			if (type == RBRACKET) {
 				nextsym(type, val, name);
@@ -227,7 +232,7 @@ void assignstmt(int ident_idx) {
 					if (/*true||*/(onlyChar&&st[ident_idx].type == ST_CHAR) || (!onlyChar&&st[ident_idx].type != ST_CHAR)) {
 						genmc("SELEM", rec_idx, rec_val, st[ident_idx].name);
 					}
-					else_ERR("type not match", 2);
+					else_ERR("type not match", 0);
 				}
 				else_ERR("expect a becomes", 2)
 			}
@@ -415,7 +420,7 @@ string conditions() {
 		case GRTEREQ:op = "GE";break;
 		}
 		t = gent();
-		if ((onlyChar&&onlyChar2) || (!onlyChar && !onlyChar2))
+		if (!onlyChar && !onlyChar2)
 			genmc(op, rec_val1, rec_val2, t);
 		else_ERR("type not match", 0)
 	}
@@ -443,7 +448,7 @@ void dowhilestmt() {
 				if (DUMP_GREAMMAR) printf("%d %d this is a do-while statement\n", lc, cc);
 				nextsym(type, val, name);
 			}
-			else_ERR("expect a right parent", 1)
+			else_ERR("expect a right parent", 0)
 		}
 		else_ERR("expect left parent", 51)
 	}
@@ -543,7 +548,7 @@ void state() {
 		nextsym(type, val, name);
 	}
 	else if (need_semicolon) {
-		errmsg("expect a semicolon", 1);
+		errmsg("expect a semicolon", 0);
 	}
 }
 void stmtlist() {
@@ -674,7 +679,7 @@ void varDecl(int var_type, bool islocal) {
 							nextsym(type, val, name);
 							break;
 						}
-						else_ERR("expect a semicolon or comma", 1);
+						else_ERR("expect a semicolon or comma", 0);
 					}
 					else_ERR("expect a right bracket", 1)
 				}
@@ -693,7 +698,7 @@ void varDecl(int var_type, bool islocal) {
 				nextsym(type, val, name);
 				return;
 			}
-			else_ERR("expect comma or semicolon", 1)
+			else_ERR("expect comma or semicolon", 0)
 		}
 	}
 	else_ERR("expect identifier", 1)
@@ -742,7 +747,7 @@ void constDef(bool islocal) {
 					if (DUMP_GREAMMAR) printf("%d %d this is a const declaration\n", lc, cc);
 					nextsym(type, val, name);
 				}
-				else_ERR("expect a semicolon", 1)
+				else_ERR("expect a semicolon", 0)
 		}
 		else_ERR("expect a type identifier", 1)
 	} while (type == CONSTSY);
@@ -785,7 +790,7 @@ void program() {
 									nextsym(type, val, name);
 
 								}
-								else_ERR("expect a semicolon or comma", 1)
+								else_ERR("expect a semicolon or comma", 0)
 							}
 							else_ERR("expect a right bracket", 1)
 						}

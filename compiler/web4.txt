@@ -16,7 +16,7 @@ char function2(int parameter3, char parameter4)
 {
     int temp_num, i, temp_num_2;
     char temp_str;
-    if (parameter4 <= 'Z')
+    if ((parameter4) <= ('Z'))
     {
         printf("Too small");
         printf("\n");
@@ -91,19 +91,19 @@ int function_cal()
         do
         {
             temp_cal = cal[i];
-            if (temp_cal >= '0') {
+            if ((temp_cal) >= ('0')) {
                 cal_num = temp_cal - '0';
                 cal_num1 = 10 * cal_num1 + cal_num;
                 i = i + 1;
             }
         }
-        while (temp_cal >= '0')
+        while ((temp_cal) >= ('0'))
         cal_flag = cal_flag + 1;
         if (cal_flag == 1)
             cal_result = cal_result + cal_num1;
         else
         {
-            if (temp_cal == str4)
+            if ((temp_cal) == (str4))
                 cal_result = cal_result + cal_num1;
             else
                 cal_result = cal_result + cal_num1;

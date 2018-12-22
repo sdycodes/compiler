@@ -30,7 +30,7 @@ void readFile(char code[]) {
 				i++;
 			}
 			else {
-				cout << "unexpected char!\n";
+				cout << "unexpected char!"<<ch<<"\n";
 				i++;
 			}
 		}

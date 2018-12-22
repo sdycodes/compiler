@@ -17,9 +17,9 @@ void init_block(block& b);
 void split_block(void);
 void gen_DAG(void);
 void cal_def_use(void);
-void unionset(bool a[], bool b[], bool c[], int size = MAXSIGNNUM);
-void substract(bool a[], bool b[], bool c[], int size = MAXSIGNNUM);
-bool assign_and_check_change(bool a[], bool b[], int size = MAXSIGNNUM);
+void unionset(bool a[], bool b[], bool c[], int size);
+void substract(bool a[], bool b[], bool c[], int size);
+bool assign_and_check_change(bool a[], bool b[], int size);
 void cal_in_out(void);
 void cal_isOB(void);
 #endif

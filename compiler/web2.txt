@@ -56,13 +56,13 @@ char test_switch(){
     char flag;
     printf(" test_switch input one char:a or b  ");
     scanf(flag);
-        if(flag=='a'){
+        if((flag)==('a')){
             printf("  ");
             printf(cha);
             printf(" ");
             printf(CHA+cha);
         }    
-        else if(flag=='b'){
+        else if((flag)==('b')){
             printf("  ");
             printf(chb);
             printf(" ");

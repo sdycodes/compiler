@@ -283,7 +283,7 @@ void testCallFunction()
     if(test_select== 0)
         testIfWhile();
 	else if(test_select==1)
-		//switch casehas been removed
+		;
     else if(test_select==2)
         testAssign();
     else if(test_select==3)

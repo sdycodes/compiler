@@ -70,7 +70,7 @@ void test_switch() {
     flag = 'a';
    
     {
-    if(flag== 'a') {
+    if((flag)== ('a')) {
         printf("success!");
     }
     else  printf("fail!");

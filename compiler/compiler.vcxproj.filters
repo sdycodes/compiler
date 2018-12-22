@@ -139,9 +139,6 @@
     <Text Include="public_test5.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="gg.txt">
-      <Filter>资源文件</Filter>
-    </Text>
     <Text Include="gg3.txt">
       <Filter>资源文件</Filter>
     </Text>
@@ -221,6 +218,12 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="tests.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test_global.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="temp.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

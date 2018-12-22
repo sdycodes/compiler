@@ -8,13 +8,13 @@ void ptans(int in1, int in2, char op)
 {
     int out;
         
-    if (op == '+')
+    if ((op) == ('+'))
         out = in1 + in2;
-    if (op == '-')
+    if ((op) == ('-'))
         out = in1 - in2;
-    if (op == '*')
+    if ((op) == ('*'))
         out = in1 * in2;
-    if (op == '/')
+    if ((op) == ('/'))
         out = in1 / in2;
     printf(" ", out);
 
