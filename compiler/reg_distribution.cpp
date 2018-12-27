@@ -158,10 +158,20 @@ void inOrderAlloc() {
 }
 void cal_alloc() {
 	//inOrderAlloc();
-	//全局变量的独家处理
+	//全局变量处理
+	/*
+	int i = 0, cnt = CHOOSEA;
+	int regNo = 4 + CHOOSEA;
+	while (i < stp&&cnt < 4 && st[i].kind != ST_FUNC) {
+		if (st[i].kind == ST_VAR) {
+			name2reg[i] = regNo++;
+			cnt++;
+		}
+		i++;
+	}*/
 	int i = 0, cnt = 0;
-	int regNo = 5;
-	while (i < stp&&cnt < 3 && st[i].kind != ST_FUNC) {
+	int regNo = 22;
+	while (i < stp&&cnt < 2 && st[i].kind != ST_FUNC) {
 		if (st[i].kind == ST_VAR) {
 			name2reg[i] = regNo++;
 			cnt++;

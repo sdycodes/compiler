@@ -198,3 +198,39 @@ void common_expr() {
 		blocks[i].end = nmc.size()-1;
 	}
 }
+
+
+//局部变量的常量传播算法 have problem
+void local_var_spread() {
+	bool islocal;
+	int def_loc;
+	int loc;
+	for (int i = 0;i < (int)mc.size();i++) {
+		if (mc[i].op == "LABEL"&&mc[i].n1[0]!= '$') {	//一个函数的开始
+			def_loc = search_tab(mc[i].n1 == "main" ? "main" : mc[i].n1.substr(5), islocal);
+			int j = i+1;
+			//检查这个函数的所有中间代码
+			while (j < (int)mc.size() && !(mc[j].op == "LABEL"&&mc[j].n1[0] != '$')) {
+				if (mc[j].op == "ASSIGN"&&isCon(mc[j].n1)) {
+					loc = search_tab(mc[j].res, islocal, def_loc);
+					if (isOB[loc]|| !islocal) { j++; continue; } //跨块全局变量不要乱优化
+					loc = search_tab(mc[j].n1, islocal, def_loc);
+					if (!islocal) { j++; continue; }	//全局变量不要乱优化
+					if (isOB[loc]) { j++; continue; }		//跨块变量不要乱优化
+					int k = j + 1;
+					while (k<(int)mc.size()&&!(mc[k].op == "LABEL"&&mc[k].n1[0] != '$')){
+						if (((mc[k].op == "INV" || mc[k].op == "INC") && mc[k].n1 == mc[j].res) ||
+							((mc[k].op == "LELEM" || mc[k].op == "ASSIGN") && mc[k].res == mc[j].res))
+							break;
+						if (mc[k].n1 == mc[j].res) mc[k].n1 = mc[j].n1;
+						if (mc[k].n2 == mc[j].res) mc[k].n2 = mc[j].n1;
+						k++;
+					}
+					mc[j].op = "NULL";
+				}
+				j++;
+			}
+			i = j-1;
+		}
+	}
+}

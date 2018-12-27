@@ -1,0 +1,37 @@
+
+char chs[5];
+
+void permutation(int m, int n){ 
+	int i; 
+	char t; 
+	if (m < n-1) { 
+		permutation(m+1, n); 
+		for (i = m+1;i < n;i = i+1) { 
+			t = chs[m]; 
+			chs[m] = chs[i]; 
+			chs[i] = t; 
+			permutation(m+1, n); 	
+			t = chs[m]; 
+			chs[m] = chs[i]; 	
+			chs[i] = t; 
+		} 
+	}
+	else{			
+		i = 0;
+		do{			
+			printf(chs[i]);
+			i = i + 1;
+		}while(i<5)			
+		printf(" ");		
+	}
+} 
+
+void main() {
+	chs[0] = 'A';
+	chs[1] = 'B';
+	chs[2] = 'C';
+	chs[3] = 'D';
+	chs[4] = 'E';
+	permutation(0,5);
+	return;
+}

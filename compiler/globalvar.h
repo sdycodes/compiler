@@ -68,4 +68,6 @@ extern vector<mce> omc;
 extern vector<mce> mp;
 
 extern bool isError;
+
+extern int CHOOSEA;
 #endif

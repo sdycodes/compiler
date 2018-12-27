@@ -9,7 +9,7 @@
 #define no2name(x) (x)>=16&&(x)<=23?"$s"+to_string(x-16):	\
 					(x)<16&&(x)>=8?"$t"+to_string(x-8): \
 					(x)==24||(x)==25?"$t"+to_string(x-16): \
-					(x)>=5&&(x)<=7?"$a"+to_string(x-4):"!!!"
+					(x)>=4&&(x)<=7?"$a"+to_string(x-4):"!!!"
 
 #define isCon(num) (isdigit(num[0])||num[0]=='-'||num[0]=='+')
 #define REG_NUM 8
@@ -23,16 +23,19 @@ string get_reg(string name, bool assign, int def_loc) {
 	bool islocal;
 	string reg;
 	int loc = search_tab(name, islocal, def_loc);
-	static int data_buffer = 6;
+	//static int data_buffer = 6;
+	static int data_buffer = 0;
 	//一个全局变量 或者是一个未分配寄存器的跨基本块局部变量
 	if (loc != -1 && (!islocal|| name2reg[loc] == -1)) {
 		if (!islocal&&name2reg[loc] > 0)	return no2name(name2reg[loc]);
-		reg = "$s" + to_string(data_buffer);
+		//reg = "$s" + to_string(data_buffer);
+		reg = "$v" + to_string(data_buffer);
 		if (!islocal)
 			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//从内存中读取
 		else
 			gen_mips("lw", reg, "$fp", to_string(-st[loc].addr));
-		data_buffer = data_buffer == 6 ? 7 : 6;
+		//data_buffer = data_buffer == 6 ? 7 : 6;
+		data_buffer = data_buffer == 0 ? 1 : 0;
 		return reg;
 	}
 	//如果是一个分配了s寄存器的跨基本块局部变量
@@ -134,8 +137,13 @@ void mc2mp() {
 			if (mc[i].n1[0] != '$') {	//是一个函数标签
 				def_loc = search_tab(mc[i].n1 == "main" ? "main" : mc[i].n1.substr(5), islocal);
 				int k = def_loc + 1;
+				int get_cnt = 0;
 				while (k < stp&&st[k].kind == ST_PARA) {
-					if (name2reg[k] > 0)
+					if (name2reg[k] > 0 && get_cnt < CHOOSEA) {
+						gen_mips("move", no2name(name2reg[k]), "$a"+to_string(get_cnt));
+						get_cnt++;
+					}
+					else if (name2reg[k] > 0)
 						gen_mips("lw", no2name(name2reg[k]), "$fp", to_string(-st[k].addr));
 					k++;
 				}
@@ -232,13 +240,25 @@ void mc2mp() {
 			int loc = search_tab(mc[i].n1=="main"?"main":mc[i].n1.substr(5), islocal);
 			int context_offset = st[loc].addr;	//保存现场的起始位置
 			//传参数
+			int para_cnt = 0;
 			for (int j = 0;j < (int)paras.size();j++) {
 				if (isCon(paras[j])) {
-					gen_mips("li", "$t8", paras[j]);
-					gen_mips("sw", "$t8", "$sp", to_string(-j * 4));
+					if (name2reg[loc+j+1] > 0 && para_cnt < CHOOSEA){
+						gen_mips("li", "$a" + to_string(para_cnt), paras[j]);
+						para_cnt++;
+					}
+					else {
+						gen_mips("li", "$t8", paras[j]);
+						gen_mips("sw", "$t8", "$sp", to_string(-j * 4));
+					}
 				}
-				else
+				else if (name2reg[loc+j+1] > 0 && para_cnt < CHOOSEA) {
+					gen_mips("move", "$a"+to_string(para_cnt), get_reg(paras[j], false, def_loc));
+					para_cnt++;
+				}
+				else 
 					gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
+				
 			}
 			paras.clear();
 			//个性化保存现场

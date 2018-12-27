@@ -148,9 +148,6 @@
     <Text Include="jsh.txt">
       <Filter>资源文件</Filter>
     </Text>
-    <Text Include="dag_common_expr.txt">
-      <Filter>资源文件</Filter>
-    </Text>
     <Text Include="web1.txt">
       <Filter>资源文件</Filter>
     </Text>
@@ -224,6 +221,12 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="temp.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="problem_codes.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="try.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>
