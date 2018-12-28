@@ -354,7 +354,7 @@ void mips_opt() {
 		//对返回值的特定优化
 		else if (i>=2&&mp[i].op == "jr") {
 			if (mp[i - 1].res == "$v0"&&mp[i - 1].op == "move"&&mp[i - 2].res == mp[i - 1].n1
-				&&(mp[i-2].op=="addu"|| mp[i - 2].op == "addiu"
+				&&(mp[i-2].op=="addu"|| mp[i - 2].op == "addiu"||mp[i-2].op=="mul"||mp[i-2].op=="div"
 					|| mp[i - 2].op == "subu"|| mp[i - 2].op == "move"||
 					mp[i-2].op=="lw"||mp[i-2].op=="li")) {
 				mp[i - 2].res = "$v0";

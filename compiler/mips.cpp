@@ -361,6 +361,7 @@ void mc2mp() {
 				num1 = tmp;
 				reverse = true;
 			}
+			if (num2 == "0") num2 = "$0";
 			if (mc[i - 1].op == "LT"&&mc[i].op == "BNZ") 
 				gen_mips(reverse?"blt":"bge", mc[i].res, num1, num2);
 			else if (mc[i - 1].op == "LT"&&mc[i].op == "BEZ")
@@ -422,6 +423,24 @@ void mc2mp() {
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
+			//如果赋值的是一个非中间变量 清除掉所有中间变量
+			if (mc[i].res[0] != '#') {
+				map<int, string>::iterator it = t_alloc.begin();
+				int cnt = 0;
+				while (it != t_alloc.end()) {
+					if (it->second[0] == '#') {
+						it->second = "";
+					}
+					int k;
+					for (k = 0;k < REG_NUM;k++)
+						if (tstk[k] == it->first)	break;
+					//移动
+					for (;k < REG_NUM - 1;k++)
+						tstk[k] = tstk[k + 1];
+					tstk[k] = it->first;
+					it++;
+				}
+			}
 		}
 		else if (mc[i].op == "SELEM") { 
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
@@ -443,9 +462,9 @@ void mc2mp() {
 					gen_mips("subu", "$t8", "$fp", "$t8");
 				else
 					gen_mips("addu", "$t8", "$gp", "$t8");
-				if (isCon(mc[i].n2))
+				if (isCon(mc[i].n2)&&mc[i].n2!="0")
 					gen_mips("li", "$t9", mc[i].n2);
-				gen_mips("sw", isCon(mc[i].n2) ? "$t9" : num2, "$t8", "0");
+				gen_mips("sw", isCon(mc[i].n2)?(mc[i].n2=="0"?"$0":"$t9"): num2, "$t8", "0");
 			}
 		}
 		else if (mc[i].op == "LELEM") {
