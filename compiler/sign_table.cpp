@@ -35,15 +35,17 @@ int insert_tab(bool islocal, string name, int kind, int type, int val, int size,
 
 int search_tab(string name, bool &islocal, int def_loc) {
 	int loc = def_loc==-1?stp - 1:def_loc+1;
-	while (st[loc].kind != ST_FUNC && loc>=0 && loc<stp) {
-		if (st[loc].name == name) {
-			islocal = st[loc].islocal;
-			return loc;
+	if (def_loc != -2) {
+		while (st[loc].kind != ST_FUNC && loc >= 0 && loc < stp) {
+			if (st[loc].name == name) {
+				islocal = st[loc].islocal;
+				return loc;
+			}
+			if (def_loc == -1)
+				loc--;
+			else
+				loc++;
 		}
-		if (def_loc == -1)
-			loc--;
-		else
-			loc++;
 	}
 	map<string, int>::iterator it = stidx.find(name);
 	// global variable

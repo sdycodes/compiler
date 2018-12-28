@@ -54,7 +54,7 @@ void dumpmc(vector<mce> mc) {
 	string mop;
 	for (int j = 0;j < (int)mc.size();j++) {
 		if (mc[j].op == "LABEL") {
-			loc = search_tab(mc[j].n1, islocal);
+			loc = search_tab(mc[j].n1, islocal, -2);
 			// if its a function output its parameters and const and variables
 			if (loc != -1) {
 				printf("FUNC %s\n", st[loc].name.c_str());

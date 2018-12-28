@@ -229,5 +229,8 @@
     <Text Include="try.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="BulletFly.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

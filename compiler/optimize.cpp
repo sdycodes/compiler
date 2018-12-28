@@ -25,6 +25,7 @@ bool used(mce x, string src) {
 	return false;
 }
 
+
 void common_expr() {
 	int loc = -1;
 	bool islocal = false;
@@ -34,67 +35,136 @@ void common_expr() {
 		for (int j = blocks[i].start;j <= blocks[i].end;j++) {	//对块内每条指令
 			//label指令 更新def_loc 用于以后查表用
 			if (mc[j].op == "LABEL"&&mc[j].n1[0] != '$')
-				def_loc = search_tab(mc[j].n1, islocal);
+				def_loc = search_tab(mc[j].n1, islocal, -2);
 			//对于加减乘除指令 可作消除公共子表达式
 			else if (mc[j].op == "ADD"||mc[j].op == "SUB"||mc[j].op == "MULT" || mc[j].op == "DIV"||mc[j].op=="LELEM") {
-				//有全局变量不要做
+				//有全局变量不要做 窥孔之前 右侧一定是中间变量
 				int loc1 = search_tab(mc[j].n1, islocal1, def_loc);
 				int loc2 = search_tab(mc[j].n2, islocal2, def_loc);
 				if ((loc1!=-1&&!islocal1)||(loc2!=-1&&!islocal2))	continue;
 				bool n1change = false, n2change = false;	//两个操作数是否被改变
 				//检查后面的表达式
-				int k;
-				for (k = j + 1;k <= blocks[i].end;k++) {
+				int k=j+1;
+				while(k <= blocks[i].end&&!(mc[k].op=="ASSIGN"&&mc[k].res[0]!='#')) {
 					n1change = modified(mc[k], mc[j].n1);
 					n2change = modified(mc[k], mc[j].n2);
 					if (n1change || n2change)	break;
-					//来源没有被改变	且运算一样 那就是公共子表达式了
+					//来源没有被改变	且运算一样 那就是公共子表达式了 注意右侧一定是中间变量 直接传播
 					if (mc[k].op == mc[j].op&&mc[k].n1==mc[j].n1&&mc[k].n2==mc[j].n2) {
-						mc[k].op = "ASSIGN";
-						mc[k].n1 = mc[j].res;	
-						//作常量传播
-						if (mc[k].res[0] == '#'&&mc[k].n1 != "#RET") {
-							//中间变量复制了一个不是常数的变量
-							string src = mc[k].n1;	//复制来源
-							string dst = mc[k].res;//复制目标
-							//复制了全局变量不做传播
-							search_tab(src, islocal, def_loc);
-							if (src[0] != '#' && !islocal)	continue;
-							bool change = false, canDelete = true;
-							for (int w = k + 1;w <= blocks[i].end;w++) {	//从下一条指令开始
-								if (!change && !modified(mc[w], src)) {	//来源没有被改变 使用的目标都可以替换
-									mc[w].n1 = mc[w].n1 == dst ? src : mc[w].n1;
-									mc[w].n2 = mc[w].n2 == dst ? src : mc[w].n2;
-								}
-								else if (change) {	//在被改变的情况下 检查dst还是否被使用过
-									if ((mc[w].op != "INC"&&mc[w].op != "INV") && (mc[w].n1 == dst || mc[k].n2 == dst))
-										canDelete = false;	//如果还被用过 那就不能再删除了
-								}
-								else {//来源被改变的那一条还是可以换的
-									if (mc[w].op != "INC"&&mc[w].op != "INV") {
-										mc[w].n1 = mc[w].n1 == dst ? src : mc[w].n1;
-										mc[w].n2 = mc[w].n2 == dst ? src : mc[w].n1;
-									}
-									change = true;	//标记来源被改变了
-								}
-							}
-							if (canDelete)	//能删则删
-								mc[k].op = "NULL";
-						}
+						mc[k].op = "NULL";
+						//作常量传播 这里打破了一个规律 中间变量的使用超过了表达式
+						//维持这个规律更明智
+						//中间变量复制了一个不是常数的变量
+						string src = mc[j].res;	//复制来源
+						string dst = mc[k].res;//复制目标
+						if (src[0] != '#' && !islocal) { k++; continue; }
+						int w = k+1;
+						do {	//从下一条指令开始
+							if (mc[w].n1 == dst)	mc[w].n1 = src;
+							if (mc[w].n2 == dst)	mc[w].n2 = src;
+							w++;
+						} while (w <= blocks[i].end&& !(mc[k].op == "ASSIGN"&&mc[k].res[0] != '#'));
 					}
+					k++;
 				}
 			}
 		}
 	}
 }
+/*
+int trans(mce x, int def_line, int mc_loc, string end_lab, int base) {
+	int cnt = 0;
+	mce res;
+	res = x;
+	int i = def_line+1;
+	if (x.op == "RET") {
+		res.op = "ASSIGN";
+		res.n1 = x.n1;
+		while (i < stp&&st[i].kind == ST_PARA) {
+			if (x.n1 == st[i].name)
+				res.n1 = "$a" + to_string(i - def_line);
+			if (x.n2 == st[i].name)
+				res.n2 = "$a" + to_string(i - def_line);
+			i++;
+		}
+		res.res = "#RET";
+		mc.insert(mc.begin()+mc_loc, res);
+		cnt++;
+		res.op = "GOTO";
+		res.n1 = end_lab;
+		mc.insert(mc.begin() + mc_loc, res);
+		cnt++;
+	}
+	else {
+		while (i < stp&&st[i].kind == ST_PARA) {
+			if (x.n1 == st[i].name)
+				res.n1 = "$a" + to_string(i - def_line);
+			if (x.n2 == st[i].name)
+				res.n2 = "$a" + to_string(i - def_line);
+			i++;
+		}
+		mc.insert(mc.begin() + mc_loc, res);
+		cnt++;
+	}
+	return cnt;
+}
+void inline_tag() {
+	bool islocal;
+	int def_loc;
+	int para_cnt = 0;
+	bool canInline = false;
+	int code_loc;
+	for (int i = 0;i < (int)mc.size();i++) {
+		canInline = false;
+		code_loc = 0;
+		if (mc[i].op == "CALL"&&mc[i].n1!="main") {
+			def_loc = search_tab(mc[i].n1.substr(5), islocal, -2);
+			para_cnt = 0;
+			int j = def_loc + 1;
+			while (j < stp&&st[j].kind == ST_PARA) {
+				j++;
+				para_cnt++;
+			}
+			//参数小于3 且没有局部变量
+			if (para_cnt <= 3&&j!=stp&&st[j].kind==ST_FUNC) {
+				for (code_loc = 0;code_loc < i;code_loc++)
+					if (mc[code_loc].op == "LABEL"&&mc[code_loc].n1 == mc[i].n1)
+						break;
+				//检查这个函数是否调用别人
+				int m = code_loc + 1;
+				while (m < (int)mc.size() && !(mc[m].op == "LABEL"&&mc[m].n1[0] != '$')) {
+					if (mc[m].op == "CALL")	break;
+					m++;
+				}
+				if (m < (int)mc.size() && mc[m].op == "LABEL"&&mc[m].n1[0] != '$')
+					canInline = true;
+			}
+		}
+		if (!canInline)	continue;
+		mce tmp;
+		tmp.op = "INLINE";
+		mc.insert(mc.begin()+i, tmp);
+		i++;
+		mc[i].op = "LABEL";
+		mc[i].n1 = genlabel();
+		int m = code_loc + 1;
+		while (m < (int)mc.size() && !(mc[m].op == "LABEL"&&mc[m].n1[0] != '$')) {
+			i += trans(mc[m], def_loc, i, mc[i].n1);
+			m++;
+		}
 
-//标签收缩 把重叠的标签删除
+	}
+	
+}
+*/
+
+//标签收缩 把重叠的标签删除	可能还是会有重复标签因为GOTO被删除导致
 void label_modify() {
 	for (int i = 0;i < (int)mc.size()-1;i++) {
 		if (mc[i].op == mc[i + 1].op&&mc[i].op == "LABEL"&&mc[i].n1[0]=='$'&&mc[i+1].n1[0]=='$') {
-			mc[i].op = "NULL";
-			string dst = mc[i+1].n1;
-			string src = mc[i].n1;
+			mc[i+1].op = "NULL";
+			string dst = mc[i].n1;
+			string src = mc[i+1].n1;
 			for (int j = 0;j < (int)mc.size();j++) {
 				if (mc[j].n1 == src)	mc[j].n1 = dst;
 				if (mc[j].res == src)	mc[j].res = dst;
@@ -105,7 +175,7 @@ void label_modify() {
 void midcode_opt() {
 	omc = mc;	//深拷贝 mc将保存优化后的中间代码 omc存储过去的
 	const_copy_spread();	//中间变量的常量和复制传播 局部变量的常量传播
-	common_expr();			//把公共子表达式转化为assign语句	并且传播
+	common_expr();			//把消除公共子表达式
 	label_modify();			//把多重标签收缩
 	kk_opt();				//窥孔优化
 }
@@ -120,7 +190,7 @@ void const_copy_spread() {
 	for (int i = 0;i < (int)blocks.size();i++) {	//对每个块
 		for (int j = blocks[i].start;j <= blocks[i].end;j++) {	//对每条代码
 			if (mc[j].op == "LABEL"&&mc[j].n1[0] != '$') {	//更新现在在哪个函数里
-				def_loc = search_tab(mc[j].n1 == "main" ? "main" : mc[j].n1.substr(5), islocal);
+				def_loc = search_tab(mc[j].n1 == "main" ? "main" : mc[j].n1.substr(5), islocal, -2);
 				continue;
 			}
 			else if (mc[j].op == "ASSIGN"&&mc[j].res[0]=='#'&&isCon(mc[j].n1)) {	
@@ -277,15 +347,15 @@ void kk_opt() {
 void mips_opt() {
 	for (int i = 0;i < (int)mp.size();i++) {
 		//减立即数是伪指令翻译会多一条
-		if (mp[i].op == "subi") {
-			mp[i].op = "addi";
+		if (mp[i].op == "subiu") {
+			mp[i].op = "addiu";
 			mp[i].n2 = to_string(-stoi(mp[i].n2));
 		}
 		//对返回值的特定优化
 		else if (i>=2&&mp[i].op == "jr") {
 			if (mp[i - 1].res == "$v0"&&mp[i - 1].op == "move"&&mp[i - 2].res == mp[i - 1].n1
-				&&(mp[i-2].op=="add"|| mp[i - 2].op == "addi"
-					|| mp[i - 2].op == "sub"|| mp[i - 2].op == "move"||
+				&&(mp[i-2].op=="addu"|| mp[i - 2].op == "addiu"
+					|| mp[i - 2].op == "subu"|| mp[i - 2].op == "move"||
 					mp[i-2].op=="lw"||mp[i-2].op=="li")) {
 				mp[i - 2].res = "$v0";
 				mp.erase(mp.begin() + i - 1);

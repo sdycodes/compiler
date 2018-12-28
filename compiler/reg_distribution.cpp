@@ -41,7 +41,7 @@ void colorAlloc() {
 			//从i到n左闭右开区间是这个函数的块
 			//通过符号表找到这个函数的所有局部变量
 			string funcname = mc[blocks[i].start].n1 == "main" ? "main" : mc[blocks[i].start].n1.substr(5);
-			int loc = search_tab(funcname, islocal);
+			int loc = search_tab(funcname, islocal, -2);
 			int end = loc + 1;
 			while (end < stp&&st[end].kind != ST_FUNC)
 				end++;
@@ -138,7 +138,7 @@ void inOrderAlloc() {
 		//如果本块是一个函数的开始 那么可以从头分配寄存器
 		if (mc[blocks[i].start].op == "LABEL"&&mc[blocks[i].start].n1[0] != '$') {
 			sregcnt = 16;
-			func_begin = search_tab(mc[blocks[i].start].n1 == "main" ? "main" : mc[blocks[i].start].n1.substr(5), islocal);
+			func_begin = search_tab(mc[blocks[i].start].n1 == "main" ? "main" : mc[blocks[i].start].n1.substr(5), islocal, -2);
 			func_end = func_begin + 1;
 			while (func_end < stp&&st[func_end].kind != ST_FUNC)
 				func_end++;	//一个函数在符号表中的范围 左闭右开区间
@@ -179,4 +179,5 @@ void cal_alloc() {
 		i++;
 	}
 	colorAlloc();
+	//inOrderAlloc();
 }

@@ -4,7 +4,8 @@
 #include "globalvar.h"
 #include "sign_table.h"
 vector<block> blocks;
-#define isVar(x) (((x)[0]=='_'||((x)[0]>='a'&&(x)[0]<='z')||((x)[0]>='A'&&(x)[0]<='Z'))&&islocal)
+//#define isVar(x) (((x)[0]=='_'||((x)[0]>='a'&&(x)[0]<='z')||((x)[0]>='A'&&(x)[0]<='Z'))&&islocal)
+#define isVar(x) ((st[loc].kind==ST_VAR||st[loc].kind==ST_PARA)&&islocal)
 
 bool isOB[MAXSIGNNUM];
 void init_block(block& b) {
@@ -115,7 +116,7 @@ void cal_def_use() {
 		map<int, bool> rec;
 		for (int j = blocks[i].start;j <= blocks[i].end;j++) {
 			if (mc[j].op == "LABEL"&&mc[j].n1[0]!='$') {
-				def_loc = search_tab(mc[j].n1=="main"?"main":mc[j].n1.substr(5), islocal);
+				def_loc = search_tab(mc[j].n1=="main"?"main":mc[j].n1.substr(5), islocal, -2);
 				//把参数的def置为true
 				int k = def_loc + 1;
 				while (k < stp&&st[k].kind == ST_PARA) {
