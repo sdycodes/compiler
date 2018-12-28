@@ -20,7 +20,7 @@ bool modified(mce x, string src) {
 	return false;
 }
 bool used(mce x, string src) {
-	if (x.op != "INC"&&x.op != "INV"&&(x.n1 == src || x.n2 == src))
+	if (x.op != "INC"&&x.op != "INV"&&x.op!="NULL"&&(x.n1 == src || x.n2 == src))
 		return true;
 	return false;
 }
@@ -45,7 +45,7 @@ void common_expr() {
 				bool n1change = false, n2change = false;	//两个操作数是否被改变
 				//检查后面的表达式
 				int k=j+1;
-				while(k <= blocks[i].end&&!(mc[k].op=="ASSIGN"&&mc[k].res[0]!='#')) {
+				while(k <= blocks[i].end&&!(mc[k].op=="ASSIGN"&&mc[k].res[0]!='#')&&mc[k].op!="CALL") {
 					n1change = modified(mc[k], mc[j].n1);
 					n2change = modified(mc[k], mc[j].n2);
 					if (n1change || n2change)	break;
@@ -63,7 +63,7 @@ void common_expr() {
 							if (mc[w].n1 == dst)	mc[w].n1 = src;
 							if (mc[w].n2 == dst)	mc[w].n2 = src;
 							w++;
-						} while (w <= blocks[i].end&& !(mc[k].op == "ASSIGN"&&mc[k].res[0] != '#'));
+						} while (w <= blocks[i].end&& !(mc[w].op == "ASSIGN"&&mc[w].res[0] != '#')&&mc[w].op!="CALL");
 					}
 					k++;
 				}
@@ -172,11 +172,38 @@ void label_modify() {
 		}
 	}
 }
+
+void death_code() {
+	int loc, def_loc;
+	bool islocal;
+	for (int i = 0;i < (int)blocks.size();i++) {
+		int a = blocks[i].start;
+		if (mc[a].op == "LABEL"&&mc[a].n1[0] != '$')
+			def_loc = search_tab(mc[a].n1 == "main" ? "main" : mc[a].n1.substr(5), islocal, -2);
+		for (int j = blocks[i].end;j >= blocks[i].start;j--) {
+			if (mc[j].op == "ASSIGN" || mc[j].op == "LELEM" || mc[j].op == "ADD" || mc[j].op == "SUB" ||
+				mc[j].op == "MULT" || mc[j].op == "DIV" || mc[j].op == "LT" || mc[j].op == "LE" ||
+				mc[j].op == "GT" || mc[j].op == "GE" || mc[j].op == "EQ" || mc[j].op == "NE") {
+				string tar = mc[j].res;
+				loc = search_tab(tar, islocal, def_loc);
+				if (tar[0] == '#' || (loc != -1 && !isOB[loc])) {
+					bool canDelete = true;
+					for (int k = j + 1;k <= blocks[i].end;k++) {
+						if (used(mc[k], tar))	canDelete = false;
+					}
+					if (canDelete)	mc[j].op = "NULL";
+				}
+			}
+			
+		}
+	}
+}
 void midcode_opt() {
 	omc = mc;	//深拷贝 mc将保存优化后的中间代码 omc存储过去的
 	const_copy_spread();	//中间变量的常量和复制传播 局部变量的常量传播
 	common_expr();			//把消除公共子表达式
 	label_modify();			//把多重标签收缩
+	death_code();			//死代码删除
 	kk_opt();				//窥孔优化
 }
 
@@ -297,13 +324,13 @@ void kk_opt() {
 			i++;
 		}
 		//优化2 GOTO到下一个label之间的代码删除 相邻则可以删除GOTO
-		else if (mc[i].op == "GOTO") {
+		else if (mc[i].op == "GOTO"||mc[i].op=="RET") {
 			int j = i + 1;
 			while (mc[j].op != "LABEL") {
 				mc[j].op = "NULL";
 				j++;
 			}
-			if (mc[j].op == "LABEL"&&mc[i].n1 == mc[j].n1)
+			if (mc[j].op == "LABEL"&&mc[i].n1 == mc[j].n1&&mc[i].op=="GOTO")
 				mc[i].op = "NULL";
 			i = j - 1;
 		}

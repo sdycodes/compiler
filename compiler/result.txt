@@ -9,79 +9,68 @@ move $s0 $a0
 bgt $s0 1 $LABEL0
 li $v0 1 
 jr $ra  
-j $LABEL1  
 $LABEL0:   
 addiu $t7 $s0 -1
 move $a0 $t7 
-sw $15 -64($sp)
 sw $s0 -68($sp)
 sw $31 -128($sp)
 move $fp $sp 
 addiu $sp $fp -152
 jal FUNC_factorial  
-lw $15 -64($fp)
 lw $s0 -68($fp)
 lw $31 -128($fp)
 move $sp $fp 
 addiu $fp $sp 152
-move $t6 $v0 
-mul $v0 $s0 $t6
+move $t7 $v0 
+mul $v0 $s0 $t7
 jr $ra  
 $LABEL1:   
 li $v0 0 
 jr $ra  
 FUNC_mod:   
-lw $t4 0($fp)
-lw $t3 -4($fp)
-div $t2 $t4 $t3
-mul $t1 $t2 $t3
-subu $v0 $t4 $t1
+div $t5 $a1 $a2
+mul $t4 $t5 $a2
+subu $v0 $a1 $t4
 jr $ra  
 FUNC_swap:   
 li $v0 4 
 li $a0 268500992 
 syscall   
 li $v0 1 
-lw $t0 0($fp)
-move $a0 $t0 
+move $a0 $a1 
 syscall   
 li $v0 4 
 li $a0 268500999 
 syscall   
 li $v0 1 
-lw $t7 -4($fp)
-move $a0 $t7 
+move $a0 $a2 
 syscall   
-move $t6 $t0 
-move $t0 $t7 
-move $t7 $t6 
+move $t3 $a1 
+move $a1 $a2 
+move $a2 $t3 
 li $v0 4 
 li $a0 268501006 
 syscall   
 li $v0 1 
-move $a0 $t0 
+move $a0 $a1 
 syscall   
 li $v0 4 
 li $a0 268501018 
 syscall   
 li $v0 1 
-move $a0 $t7 
+move $a0 $a2 
 syscall   
 jr $ra  
 FUNC_complete_num:   
-lw $t6 0($fp)
-move $s4 $t6 
+lw $t2 0($fp)
+move $s4 $t2 
 $LABEL2:   
 li $s3 -1 
 move $s1 $s4 
 li $s0 1 
 $LABEL3:   
-div $t6 $s4 $s0
-mul $t5 $t6 $s0
-sw $s4 0($sp)
-sw $s0 -4($sp)
-sw $13 -60($sp)
-sw $14 -64($sp)
+move $a1 $s4 
+move $a2 $s0 
 sw $s0 -72($sp)
 sw $s1 -76($sp)
 sw $s2 -80($sp)
@@ -91,8 +80,6 @@ sw $31 -132($sp)
 move $fp $sp 
 addiu $sp $fp -148
 jal FUNC_mod  
-lw $13 -60($fp)
-lw $14 -64($fp)
 lw $s0 -72($fp)
 lw $s1 -76($fp)
 lw $s2 -80($fp)
@@ -101,8 +88,8 @@ lw $s4 -88($fp)
 lw $31 -132($fp)
 move $sp $fp 
 addiu $fp $sp 872
-move $t2 $v0 
-bne $t2 $0 $LABEL4
+move $t1 $v0 
+bne $t1 $0 $LABEL4
 addiu $s3 $s3 1
 subu $s1 $s1 $s0
 blt $s3 128 $LABEL6
@@ -134,9 +121,9 @@ syscall
 sll $t8 $s0 2
 addiu $t8 $t8 4
 subu $t8 $fp $t8
-lw $t3 0($t8)
+lw $t0 0($t8)
 li $v0 1 
-move $a0 $t3 
+move $a0 $t0 
 syscall   
 addiu $s0 $s0 1
 ble $s0 $s3 $LABEL10
@@ -153,10 +140,10 @@ li $s2 0
 li $s0 0 
 $LABEL11:   
 mul $s1 $s2 $s0
-mul $t1 $s4 $s3
+mul $t7 $s4 $s3
 mul $s2 $s2 $s0
-addu $t4 $s2 $s1
-addu $s2 $t4 $t1
+addu $t6 $s2 $s1
+addu $s2 $t6 $t7
 addiu $s0 $s0 1
 blt $s0 1024 $LABEL11
 move $s1 $s2 
@@ -181,12 +168,8 @@ $LABEL13:
 div $s3 $s4 2
 li $s0 2 
 $LABEL14:   
-div $t0 $s4 $s0
-mul $t7 $t0 $s0
-sw $s4 0($sp)
-sw $s0 -4($sp)
-sw $8 -40($sp)
-sw $15 -68($sp)
+move $a1 $s4 
+move $a2 $s0 
 sw $s0 -72($sp)
 sw $s1 -76($sp)
 sw $s2 -80($sp)
@@ -196,8 +179,6 @@ sw $31 -132($sp)
 move $fp $sp 
 addiu $sp $fp -148
 jal FUNC_mod  
-lw $8 -40($fp)
-lw $15 -68($fp)
 lw $s0 -72($fp)
 lw $s1 -76($fp)
 lw $s2 -80($fp)
@@ -206,8 +187,8 @@ lw $s4 -88($fp)
 lw $31 -132($fp)
 move $sp $fp 
 addiu $fp $sp 872
-move $t6 $v0 
-bne $t6 $0 $LABEL15
+move $t5 $v0 
+bne $t5 $0 $LABEL15
 li $s1 0 
 $LABEL15:   
 addiu $s0 $s0 1
@@ -220,9 +201,9 @@ li $v0 1
 move $a0 $s4 
 syscall   
 addiu $s2 $s2 1
-div $t5 $s2 10
-mul $t2 $t5 10
-bne $t2 $s2 $LABEL19
+div $t4 $s2 10
+mul $t3 $t4 10
+bne $t3 $s2 $LABEL19
 li $v0 4 
 li $a0 268501250 
 syscall   
@@ -247,35 +228,33 @@ jal FUNC_factorial
 lw $31 -128($fp)
 move $sp $fp 
 addiu $fp $sp 328
-move $t3 $v0 
-move $t4 $t3 
+move $t2 $v0 
+move $t1 $t2 
 li $v0 4 
 li $a0 268501287 
 syscall   
 li $v0 1 
-move $a0 $t4 
+move $a0 $t1 
 syscall   
-li $t8 5 
-sw $t8 0($sp)
-li $t8 10 
-sw $t8 -4($sp)
-sw $12 -60($sp)
+li $a1 5 
+li $a2 10 
+sw $9 -48($sp)
 sw $31 -136($sp)
 move $fp $sp 
 addiu $sp $fp -140
 jal FUNC_swap  
-lw $12 -60($fp)
+lw $9 -48($fp)
 lw $31 -136($fp)
 move $sp $fp 
 addiu $fp $sp 328
 li $t8 2 
 sw $t8 0($sp)
-sw $12 -616($sp)
+sw $9 -604($sp)
 sw $31 -692($sp)
 move $fp $sp 
 addiu $sp $fp -872
 jal FUNC_complete_num  
-lw $12 -616($fp)
+lw $9 -604($fp)
 lw $31 -692($fp)
 move $sp $fp 
 addiu $fp $sp 328

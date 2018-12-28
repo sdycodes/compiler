@@ -16,27 +16,68 @@
 int tstk[REG_NUM] = { 8,9,10,11,12,13,14,15 };
 map<int, string> t_alloc;
 
+void resetMidvar(string midvarname) {
+	map<int, string>::iterator it = t_alloc.begin();
+	int cnt = 0;
+	while (it != t_alloc.end()) {
+		if (it->second == midvarname) {
+			it->second = "";
+		}
+		int k;
+		for (k = 0;k < REG_NUM;k++)
+			if (tstk[k] == it->first)	break;
+		//移动
+		for (;k < REG_NUM - 1;k++)
+			tstk[k] = tstk[k + 1];
+		tstk[k] = it->first;
+		it++;
+	}
+}
+bool isOBNL(string funcname) {
+	int start = 0;
+	while (start < (int)mc.size()) {
+		if (mc[start].op == "LABEL"&&mc[start].n1 == funcname)
+			break;
+		start++;
+	}
+	int i = start+1;
+	while (i < (int)mc.size() && mc[i].op != "LABEL") {
+		if (mc[i].op == "CALL")
+			return false;
+		i++;
+	}
+	if (i < (int)mc.size() && mc[i].op == "LABEL"&&mc[i].n1[0] == '$')
+		return false;
+	return true;
+}
 string get_reg(string name, bool assign, int def_loc) {
 	//#RET 直接返回v0
 	if (name == "#RET")
 		return "$v0";
-	if (name[0] == '$')
-		return name;
+	if (isOBNL(st[def_loc].name=="main"?"main":"FUNC_"+st[def_loc].name)) {
+		if (def_loc+1<stp&&st[def_loc + 1].name == name && st[def_loc + 1].kind == ST_PARA)
+			return "$a1";
+		if (def_loc+2<stp&&st[def_loc + 2].name == name && st[def_loc + 2].kind == ST_PARA)
+			return "$a2";
+		if (def_loc + 3 < stp&&st[def_loc + 3].name == name && st[def_loc + 3].kind == ST_PARA)
+			return "$a3";
+	}
 	bool islocal;
 	string reg;
 	int loc = search_tab(name, islocal, def_loc);
-	//static int data_buffer = 6;
-	static int data_buffer = 0;
+	static int data_buffer = 6;
+	//static int data_buffer = 0;
 	//一个全局变量 或者是一个未分配寄存器的跨基本块局部变量
 	if (loc != -1 && (!islocal|| name2reg[loc] == -1)) {
 		if (!islocal&&name2reg[loc] > 0)	return no2name(name2reg[loc]);
-		//reg = "$s" + to_string(data_buffer);
-		reg = data_buffer == 0 ? "$a3" : "$v1";
+		reg = "$s" + to_string(data_buffer);
+		//reg = data_buffer == 0 ? "$a3" : "$v1";
 		if (!islocal)
 			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//从内存中读取
 		else
 			gen_mips("lw", reg, "$fp", to_string(-st[loc].addr));
-		data_buffer = data_buffer == 0 ? 1 : 0;
+		data_buffer = data_buffer == 6 ? 6 : 7;
+		//data_buffer = data_buffer == 0 ? 1 : 0;
 		return reg;
 	}
 	//如果是一个分配了s寄存器的跨基本块局部变量
@@ -140,7 +181,7 @@ void mc2mp() {
 				int k = def_loc + 1;
 				int get_cnt = 0;
 				while (k < stp&&st[k].kind == ST_PARA) {
-					if (name2reg[k] > 0 && get_cnt < 3) {
+					if (name2reg[k] > 0 && get_cnt < CHOOSEA) {
 						gen_mips("move", no2name(name2reg[k]), "$a"+to_string(get_cnt));
 						get_cnt++;
 					}
@@ -242,24 +283,52 @@ void mc2mp() {
 			int context_offset = st[loc].addr;	//保存现场的起始位置
 			//传参数
 			int para_cnt = 0;
-			for (int j = 0;j < (int)paras.size();j++) {
-				if (isCon(paras[j])) {
-					if (name2reg[loc+j+1] > 0 && para_cnt < 3){
-						gen_mips("li", "$a" + to_string(para_cnt), paras[j]);
-						para_cnt++;
+			if (isOBNL(mc[i].n1)) {
+				for (int j = 0;j < (int)paras.size();j++) {
+					if (isCon(paras[j])) {
+						if (para_cnt < CHOOSEA-1) {
+							gen_mips("li", "$a"+to_string(para_cnt+1), paras[j]);
+							para_cnt++;
+						}
+						else {
+							if(paras[j]!="0") gen_mips("li", "$t8", paras[j]);
+							gen_mips("sw", paras[j]=="0"?"$0":"$t8", "$sp", to_string(-j * 4));
+						}
 					}
 					else {
-						gen_mips("li", "$t8", paras[j]);
-						gen_mips("sw", "$t8", "$sp", to_string(-j * 4));
+						if (para_cnt < CHOOSEA-1) {
+							gen_mips("move", "$a"+to_string(para_cnt+1), get_reg(paras[j], false, def_loc));
+							para_cnt++;
+						}
+						else
+							gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
 					}
 				}
-				else if (name2reg[loc+j+1] > 0 && para_cnt < 3) {
-					gen_mips("move", "$a"+to_string(para_cnt), get_reg(paras[j], false, def_loc));
-					para_cnt++;
+			}
+			else {
+				for (int j = 0;j < (int)paras.size();j++) {
+					if (isCon(paras[j])) {
+						if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA) {
+							gen_mips("li", "$a" + to_string(para_cnt), paras[j]);
+							para_cnt++;
+						}
+						else {
+							if(paras[j]!="0") gen_mips("li", "$t8", paras[j]);
+							gen_mips("sw", paras[j]=="0"?"$0":"$t8", "$sp", to_string(-j * 4));
+						}
+					}
+					else if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA) {
+						gen_mips("move", "$a" + to_string(para_cnt), get_reg(paras[j], false, def_loc));
+						para_cnt++;
+					}
+					else
+						gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
 				}
-				else 
-					gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
-				
+			}
+			//函数传参后 所有的参数中间变量都应清除 这也意味着公共子表达式的中间变量不能跨函数
+			for (int j = 0;j < (int)paras.size();j++) {
+				if (paras[j][0] == '#') 
+					resetMidvar(paras[j]);
 			}
 			paras.clear();
 			//个性化保存现场
@@ -274,7 +343,7 @@ void mc2mp() {
 					should[name2reg[j]-16] = true;
 				j++;
 			}
-			for(int l=0;l<8;l++)
+			for(int l=0;l<6;l++)
 				if(should[l])
 					gen_mips("sw", no2name(l+16), "$sp", to_string(-context_offset - (l + 16) * 4));
 			gen_mips("sw", "$31", "$sp", to_string(-context_offset - 124));
@@ -294,7 +363,7 @@ void mc2mp() {
 					gen_mips("lw", no2name(name2reg[j]), "$fp", to_string(-context_offset - name2reg[j] * 4));
 				j++;
 			}*/
-			for (int l = 0;l < 8;l++)
+			for (int l = 0;l < 6;l++)
 				if (should[l])
 					gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
 			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31 * 4));
@@ -426,18 +495,9 @@ void mc2mp() {
 			//如果赋值的是一个非中间变量 清除掉所有中间变量
 			if (mc[i].res[0] != '#') {
 				map<int, string>::iterator it = t_alloc.begin();
-				int cnt = 0;
 				while (it != t_alloc.end()) {
-					if (it->second[0] == '#') {
-						it->second = "";
-					}
-					int k;
-					for (k = 0;k < REG_NUM;k++)
-						if (tstk[k] == it->first)	break;
-					//移动
-					for (;k < REG_NUM - 1;k++)
-						tstk[k] = tstk[k + 1];
-					tstk[k] = it->first;
+					if (it->second[0] == '#') 
+						resetMidvar(it->second);
 					it++;
 				}
 			}
