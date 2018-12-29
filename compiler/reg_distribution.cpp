@@ -12,7 +12,15 @@ void cal_ConfG() {
 	for (int i = 1;i < (int)blocks.size();i++) {
 		for (int j = 0;j < stp;j++) {
 			for (int k = j + 1;k < stp;k++) {	//in集合两两冲突	in与def冲突
-				if (blocks[i].in[j] && (blocks[i].in[k] || blocks[i].def[k])) {
+				if (blocks[i].in[j] && blocks[i].in[k]) {
+					conflictG[j][k] = true;
+					conflictG[k][j] = true;
+				}
+				if (blocks[i].in[j] && blocks[i].def[k]) {
+					conflictG[j][k] = true;
+					conflictG[k][j] = true;
+				}
+				if (blocks[i].in[k] && blocks[i].def[j]) {
 					conflictG[j][k] = true;
 					conflictG[k][j] = true;
 				}
@@ -55,13 +63,18 @@ void colorAlloc() {
 			}
 			vector<int> vars;	//变量的编号
 			for (int j = loc + 1;j < end;j++)
-				if (tmp[j])
+				if (tmp[j]) 
 					vars.push_back(j);
-			//这里的倒置操作只是为了方便看
-			//vector<int> vars2;
-			//for (int j = vars.size() - 1;j >= 0;j--)
-			//	vars2.push_back(vars[j]);
-			//vars = vars2;
+			/*
+			cout << mc[blocks[i].start].n1 << "\n";
+			for (int j = 0;j < (int)vars.size();j++)
+				cout << st[vars[j]].name << " ";
+			cout << "\n";
+			for (int j = 0;j < vars.size();j++) {
+				for (int k =0;k < vars.size();k++)
+					cout << conflictG[vars[j]][vars[k]] << " ";
+				cout << "\n";
+			}*/
 			//至此所有的需要考察的变量都在vars中
 			map<int, int> loc2deg;	//记录这些变量的度
 			for (int j = 0;j < (int)vars.size();j++) {

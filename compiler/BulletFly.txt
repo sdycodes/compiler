@@ -91,18 +91,14 @@ void complete_num(int val){
 	b = a ;
   i=0;
   do{
-    b = b + i ;
-	i=i+1;
-  }while( i < MAX_NUM )
-  printf(" b = ", b) ;
-  printf(" ---------------------------------------------------------------          ");
-
-  h = 0 ;
-
-  leap = 1 ;
-
-  m = 2;
-
+		b = b + i ;
+		i=i+1;
+	}while( i < MAX_NUM )
+	leap = 1 ;
+	printf(" b = ", b) ;
+	printf(" ---------------------------------------------------------------          ");
+	h = 0 ;
+	m = 2;
   do
 
   {
@@ -110,7 +106,6 @@ void complete_num(int val){
     k2 = m / 2;
 
 	i = 2;
-
     do{
 
       x2 = (m/i)*i ;

@@ -152,6 +152,7 @@ $LABEL12:
 addu $s1 $s1 $s0
 addiu $s0 $s0 1
 blt $s0 1024 $LABEL12
+li $s2 1 
 li $v0 4 
 li $a0 268501164 
 syscall   
@@ -161,11 +162,10 @@ syscall
 li $v0 4 
 li $a0 268501171 
 syscall   
-li $s2 0 
-li $s1 1 
+li $s3 0 
 li $s4 2 
 $LABEL13:   
-div $s3 $s4 2
+div $s1 $s4 2
 li $s0 2 
 $LABEL14:   
 move $a1 $s4 
@@ -189,34 +189,34 @@ move $sp $fp
 addiu $fp $sp 872
 move $t5 $v0 
 bne $t5 $0 $LABEL15
-li $s1 0 
+li $s2 0 
 $LABEL15:   
 addiu $s0 $s0 1
-ble $s0 $s3 $LABEL14
-bne $s1 1 $LABEL17
+ble $s0 $s1 $LABEL14
+bne $s2 1 $LABEL17
 li $v0 4 
 li $a0 268501247 
 syscall   
 li $v0 1 
 move $a0 $s4 
 syscall   
-addiu $s2 $s2 1
-div $t4 $s2 10
+addiu $s3 $s3 1
+div $t4 $s3 10
 mul $t3 $t4 10
-bne $t3 $s2 $LABEL19
+bne $t3 $s3 $LABEL19
 li $v0 4 
 li $a0 268501250 
 syscall   
 $LABEL19:   
 $LABEL17:   
-li $s1 1 
+li $s2 1 
 addiu $s4 $s4 1
 ble $s4 1024 $LABEL13
 li $v0 4 
 li $a0 268501262 
 syscall   
 li $v0 1 
-move $a0 $s2 
+move $a0 $s3 
 syscall   
 jr $ra  
 main:   
