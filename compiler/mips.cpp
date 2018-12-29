@@ -16,6 +16,21 @@
 int tstk[REG_NUM] = { 8,9,10,11,12,13,14,15 };
 map<int, string> t_alloc;
 
+bool isLeaf(string funcname) {
+	int start = 0;
+	while (start < (int)mc.size()) {
+		if (mc[start].op == "LABEL"&&mc[start].n1 == funcname)
+			break;
+		start++;
+	}
+	int i = start + 1;
+	while (i < (int)mc.size() && !(mc[i].op=="LABEL"&&mc[i].n1[0]!='$')) {
+		if (mc[i].op == "CALL")
+			return false;
+		i++;
+	}
+	return true;
+}
 void resetMidvar(string midvarname) {
 	map<int, string>::iterator it = t_alloc.begin();
 	int cnt = 0;
@@ -89,9 +104,9 @@ string get_reg(string name, bool assign, int def_loc) {
 		if (!islocal&&name2reg[loc] > 0)	return no2name(name2reg[loc]);
 		reg = "$s" + to_string(data_buffer);
 		//reg = data_buffer == 0 ? "$a3" : "$v1";
-		if (!islocal)
+		if (!islocal&&!assign)
 			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//从内存中读取
-		else
+		else if(!assign)
 			gen_mips("lw", reg, "$fp", to_string(-st[loc].addr));
 		data_buffer = data_buffer == 6 ? 6 : 7;
 		//data_buffer = data_buffer == 0 ? 1 : 0;
@@ -367,6 +382,17 @@ void mc2mp() {
 					if (name2reg[j] > 0)
 						should[name2reg[j] - 16] = true;
 					j++;
+				}
+				if (st[loc].name != "main"&&isLeaf("FUNC_" + st[loc].name)) {
+					bool should2[8];
+					memset(should2, 0, 8);
+					int o = loc + 1;
+					while (o < stp&&st[o].kind != ST_FUNC) {
+						if (name2reg[o] > 0)	should2[name2reg[o] - 16] = true;
+						o++;
+					}
+					for (o = 0;o < 8;o++)
+						should[o] = should[o] && should2[o];
 				}
 				for (int l = 0;l < 6;l++)
 					if (should[l])
