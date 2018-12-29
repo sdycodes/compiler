@@ -5,13 +5,13 @@ li $fp 0x7fffeffc
 addiu $sp $fp -328
 j main  
 FUNC_factorial:   
-move $s0 $a0 
+move $s0 $a3 
 bgt $s0 1 $LABEL0
 li $v0 1 
 jr $ra  
 $LABEL0:   
 addiu $t7 $s0 -1
-move $a0 $t7 
+move $a3 $t7 
 sw $s0 -68($sp)
 sw $31 -128($sp)
 move $fp $sp 
@@ -28,7 +28,8 @@ $LABEL1:
 li $v0 0 
 jr $ra  
 FUNC_mod:   
-div $t5 $a1 $a2
+div  $a1 $a2
+mflo $t5  
 mul $t4 $t5 $a2
 subu $v0 $a1 $t4
 jr $ra  
@@ -71,20 +72,10 @@ li $s0 1
 $LABEL3:   
 move $a1 $s4 
 move $a2 $s0 
-sw $s0 -72($sp)
-sw $s1 -76($sp)
-sw $s2 -80($sp)
-sw $s3 -84($sp)
-sw $s4 -88($sp)
 sw $31 -132($sp)
 move $fp $sp 
 addiu $sp $fp -148
 jal FUNC_mod  
-lw $s0 -72($fp)
-lw $s1 -76($fp)
-lw $s2 -80($fp)
-lw $s3 -84($fp)
-lw $s4 -88($fp)
 lw $31 -132($fp)
 move $sp $fp 
 addiu $fp $sp 872
@@ -170,20 +161,10 @@ li $s0 2
 $LABEL14:   
 move $a1 $s4 
 move $a2 $s0 
-sw $s0 -72($sp)
-sw $s1 -76($sp)
-sw $s2 -80($sp)
-sw $s3 -84($sp)
-sw $s4 -88($sp)
 sw $31 -132($sp)
 move $fp $sp 
 addiu $sp $fp -148
 jal FUNC_mod  
-lw $s0 -72($fp)
-lw $s1 -76($fp)
-lw $s2 -80($fp)
-lw $s3 -84($fp)
-lw $s4 -88($fp)
 lw $31 -132($fp)
 move $sp $fp 
 addiu $fp $sp 872
@@ -220,12 +201,10 @@ move $a0 $s3
 syscall   
 jr $ra  
 main:   
-li $a0 10 
-sw $31 -128($sp)
+li $a3 10 
 move $fp $sp 
 addiu $sp $fp -152
 jal FUNC_factorial  
-lw $31 -128($fp)
 move $sp $fp 
 addiu $fp $sp 328
 move $t2 $v0 
@@ -239,23 +218,19 @@ syscall
 li $a1 5 
 li $a2 10 
 sw $9 -48($sp)
-sw $31 -136($sp)
 move $fp $sp 
 addiu $sp $fp -140
 jal FUNC_swap  
 lw $9 -48($fp)
-lw $31 -136($fp)
 move $sp $fp 
 addiu $fp $sp 328
 li $t8 2 
 sw $t8 0($sp)
 sw $9 -604($sp)
-sw $31 -692($sp)
 move $fp $sp 
 addiu $sp $fp -872
 jal FUNC_complete_num  
 lw $9 -604($fp)
-lw $31 -692($fp)
 move $sp $fp 
 addiu $fp $sp 328
 li $v0 10 

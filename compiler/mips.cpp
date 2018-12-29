@@ -50,6 +50,23 @@ bool isOBNL(string funcname) {
 		return false;
 	return true;
 }
+
+
+bool calnoRA() {
+	int start = 0;
+	while (start < (int)mc.size()) {
+		if (mc[start].op == "LABEL"&&mc[start].n1 == "main")
+			break;
+		start++;
+	}
+	int i = start + 1;
+	while (i < (int)mc.size()) {
+		if (mc[i].op == "CALL"&&mc[i].n1=="main")
+			return false;
+		i++;
+	}
+	return true;
+}
 string get_reg(string name, bool assign, int def_loc) {
 	//#RET 直接返回v0
 	if (name == "#RET")
@@ -148,11 +165,13 @@ void gen_mips(string op, string res, string n1, string n2) {
 	tmp.n2 = n2;
 	mp.push_back(tmp);
 }
+
 void mc2mp() {
 	mce tmp;
 	bool islocal;
 	vector<string> paras;
 	int def_loc;
+	bool noRA = calnoRA();
 	gen_mips(".data", "", "", "");
 	string all_string="";
 	for (int s = 0;s < strtabp;s++) {
@@ -182,7 +201,7 @@ void mc2mp() {
 				int get_cnt = 0;
 				while (k < stp&&st[k].kind == ST_PARA) {
 					if (name2reg[k] > 0 && get_cnt < CHOOSEA) {
-						gen_mips("move", no2name(name2reg[k]), "$a"+to_string(get_cnt));
+						gen_mips("move", no2name(name2reg[k]), "$a" + to_string(3 - get_cnt));
 						get_cnt++;
 					}
 					else if (name2reg[k] > 0)
@@ -257,8 +276,12 @@ void mc2mp() {
 			}
 			//都是变量
 			else {
-				string op = mc[i].op == "MULT" ? "mul" : "div";
-				gen_mips(op, numres, num1, num2);
+				if(mc[i].op=="MULT")
+					gen_mips("mul", numres, num1, num2);
+				else {
+					gen_mips("div", "", num1, num2);
+					gen_mips("mflo", numres);
+				}
 			}
 			//这里是对于全局变量的特殊操作 
 			int loc = search_tab(mc[i].res, islocal, def_loc);
@@ -309,7 +332,7 @@ void mc2mp() {
 				for (int j = 0;j < (int)paras.size();j++) {
 					if (isCon(paras[j])) {
 						if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA) {
-							gen_mips("li", "$a" + to_string(para_cnt), paras[j]);
+							gen_mips("li", "$a" + to_string(3-para_cnt), paras[j]);
 							para_cnt++;
 						}
 						else {
@@ -318,7 +341,7 @@ void mc2mp() {
 						}
 					}
 					else if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA) {
-						gen_mips("move", "$a" + to_string(para_cnt), get_reg(paras[j], false, def_loc));
+						gen_mips("move", "$a" + to_string(3-para_cnt), get_reg(paras[j], false, def_loc));
 						para_cnt++;
 					}
 					else
@@ -338,15 +361,20 @@ void mc2mp() {
 			int j = def_loc + 1;
 			bool should[8];
 			memset(should, 0, sizeof(should));
-			while (j < stp&&st[j].kind !=ST_FUNC) {
-				if (name2reg[j] > 0)
-					should[name2reg[j]-16] = true;
-				j++;
+			//如果子函数就一块不会用s寄存器不保存现场
+			if (!isOBNL(mc[i].n1)) {
+				while (j < stp&&st[j].kind != ST_FUNC) {
+					if (name2reg[j] > 0)
+						should[name2reg[j] - 16] = true;
+					j++;
+				}
+				for (int l = 0;l < 6;l++)
+					if (should[l])
+						gen_mips("sw", no2name(l + 16), "$sp", to_string(-context_offset - (l + 16) * 4));
 			}
-			for(int l=0;l<6;l++)
-				if(should[l])
-					gen_mips("sw", no2name(l+16), "$sp", to_string(-context_offset - (l + 16) * 4));
-			gen_mips("sw", "$31", "$sp", to_string(-context_offset - 124));
+			//main函数且不是自递归的则不需要
+			if(!(st[def_loc].name=="main"&&noRA))
+				gen_mips("sw", "$31", "$sp", to_string(-context_offset - 124));
 			//分配函数运行栈
 			gen_mips("move", "$fp", "$sp");
 			gen_mips("subiu", "$sp", "$fp", to_string(st[loc].size));
@@ -356,17 +384,14 @@ void mc2mp() {
 			for (int j = 8;j < 16;j++)
 				if (t_alloc.find(j) != t_alloc.end() && t_alloc[j] != "")
 					gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
-			/*
-			j = def_loc + 1;
-			while (j < stp&&st[j].kind != ST_FUNC) {
-				if (name2reg[j]>0)
-					gen_mips("lw", no2name(name2reg[j]), "$fp", to_string(-context_offset - name2reg[j] * 4));
-				j++;
-			}*/
-			for (int l = 0;l < 6;l++)
-				if (should[l])
-					gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
-			gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31 * 4));
+			if (!isOBNL(mc[i].n1)) {
+				for (int l = 0;l < 6;l++)
+					if (should[l])
+						gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
+			}
+			//main函数且不是自递归的则不需要
+			if (!(st[def_loc].name == "main"&&noRA))
+				gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31 * 4));
 			gen_mips("move", "$sp", "$fp");
 			gen_mips("addiu", "$fp", "$sp", to_string(st[def_loc].size));
 			
@@ -405,56 +430,60 @@ void mc2mp() {
 			bool reverse = false;
 			string tmp;
 			if (isCon(mc[i-1].n1)&&isCon(mc[i-1].n2)) {
-				if ((mc[i - 1].op == "LT"&&stoi(num1) < stoi(num2))||
-					(mc[i - 1].op == "LE"&&stoi(num1) <= stoi(num2))||
-					(mc[i - 1].op == "GT"&&stoi(num1)>stoi(num2))||
-					(mc[i - 1].op == "GE"&&stoi(num1)>=stoi(num2))||
-					(mc[i - 1].op == "EQ"&&stoi(num1)==stoi(num2))||
-					(mc[i - 1].op == "NE"&&stoi(num1)!=stoi(num2)))
-					if (mc[i].op == "BEZ") {
+				int a = stoi(num1);
+				int b = stoi(num2);
+				if ((mc[i - 1].op == "LT"&&a < b) ||
+					(mc[i - 1].op == "LE"&&a <= b) ||
+					(mc[i - 1].op == "GT"&&a > b) ||
+					(mc[i - 1].op == "GE"&&a >= b) ||
+					(mc[i - 1].op == "EQ"&&a == b) ||
+					(mc[i - 1].op == "NE"&&a != b)) {
+					if (mc[i].op == "BEZ")
 						gen_mips("j", mc[i].res);
-					}
-				else if ((mc[i - 1].op == "LT"&&stoi(num1) >= stoi(num2)) ||
-					(mc[i - 1].op == "LE"&&stoi(num1) > stoi(num2)) ||
-					(mc[i - 1].op == "GT"&&stoi(num1) <= stoi(num2)) ||
-					(mc[i - 1].op == "GE"&&stoi(num1) < stoi(num2)) ||
-					(mc[i - 1].op == "EQ"&&stoi(num1) != stoi(num2)) ||
-					(mc[i - 1].op == "NE"&&stoi(num1) == stoi(num2)))
-					if (mc[i].op == "BNZ") {
+				}
+				else if ((mc[i - 1].op == "LT"&&a >= b) ||
+					(mc[i - 1].op == "LE"&&a > b) ||
+					(mc[i - 1].op == "GT"&&a <= b) ||
+					(mc[i - 1].op == "GE"&&a < b) ||
+					(mc[i - 1].op == "EQ"&&a != b) ||
+					(mc[i - 1].op == "NE"&&a == b)) {
+					if (mc[i].op == "BNZ")
 						gen_mips("j", mc[i].res);
-					}
+				}
 			}
-			else if (isCon(mc[i-1].n1)) {
-				tmp = num2;
-				num2 = num1;
-				num1 = tmp;
-				reverse = true;
+			else{
+				if (isCon(mc[i - 1].n1)) {
+					tmp = num2;
+					num2 = num1;
+					num1 = tmp;
+					reverse = true;
+				}
+				if (num2 == "0") num2 = "$0";
+				if (mc[i - 1].op == "LT"&&mc[i].op == "BNZ") 
+					gen_mips(reverse?"blt":"bge", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "LT"&&mc[i].op == "BEZ")
+					gen_mips(reverse?"bge":"blt", mc[i].res, num1, num2);
+				else if(mc[i-1].op=="LE"&&mc[i].op=="BNZ")
+					gen_mips(reverse?"ble":"bgt", mc[i].res, num1, num2);
+				else if(mc[i-1].op=="LE"&&mc[i].op=="BEZ")
+					gen_mips(reverse?"bgt":"ble", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "GT"&&mc[i].op == "BNZ")
+					gen_mips(reverse?"bgt":"ble", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "GT"&&mc[i].op == "BEZ")
+					gen_mips(reverse?"ble":"bgt", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "GE"&&mc[i].op == "BNZ")
+					gen_mips(reverse?"bge":"blt", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "GE"&&mc[i].op == "BEZ")
+					gen_mips(reverse?"blt":"bge", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "EQ"&&mc[i].op == "BNZ")
+					gen_mips("bne", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "EQ"&&mc[i].op == "BEZ")
+					gen_mips("beq", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "NE"&&mc[i].op == "BNZ")
+					gen_mips("beq", mc[i].res, num1, num2);
+				else if (mc[i - 1].op == "NE"&&mc[i].op == "BEZ")
+					gen_mips("bne", mc[i].res, num1, num2);
 			}
-			if (num2 == "0") num2 = "$0";
-			if (mc[i - 1].op == "LT"&&mc[i].op == "BNZ") 
-				gen_mips(reverse?"blt":"bge", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "LT"&&mc[i].op == "BEZ")
-				gen_mips(reverse?"bge":"blt", mc[i].res, num1, num2);
-			else if(mc[i-1].op=="LE"&&mc[i].op=="BNZ")
-				gen_mips(reverse?"ble":"bgt", mc[i].res, num1, num2);
-			else if(mc[i-1].op=="LE"&&mc[i].op=="BEZ")
-				gen_mips(reverse?"bgt":"ble", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "GT"&&mc[i].op == "BNZ")
-				gen_mips(reverse?"bgt":"ble", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "GT"&&mc[i].op == "BEZ")
-				gen_mips(reverse?"ble":"bgt", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "GE"&&mc[i].op == "BNZ")
-				gen_mips(reverse?"bge":"blt", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "GE"&&mc[i].op == "BEZ")
-				gen_mips(reverse?"blt":"bge", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "EQ"&&mc[i].op == "BNZ")
-				gen_mips("bne", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "EQ"&&mc[i].op == "BEZ")
-				gen_mips("beq", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "NE"&&mc[i].op == "BNZ")
-				gen_mips("beq", mc[i].res, num1, num2);
-			else if (mc[i - 1].op == "NE"&&mc[i].op == "BEZ")
-				gen_mips("bne", mc[i].res, num1, num2);
 		}
 		else if (mc[i].op == "INC"||mc[i].op=="INV") {
 			gen_mips("li", "$v0", mc[i].op=="INV"?"5":"12");

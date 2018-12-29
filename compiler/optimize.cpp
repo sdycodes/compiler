@@ -186,7 +186,7 @@ void death_code() {
 				mc[j].op == "GT" || mc[j].op == "GE" || mc[j].op == "EQ" || mc[j].op == "NE") {
 				string tar = mc[j].res;
 				loc = search_tab(tar, islocal, def_loc);
-				if (tar[0] == '#' || (loc != -1 && !isOB[loc])) {
+				if (tar[0] == '#' || (loc != -1 && !isOB[loc]&&islocal)) {
 					bool canDelete = true;
 					for (int k = j + 1;k <= blocks[i].end;k++) {
 						if (used(mc[k], tar))	canDelete = false;
@@ -273,7 +273,7 @@ void const_copy_spread() {
 			}
 			else if (mc[j].op == "ASSIGN"&&mc[j].res[0] != '#'&&isCon(mc[j].n1)) {
 				loc = search_tab(mc[j].res, islocal, def_loc);
-				if (isOB[loc]||!islocal)	continue;	//此操作只针对不跨块的局部变量
+				if (mc[j].res[0]!='#'&&(loc!=-1&&isOB[loc])||!islocal)	continue;	//此操作只针对不跨块的局部变量
 				//局部变量可能被改值 
 				string src = mc[j].n1;
 				string dst = mc[j].res;
@@ -381,7 +381,8 @@ void mips_opt() {
 		//对返回值的特定优化
 		else if (i>=2&&mp[i].op == "jr") {
 			if (mp[i - 1].res == "$v0"&&mp[i - 1].op == "move"&&mp[i - 2].res == mp[i - 1].n1
-				&&(mp[i-2].op=="addu"|| mp[i - 2].op == "addiu"||mp[i-2].op=="mul"||mp[i-2].op=="div"
+				&&(mp[i-2].op=="addu"|| mp[i - 2].op == "addiu"||mp[i-2].op=="mul"||mp[i-2].op=="mflo"
+					||(mp[i-2].op=="div"&&mp[i-2].res!="")
 					|| mp[i - 2].op == "subu"|| mp[i - 2].op == "move"||
 					mp[i-2].op=="lw"||mp[i-2].op=="li")) {
 				mp[i - 2].res = "$v0";

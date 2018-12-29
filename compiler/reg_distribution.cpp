@@ -4,6 +4,7 @@
 #include "globalvar.h"
 #include "sign_table.h"
 #include "reg_distribution.h"
+#include "mips.h"
 bool conflictG[MAXSIGNNUM][MAXSIGNNUM];
 int name2reg[MAXSIGNNUM] = { 0 };
 
@@ -170,7 +171,6 @@ void inOrderAlloc() {
 	}
 }
 void cal_alloc() {
-	//inOrderAlloc();
 	//全局变量处理
 	/*
 	int i = 0, cnt = CHOOSEA;
@@ -181,16 +181,16 @@ void cal_alloc() {
 			cnt++;
 		}
 		i++;
-	}*/
+	}
 	int i = 0, cnt = 0;
 	int regNo = 22;
-	while (i < stp&&cnt < 2 && st[i].kind != ST_FUNC) {
+	while (i < stp&&cnt < 1 && st[i].kind != ST_FUNC) {
 		if (st[i].kind == ST_VAR) {
 			name2reg[i] = regNo++;
 			cnt++;
 		}
 		i++;
-	}
+	}*/
 	colorAlloc();
 	//inOrderAlloc();
 }
