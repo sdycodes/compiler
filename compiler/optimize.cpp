@@ -390,6 +390,10 @@ void mips_opt() {
 				i--;
 			}
 		}
+		else if (mp[i].op == "move"&&mp[i].res == mp[i].n1) {
+			mp.erase(mp.begin() + i);
+			i--;
+		}
 		//如果一条lw下面lw的被改掉 那么删除这条lw 而且必须保证这个寄存器没有被使用
 		/*
 		else if (i < (int)mp.size() - 1 && mp[i].op == "lw") {

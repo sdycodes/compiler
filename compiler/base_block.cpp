@@ -118,11 +118,11 @@ void cal_def_use() {
 			if (mc[j].op == "LABEL"&&mc[j].n1[0]!='$') {
 				def_loc = search_tab(mc[j].n1=="main"?"main":mc[j].n1.substr(5), islocal, -2);
 				//把参数的def置为true
-				int k = def_loc + 1;
-				while (k < stp&&st[k].kind == ST_PARA) {
-					blocks[i].def[k] = true;
-					k++;
-				}
+				//int k = def_loc + 1;
+				//while (k < stp&&st[k].kind == ST_PARA) {
+				//	blocks[i].def[k] = true;
+				//	k++;
+				//}
 			}
 			else if (mc[j].op == "ADD" || mc[j].op == "SUB" ||
 				mc[j].op == "MULT" || mc[j].op == "DIV" || mc[j].op == "EQ" || mc[j].op == "NE" ||

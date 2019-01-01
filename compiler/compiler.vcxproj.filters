@@ -232,5 +232,26 @@
     <Text Include="BulletFly.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="midcode.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="new_midcode.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

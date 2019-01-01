@@ -86,14 +86,6 @@ string get_reg(string name, bool assign, int def_loc) {
 	//#RET 直接返回v0
 	if (name == "#RET")
 		return "$v0";
-	if (isOBNL(st[def_loc].name=="main"?"main":"FUNC_"+st[def_loc].name)) {
-		if (def_loc+1<stp&&st[def_loc + 1].name == name && st[def_loc + 1].kind == ST_PARA)
-			return "$a1";
-		if (def_loc+2<stp&&st[def_loc + 2].name == name && st[def_loc + 2].kind == ST_PARA)
-			return "$a2";
-		if (def_loc + 3 < stp&&st[def_loc + 3].name == name && st[def_loc + 3].kind == ST_PARA)
-			return "$a3";
-	}
 	bool islocal;
 	string reg;
 	int loc = search_tab(name, islocal, def_loc);
@@ -108,11 +100,11 @@ string get_reg(string name, bool assign, int def_loc) {
 			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//从内存中读取
 		else if(!assign)
 			gen_mips("lw", reg, "$fp", to_string(-st[loc].addr));
-		data_buffer = data_buffer == 6 ? 6 : 7;
+		data_buffer = data_buffer == 6 ? 7 : 6;
 		//data_buffer = data_buffer == 0 ? 1 : 0;
 		return reg;
 	}
-	//如果是一个分配了s寄存器的跨基本块局部变量
+	//如果是一个分配了s/a寄存器的跨基本块局部变量
 	if (loc != -1 && name2reg[loc]!=0&&name2reg[loc]!=-1) {
 		return no2name(name2reg[loc]);
 	}
@@ -214,8 +206,10 @@ void mc2mp() {
 				def_loc = search_tab(mc[i].n1 == "main" ? "main" : mc[i].n1.substr(5), islocal, -2);
 				int k = def_loc + 1;
 				int get_cnt = 0;
+				int rest = 0;
+				if (mc[i].n1 != "main"&&isLeaf(mc[i].n1))	rest = 1;
 				while (k < stp&&st[k].kind == ST_PARA) {
-					if (name2reg[k] > 0 && get_cnt < CHOOSEA) {
+					if (name2reg[k] > 0 && get_cnt < CHOOSEA-rest) {
 						gen_mips("move", no2name(name2reg[k]), "$a" + to_string(3 - get_cnt));
 						get_cnt++;
 					}
@@ -321,47 +315,26 @@ void mc2mp() {
 			int context_offset = st[loc].addr;	//保存现场的起始位置
 			//传参数
 			int para_cnt = 0;
-			if (isOBNL(mc[i].n1)) {
-				for (int j = 0;j < (int)paras.size();j++) {
-					if (isCon(paras[j])) {
-						if (para_cnt < CHOOSEA-1) {
-							gen_mips("li", "$a"+to_string(para_cnt+1), paras[j]);
-							para_cnt++;
-						}
-						else {
-							if(paras[j]!="0") gen_mips("li", "$t8", paras[j]);
-							gen_mips("sw", paras[j]=="0"?"$0":"$t8", "$sp", to_string(-j * 4));
-						}
-					}
-					else {
-						if (para_cnt < CHOOSEA-1) {
-							gen_mips("move", "$a"+to_string(para_cnt+1), get_reg(paras[j], false, def_loc));
-							para_cnt++;
-						}
-						else
-							gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
-					}
-				}
-			}
-			else {
-				for (int j = 0;j < (int)paras.size();j++) {
-					if (isCon(paras[j])) {
-						if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA) {
-							gen_mips("li", "$a" + to_string(3-para_cnt), paras[j]);
-							para_cnt++;
-						}
-						else {
-							if(paras[j]!="0") gen_mips("li", "$t8", paras[j]);
-							gen_mips("sw", paras[j]=="0"?"$0":"$t8", "$sp", to_string(-j * 4));
-						}
-					}
-					else if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA) {
-						gen_mips("move", "$a" + to_string(3-para_cnt), get_reg(paras[j], false, def_loc));
+			int rest = 0;
+			if (mc[i].n1!="main"&&isLeaf(mc[i].n1))
+				rest = 1;
+			for (int j = 0;j < (int)paras.size();j++) {
+				if (isCon(paras[j])) {
+					if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA-rest) {
+						gen_mips("li", "$a" + to_string(3-para_cnt), paras[j]);
 						para_cnt++;
 					}
-					else
-						gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
+					else {
+						if(paras[j]!="0") gen_mips("li", "$t8", paras[j]);
+						gen_mips("sw", paras[j]=="0"?"$0":"$t8", "$sp", to_string(-j * 4));
+					}
 				}
+				else if (name2reg[loc + j + 1] > 0 && para_cnt < CHOOSEA-rest) {
+					gen_mips("move", "$a" + to_string(3-para_cnt), get_reg(paras[j], false, def_loc));
+					para_cnt++;
+				}
+				else
+					gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
 			}
 			//函数传参后 所有的参数中间变量都应清除 这也意味着公共子表达式的中间变量不能跨函数
 			for (int j = 0;j < (int)paras.size();j++) {
@@ -376,28 +349,26 @@ void mc2mp() {
 			int j = def_loc + 1;
 			bool should[8];
 			memset(should, 0, sizeof(should));
-			//如果子函数就一块不会用s寄存器不保存现场
-			if (!isOBNL(mc[i].n1)) {
-				while (j < stp&&st[j].kind != ST_FUNC) {
-					if (name2reg[j] > 0)
-						should[name2reg[j] - 16] = true;
-					j++;
+			while (j < stp&&st[j].kind != ST_FUNC) {
+				if (name2reg[j] > 0)
+					should[name2reg[j] - 16] = true;
+				j++;
+			}	//记录了需要保存现场的寄存器
+			//如果被调用的函数是叶子函数 那么只有两者的交集才需要保存现场
+			if (mc[i].n1 != "main"&&isLeaf(mc[i].n1)) {
+				bool should2[8];
+				memset(should2, 0, 8);
+				int o = loc + 1;
+				while (o < stp&&st[o].kind != ST_FUNC) {
+					if (name2reg[o] >= 16)	should2[name2reg[o] - 16] = true;
+					o++;
 				}
-				if (st[loc].name != "main"&&isLeaf("FUNC_" + st[loc].name)) {
-					bool should2[8];
-					memset(should2, 0, 8);
-					int o = loc + 1;
-					while (o < stp&&st[o].kind != ST_FUNC) {
-						if (name2reg[o] > 0)	should2[name2reg[o] - 16] = true;
-						o++;
-					}
-					for (o = 0;o < 8;o++)
-						should[o] = should[o] && should2[o];
-				}
-				for (int l = 0;l < 6;l++)
-					if (should[l])
-						gen_mips("sw", no2name(l + 16), "$sp", to_string(-context_offset - (l + 16) * 4));
+				for (o = 0;o < 8;o++)
+					should[o] = should[o] && should2[o];
 			}
+			for (int l = 0;l < 6;l++)
+				if (should[l])
+					gen_mips("sw", no2name(l + 16), "$sp", to_string(-context_offset - (l + 16) * 4));
 			//main函数且不是自递归的则不需要
 			if(!(st[def_loc].name=="main"&&noRA))
 				gen_mips("sw", "$31", "$sp", to_string(-context_offset - 124));
@@ -407,13 +378,15 @@ void mc2mp() {
 			//jump to function
 			gen_mips("jal", mc[i].n1);
 			//个性化恢复现场
-			for (int j = 8;j < 16;j++)
+			for (int j = 8;j < 16;j++) {
 				if (t_alloc.find(j) != t_alloc.end() && t_alloc[j] != "")
 					gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
+			}
 			if (!isOBNL(mc[i].n1)) {
-				for (int l = 0;l < 6;l++)
+				for (int l = 0;l < 6;l++) {
 					if (should[l])
 						gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
+				}
 			}
 			//main函数且不是自递归的则不需要
 			if (!(st[def_loc].name == "main"&&noRA))
@@ -431,7 +404,8 @@ void mc2mp() {
 			gen_mips("jr", "$ra");
 		}
 		else if (mc[i].op == "OUTS"|| mc[i].op == "OUTV"|| mc[i].op == "OUTC") {
-			gen_mips("li", "$v0", mc[i].op == "OUTS" ? "4" : mc[i].op == "OUTV" ? "1" : "11");
+			if(i==0||mc[i].op!=mc[i-1].op)
+				gen_mips("li", "$v0", mc[i].op == "OUTS" ? "4" : mc[i].op == "OUTV" ? "1" : "11");
 			if (mc[i].op == "OUTS") {
 				gen_mips("li", "$a0", to_string(0x10010000 + stoi(mc[i].n1)));
 			}
@@ -464,17 +438,16 @@ void mc2mp() {
 					(mc[i - 1].op == "GE"&&a >= b) ||
 					(mc[i - 1].op == "EQ"&&a == b) ||
 					(mc[i - 1].op == "NE"&&a != b)) {
-					if (mc[i].op == "BEZ")
+					if (mc[i].op == "BEZ") {
 						gen_mips("j", mc[i].res);
+					}
 				}
-				else if ((mc[i - 1].op == "LT"&&a >= b) ||
-					(mc[i - 1].op == "LE"&&a > b) ||
-					(mc[i - 1].op == "GT"&&a <= b) ||
-					(mc[i - 1].op == "GE"&&a < b) ||
-					(mc[i - 1].op == "EQ"&&a != b) ||
-					(mc[i - 1].op == "NE"&&a == b)) {
-					if (mc[i].op == "BNZ")
-						gen_mips("j", mc[i].res);
+				else if ((mc[i - 1].op == "LT"&&a >= b) ||(mc[i - 1].op == "LE"&&a > b) ||
+						(mc[i - 1].op == "GT"&&a <= b) ||(mc[i - 1].op == "GE"&&a < b) ||
+						(mc[i - 1].op == "EQ"&&a != b) ||(mc[i - 1].op == "NE"&&a == b)) {
+						if (mc[i].op == "BNZ") {
+							gen_mips("j", mc[i].res);
+						}
 				}
 			}
 			else{
@@ -613,15 +586,6 @@ void mc2mp() {
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
 		}
-		/*
-		else if (mc[i].op == "INLINE") {
-			for (int j = 0;j < (int)paras.size();j++) {
-				if (isCon(paras[j]))	gen_mips("li", "$a"+to_string(j+1), paras[j]);
-				else gen_mips("move", "$a" + to_string(j + 1), get_reg(paras[j], false, def_loc));
-			}
-			paras.clear();
-		}
-		*/
 		//一个基本块结束 清除t寄存器的对应关系  更新位置
 		if (i == block_end) {
 			t_alloc.clear();

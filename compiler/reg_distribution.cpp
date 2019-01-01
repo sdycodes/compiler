@@ -193,4 +193,22 @@ void cal_alloc() {
 	}*/
 	colorAlloc();
 	//inOrderAlloc();
+	//叶子函数的参数分配a寄存器
+	for (int i = 0;i < (int)blocks.size();i++) {
+		if (mc[blocks[i].start].op == "LABEL"&&mc[blocks[i].start].n1[0] != '$') {
+			string func = mc[blocks[i].start].n1;
+			if (func != "main"&&isLeaf(func)) {
+				bool islocal;
+				int loc = search_tab(func.substr(5), islocal, -2);
+				if (loc + 1 < stp&&st[loc + 1].kind == ST_PARA) {
+					name2reg[loc + 1] = 7;
+					if (loc + 2 < stp&&st[loc + 2].kind == ST_PARA) {
+						name2reg[loc + 2] = 6;
+						if (loc + 3 < stp&&st[loc + 3].kind == ST_PARA)
+							name2reg[loc + 3] = 5;
+					}
+				}
+			}
+		}
+	}
 }
