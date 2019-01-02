@@ -1,651 +1,195 @@
-CONST CHAR const_char_a 'a'
-CONST CHAR const_char_b 'b'
-CONST CHAR const_char_c 'c'
-CONST CHAR const_char_A 'A'
-CONST INT const_int_postive 1
-CONST INT const_int_zero 0
-CONST INT const_int_negtive -1
-CONST CHAR const_char_num '9'
-CONST CHAR const_char_underline '_'
-CONST CHAR const_char_add '+'
-CONST CHAR const_char_mul '*'
-INT int_global_var
-CHAR char_global_var
-INT sort[10]
+CONST INT MAX_NUM 1024
 GOTO main
-SET FUNC_testIfWhile
-test_if_result = 0
-loop_num = 0
-#0 = 98 + 1
-#1 = 97 + 1
-#2 = #0 > #1
-BNZ #2 $LABEL0
-#3 = test_if_result < 100
-BNZ #3 $LABEL2
-SET $LABEL4
-#4 = test_if_result + loop_num
-test_if_result = #4
-#5 = loop_num + 1
-loop_num = #5
-#6 = test_if_result < 100
-BEZ #6 $LABEL4
-GOTO $LABEL3
-SET $LABEL2
-SET $LABEL3
-#7 = test_if_result - 100
-#8 = #7 * 3
-#9 = #8 == 15
-BNZ #9 $LABEL5
-#10 = test_if_result * 10
-#11 = 0 - #10
-#12 = 2 * loop_num
-#13 = #11 + #12
-#14 = #13 + 117
-#15 = #14 - 98
-test_if_result = #15
-#16 = 0 + loop_num
-#17 = #16 - test_if_result
-#18 = 10 * 97
-#19 = #17 + #18
-#20 = #19 - 100
-#21 = #20 + 42
-#22 = #21 + 34
-#23 = 2 * test_if_result
-#24 = #22 + #23
-loop_num = #24
-GOTO $LABEL6
-SET $LABEL5
-#25 = test_if_result * 4
-#26 = 0 + #25
-#27 = 5 * loop_num
-#28 = #26 + #27
-#29 = #28 + 24
-#30 = #29 - 97
-#31 = #30 + 99
-test_if_result = #31
-#32 = 0 - loop_num
-#33 = #32 + test_if_result
-#34 = 4 * 97
-#35 = #33 + #34
-#36 = #35 - 1653
-#37 = #36 + 453
-#38 = #37 + 555
-#39 = 4 * test_if_result
-#40 = #38 - #39
-loop_num = #40
-SET $LABEL6
+SET FUNC_factorial
+#0 = n <= 1
+BNZ #0 $LABEL0
+RET 1
 GOTO $LABEL1
 SET $LABEL0
-SET $LABEL1
-OUTV test_if_result
-OUTV loop_num
-test_if_result = 0
-loop_num = 0
-#41 = 98 + 1
-#42 = 97 + 1
-#43 = #41 >= #42
-BNZ #43 $LABEL7
-#44 = test_if_result < 10
-BNZ #44 $LABEL9
-SET $LABEL11
-#45 = loop_num > 2
-BNZ #45 $LABEL12
-#46 = test_if_result + loop_num
-test_if_result = #46
-GOTO $LABEL13
-SET $LABEL12
-SET $LABEL13
-#47 = loop_num + 1
-loop_num = #47
-#48 = test_if_result / 2
-#49 = #48 * 2
-#50 = #49 == test_if_result
-BNZ #50 $LABEL14
-#51 = loop_num + 1
-loop_num = #51
-GOTO $LABEL15
-SET $LABEL14
-SET $LABEL15
-#52 = test_if_result < 10
-BEZ #52 $LABEL11
-GOTO $LABEL10
-SET $LABEL9
-SET $LABEL10
-GOTO $LABEL8
-SET $LABEL7
-SET $LABEL8
-OUTV test_if_result
-OUTV loop_num
-test_if_result = 0
-loop_num = 0
-#53 = 1 < 2
-BNZ #53 $LABEL16
-#54 = test_if_result < 20
-BNZ #54 $LABEL18
-SET $LABEL20
-#55 = test_if_result / 2
-#56 = #55 * 2
-#57 = test_if_result - #56
-#58 = #57 == 0
-BNZ #58 $LABEL21
-#59 = test_if_result + 1
-test_if_result = #59
-GOTO $LABEL22
-SET $LABEL21
-#60 = test_if_result / 2
-#61 = #60 * 2
-#62 = test_if_result - #61
-#63 = #62 == 1
-BNZ #63 $LABEL23
-#64 = test_if_result + loop_num
-test_if_result = #64
-GOTO $LABEL24
-SET $LABEL23
-SET $LABEL24
-SET $LABEL22
-#65 = loop_num + 1
-loop_num = #65
-#66 = test_if_result < 20
-BEZ #66 $LABEL20
-GOTO $LABEL19
-SET $LABEL18
-SET $LABEL19
-#67 = test_if_result / 2
-#68 = #67 * 2
-#69 = test_if_result == #68
-BNZ #69 $LABEL25
-#70 = test_if_result * 7
-#71 = 0 + #70
-#72 = 2 * loop_num
-#73 = #71 + #72
-#74 = #73 + 99
-#75 = #74 - 97
-#76 = #75 + 103
-test_if_result = #76
-#77 = 0 - loop_num
-#78 = #77 + test_if_result
-#79 = 2 * 97
-#80 = #78 + #79
-#81 = #80 - 523
-#82 = #81 + 53
-#83 = #82 + 355
-#84 = 2 * test_if_result
-#85 = #83 - #84
-loop_num = #85
-GOTO $LABEL26
-SET $LABEL25
-SET $LABEL26
-GOTO $LABEL17
-SET $LABEL16
-SET $LABEL17
-OUTV test_if_result
-OUTV loop_num
-#86 = 2 <= 1
-BNZ #86 $LABEL27
-OUTS 2 <= 1
-GOTO $LABEL28
-SET $LABEL27
-SET $LABEL28
-#87 = 1 == 2
-BNZ #87 $LABEL29
-OUTS 1 == 2
-GOTO $LABEL30
-SET $LABEL29
-SET $LABEL30
-test_if_result = 0
-loop_num = 0
-#88 = 1 != 2
-BNZ #88 $LABEL31
-#89 = loop_num * 2
-#90 = test_if_result - #89
-#91 = #90 == 0
-BNZ #91 $LABEL33
-#92 = test_if_result < 30
-BNZ #92 $LABEL35
-SET $LABEL37
-#93 = test_if_result / 2
-#94 = #93 * 2
-#95 = #94 - test_if_result
-#96 = 0 - 1
-#97 = #95 == #96
-BNZ #97 $LABEL38
-#98 = test_if_result + 1
-test_if_result = #98
-GOTO $LABEL39
-SET $LABEL38
-#99 = test_if_result / 2
-#100 = #99 * 2
-#101 = #100 - test_if_result
-#102 = #101 == 0
-BNZ #102 $LABEL40
-#103 = test_if_result + loop_num
-test_if_result = #103
-GOTO $LABEL41
-SET $LABEL40
-SET $LABEL41
-SET $LABEL39
-#104 = loop_num + 1
-loop_num = #104
-#105 = test_if_result < 30
-BEZ #105 $LABEL37
-GOTO $LABEL36
-SET $LABEL35
-SET $LABEL36
-GOTO $LABEL34
-SET $LABEL33
-#106 = 0 - 1
-test_if_result = #106
-#107 = 0 - 1
-loop_num = #107
-SET $LABEL34
-GOTO $LABEL32
-SET $LABEL31
-SET $LABEL32
-OUTV test_if_result
-OUTV loop_num
-#108 = 1 - 1
-#109 = #108 != 0
-BNZ #109 $LABEL42
-OUTS 1 - 1 = true
-GOTO $LABEL43
-SET $LABEL42
-SET $LABEL43
-#110 = 0 - 1
-int_global_var = #110
-char_global_var = 97
-RET #
-SET FUNC_returnInt
-RET 10
-RET 0
-SET FUNC_returnChar
-RET 114
-RET 0
-SET FUNC_returnIntParameter
-#0 = select == 1
-BNZ #0 $LABEL44
-_tmp = int_parameter_1
-GOTO $LABEL45
-SET $LABEL44
-#1 = select == 2
-BNZ #1 $LABEL46
-_tmp = int_parameter_2
-GOTO $LABEL47
-SET $LABEL46
-#2 = select == 3
-BNZ #2 $LABEL48
-_tmp = int_parameter_3
-GOTO $LABEL49
-SET $LABEL48
-#3 = select == 4
-BNZ #3 $LABEL50
-_tmp = int_parameter_4
-GOTO $LABEL51
-SET $LABEL50
-_tmp = 0
-SET $LABEL51
-SET $LABEL49
-SET $LABEL47
-SET $LABEL45
-RET _tmp
-RET 0
-SET FUNC_returnCharParameter
-#0 = select == 1
-BNZ #0 $LABEL52
-RET char_parameter_1
-GOTO $LABEL53
-SET $LABEL52
-#1 = select == 2
-BNZ #1 $LABEL54
-RET char_parameter_2
-GOTO $LABEL55
-SET $LABEL54
-#2 = select == 3
-BNZ #2 $LABEL56
-RET char_parameter_3
-GOTO $LABEL57
-SET $LABEL56
-#3 = select == 4
-BNZ #3 $LABEL58
-RET char_parameter_4
-GOTO $LABEL59
-SET $LABEL58
-RET 48
-SET $LABEL59
-SET $LABEL57
-SET $LABEL55
-SET $LABEL53
-RET 0
-SET FUNC_testAssign
-#0 = 0 + 10
-#1 = 2
-#2 = 0 - -1
+#2 = n - 1
 #3 = #2
-#4 = 0 - 2
-#5 = #4
-#6 = 0 + 10
-#7 = #6
-CALL FUNC_returnChar
-#8 = #RET
-#9 = #8 - 97
-#10 = #9
-PUSH #1
 PUSH #3
-PUSH #5
-PUSH #7
-PUSH #10
-CALL FUNC_returnIntParameter
-#11 = #RET
-#13 = 99 - 97
-#12 = #11 * #13
-#14 = #12 / 2
-#15 = #0 + #14
-int_test_assign = #15
-#16 = int_test_assign / 4
-#17 = #16 + 97
-#18 = #17 - 97
-#19 = #18 - 2
-#20 = 0 - -2
-int_array_test_assign[#19] = #20
-#21 = 0 + -2
-#23 = int_array_test_assign[0]
-#22 = int_test_assign / #23
-#24 = #21 + #22
-CALL FUNC_returnInt
-#25 = #RET
-#26 = #24 + #25
-#27 = #26 - 11
-CALL FUNC_returnInt
-#28 = #RET
-#29 = 0 - #28
-CALL FUNC_returnChar
-#31 = #RET
-#32 = #31 - 97
-#30 = 10 * #32
-#33 = 4
-#34 = 0 - 98
-#35 = #34 + 99
-#36 = #35
-CALL FUNC_returnInt
-#37 = #RET
-#38 = #37
-#39 = 10
-#40 = 97
-PUSH #33
-PUSH #36
-PUSH #38
-PUSH #39
-PUSH #40
-CALL FUNC_returnIntParameter
-#41 = #RET
-#42 = #30 + #41
-#43 = #29 + #42
-int_array_test_assign[#27] = #43
-#44 = 0 - 255
-#45 = int_array_test_assign[1]
-#46 = #44 + #45
-#47 = 98 * 2
-#48 = #46 + #47
-#49 = #48 - 196
-#50 = 0 - 98
-#51 = #50 + 99
-int_array_test_assign[#49] = #51
-CALL FUNC_returnChar
-#52 = #RET
-char_test_assign = #52
-#53 = 4
-#54 = 97
-CALL FUNC_returnChar
-#55 = #RET
-#56 = #55
-CALL FUNC_returnChar
-#57 = #RET
-#58 = #57
-#59 = 97
-PUSH #53
-PUSH #54
-PUSH #56
-PUSH #58
-PUSH #59
-CALL FUNC_returnCharParameter
-#60 = #RET
-char_array_test_assign[0] = #60
-#61 = char_array_test_assign[0]
-char_array_test_assign[1] = #61
-char_array_test_assign[2] = 120
-OUTV int_test_assign
-#62 = int_array_test_assign[0]
-OUTV #62
-#63 = int_array_test_assign[1]
-OUTV #63
-#64 = int_array_test_assign[2]
-OUTV #64
-OUTC char_test_assign
-#65 = char_array_test_assign[0]
-OUTC #65
-#66 = char_array_test_assign[1]
-OUTC #66
-#67 = char_array_test_assign[2]
-OUTC #67
-#68 = 0 - 3
-int_global_var = #68
-char_global_var = 99
-RET #
-SET FUNC_testInputOutput
-INV int_test_input
-INC char_test_input
-OUTS  !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
-OUTS int_test_input = 
-OUTV int_test_input
-OUTS char_test_input = 
-OUTC char_test_input
-#0 = 0 - 4
-int_global_var = #0
-char_global_var = 100
-RET #
-SET FUNC_testTrick
-RET #
-SET FUNC_judge1
-ret = 0
-#0 = a < b
-BNZ #0 $LABEL60
-#1 = c >= d
-BNZ #1 $LABEL62
-ret = 1
-GOTO $LABEL63
-SET $LABEL62
-SET $LABEL63
-GOTO $LABEL61
-SET $LABEL60
-SET $LABEL61
-RET ret
+CALL FUNC_factorial
+#4 = #RET
+#1 = n * #4
+RET #1
+SET $LABEL1
 RET 0
-SET FUNC_judge2
-ret = 0
-#0 = a < b
-BNZ #0 $LABEL64
-#1 = c <= d
-BNZ #1 $LABEL66
-ret = 1
-GOTO $LABEL67
-SET $LABEL66
-SET $LABEL67
-GOTO $LABEL65
-SET $LABEL64
-SET $LABEL65
-RET ret
+SET FUNC_mod
+#0 = x / y
+#1 = #0 * y
+#2 = x - #1
+x = #2
+RET x
 RET 0
-SET FUNC_Qsort
-first = low
-last = high
-#0 = sort[first]
-key = #0
-#1 = low >= high
-BNZ #1 $LABEL68
+SET FUNC_swap
+OUTS  x = 
+OUTV x
+OUTS  y = 
+OUTV y
+temp = x
+x = y
+y = temp
+OUTS  SWAP x = 
+OUTV x
+OUTS  SWAP y = 
+OUTV y
 RET #
-GOTO $LABEL69
-SET $LABEL68
-SET $LABEL69
-#2 = first < last
-BNZ #2 $LABEL70
-SET $LABEL72
-#3 = first
-#4 = last
-#5 = sort[last]
-#6 = #5
-#7 = key
+SET FUNC_complete_num
+j = val
+SET $LABEL2
+#0 = 0 - 1
+n = #0
+s = j
+i = 1
+SET $LABEL3
+#1 = j / i
+#2 = #1 * i
+x1 = #2
+#3 = j
+#4 = i
 PUSH #3
 PUSH #4
-PUSH #6
-PUSH #7
-CALL FUNC_judge1
-#8 = #RET
-#9 = #8 == 1
-BNZ #9 $LABEL73
-SET $LABEL75
-#10 = last - 1
-last = #10
-#11 = first
-#12 = last
-#13 = sort[last]
-#14 = #13
-#15 = key
-PUSH #11
-PUSH #12
-PUSH #14
-PUSH #15
-CALL FUNC_judge1
-#16 = #RET
-#17 = #16 == 1
-BEZ #17 $LABEL75
-GOTO $LABEL74
-SET $LABEL73
-SET $LABEL74
-#18 = sort[last]
-sort[first] = #18
-#19 = first
-#20 = last
-#21 = sort[first]
-#22 = #21
-#23 = key
-PUSH #19
-PUSH #20
-PUSH #22
-PUSH #23
-CALL FUNC_judge2
-#24 = #RET
-#25 = #24 == 1
-BNZ #25 $LABEL76
-SET $LABEL78
-#26 = first + 1
-first = #26
-#27 = first
-#28 = last
-#29 = sort[last]
-#30 = #29
-#31 = key
-PUSH #27
-PUSH #28
-PUSH #30
-PUSH #31
-CALL FUNC_judge1
-#32 = #RET
-#33 = #32 == 1
-BEZ #33 $LABEL78
-GOTO $LABEL77
-SET $LABEL76
-SET $LABEL77
-#34 = sort[first]
-sort[last] = #34
-#35 = first < last
-BEZ #35 $LABEL72
-GOTO $LABEL71
-SET $LABEL70
-SET $LABEL71
-sort[first] = key
-#36 = low
-#37 = first - 1
-#38 = #37
-PUSH #36
-PUSH #38
-CALL FUNC_Qsort
-#39 = first + 1
-#40 = #39
-#41 = high
-PUSH #40
-PUSH #41
-CALL FUNC_Qsort
-RET #
-RET #
-SET FUNC_testRecursion
-sort[0] = 5
-sort[1] = 8
-sort[2] = 3
-sort[3] = 6
-sort[4] = 4
-sort[5] = 1
-sort[6] = 2
-sort[7] = 7
-#0 = 0
-#1 = 7
-PUSH #0
-PUSH #1
-CALL FUNC_Qsort
+CALL FUNC_mod
+#5 = #RET
+#6 = #5 == 0
+BNZ #6 $LABEL4
+#7 = n + 1
+n = #7
+#8 = s - i
+s = #8
+#9 = n >= 128
+BNZ #9 $LABEL6
+OUTS  OVERFLOW!          
+GOTO $LABEL7
+SET $LABEL6
+k[n] = i
+SET $LABEL7
+GOTO $LABEL5
+SET $LABEL4
+SET $LABEL5
+#10 = i + 1
+i = #10
+#11 = i < j
+BEZ #11 $LABEL3
+#12 = s == 0
+BNZ #12 $LABEL8
+OUTS  complete number: 
+OUTV j
 i = 0
-#2 = i < 8
-BNZ #2 $LABEL79
-SET $LABEL81
-#3 = sort[i]
-OUTV #3
-#4 = i + 1
-i = #4
-#5 = i < 8
-BEZ #5 $LABEL81
-GOTO $LABEL80
-SET $LABEL79
-SET $LABEL80
-#6 = 0 - 5
-int_global_var = #6
-char_global_var = 101
-RET #
-SET FUNC_testCallFunction
-INV test_select
-#0 = test_select == 0
-BNZ #0 $LABEL82
-CALL FUNC_testIfWhile
-GOTO $LABEL83
-SET $LABEL82
-#1 = test_select == 1
-BNZ #1 $LABEL84
-GOTO $LABEL85
-SET $LABEL84
-#2 = test_select == 2
-BNZ #2 $LABEL86
-CALL FUNC_testAssign
-GOTO $LABEL87
-SET $LABEL86
-#3 = test_select == 3
-BNZ #3 $LABEL88
-CALL FUNC_testInputOutput
-GOTO $LABEL89
-SET $LABEL88
-#4 = test_select == 4
-BNZ #4 $LABEL90
-CALL FUNC_testRecursion
-GOTO $LABEL91
-SET $LABEL90
-SET $LABEL91
-SET $LABEL89
-SET $LABEL87
-SET $LABEL85
-SET $LABEL83
-#5 = int_global_var
-OUTV #5
-#6 = char_global_var
-OUTC #6
+SET $LABEL10
+OUTS   
+#13 = k[i]
+OUTV #13
+#14 = i + 1
+i = #14
+#15 = i <= n
+BEZ #15 $LABEL10
+OUTS           
+GOTO $LABEL9
+SET $LABEL8
+SET $LABEL9
+#16 = j + 1
+j = #16
+#17 = j < 1024
+BEZ #17 $LABEL2
+OUTS  ---------------------------------------------------------------          
+a = 0
+i = 0
+SET $LABEL11
+#18 = a * i
+b = #18
+#19 = j * n
+c = #19
+#20 = a * i
+a = #20
+#21 = a + b
+#22 = #21 + c
+a = #22
+#23 = i + 1
+i = #23
+#24 = i < 1024
+BEZ #24 $LABEL11
+b = a
+i = 0
+SET $LABEL12
+#25 = b + i
+b = #25
+#26 = i + 1
+i = #26
+#27 = i < 1024
+BEZ #27 $LABEL12
+leap = 1
+OUTS  b = 
+OUTV b
+OUTS  ---------------------------------------------------------------          
+h = 0
+m = 2
+SET $LABEL13
+#28 = m / 2
+k2 = #28
+i = 2
+SET $LABEL14
+#29 = m / i
+#30 = #29 * i
+x2 = #30
+#31 = m
+#32 = i
+PUSH #31
+PUSH #32
+CALL FUNC_mod
+#33 = #RET
+#34 = #33 == 0
+BNZ #34 $LABEL15
+leap = 0
+GOTO $LABEL16
+SET $LABEL15
+SET $LABEL16
+#35 = i + 1
+i = #35
+#36 = i <= k2
+BEZ #36 $LABEL14
+#37 = leap == 1
+BNZ #37 $LABEL17
+OUTS  
+OUTV m
+#38 = h + 1
+h = #38
+#39 = h / 10
+#40 = #39 * 10
+x2 = #40
+#41 = x2 == h
+BNZ #41 $LABEL19
+OUTS           
+GOTO $LABEL20
+SET $LABEL19
+SET $LABEL20
+GOTO $LABEL18
+SET $LABEL17
+SET $LABEL18
+leap = 1
+#42 = m + 1
+m = #42
+#43 = m <= 1024
+BEZ #43 $LABEL13
+OUTS           The total is 
+OUTV h
 RET #
 FUNC main
-int_global_var = 0
-char_global_var = 95
-CALL FUNC_testCallFunction
-CALL FUNC_testTrick
+INT n
+#44 = 10
+PUSH #44
+CALL FUNC_factorial
+#45 = #RET
+n = #45
+OUTS  10! = 
+OUTV n
+#46 = 5
+#47 = 10
+PUSH #46
+PUSH #47
+CALL FUNC_swap
+#48 = 2
+PUSH #48
+CALL FUNC_complete_num
 EXIT

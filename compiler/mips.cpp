@@ -382,11 +382,9 @@ void mc2mp() {
 				if (t_alloc.find(j) != t_alloc.end() && t_alloc[j] != "")
 					gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
 			}
-			if (!isOBNL(mc[i].n1)) {
-				for (int l = 0;l < 6;l++) {
-					if (should[l])
-						gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
-				}
+			for (int l = 0;l < 6;l++) {
+				if (should[l])
+					gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
 			}
 			//main函数且不是自递归的则不需要
 			if (!(st[def_loc].name == "main"&&noRA))

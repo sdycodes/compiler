@@ -1,908 +1,236 @@
 .data   
-$string: .asciiz "2 <= 1\0\01 == 2\0\01 - 1 = true\0\0 !#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\0\0int_test_input = \0\0char_test_input = \0\0" 
+$string: .asciiz " x = \0\0 y = \0\0 SWAP x = \0\0 SWAP y = \0\0 OVERFLOW!          \0\0 complete number: \0\0  \0\0          \0\0 ---------------------------------------------------------------          \0\0 b = \0\0 ---------------------------------------------------------------          \0\0 \0\0          \0\0          The total is \0\0 10! = \0\0" 
 .text   
 li $fp 0x7fffeffc 
-addiu $sp $fp -156
+addiu $sp $fp -328
 j main  
-FUNC_testIfWhile:   
-li $s1 0 
-li $s0 0 
-bge $s1 100 $LABEL2
-$LABEL4:   
-addu $s1 $s1 $s0
-addiu $s0 $s0 1
-blt $s1 100 $LABEL4
-$LABEL2:   
-addiu $t7 $s1 -100
-mul $t6 $t7 3
-bne $t6 15 $LABEL5
-mul $t5 $s1 10
-subu $t4 $0 $t5
-addiu $t4 $t4 0
-mul $t3 $s0 2
-addu $t2 $t4 $t3
-addiu $t1 $t2 117
-addiu $s1 $t1 -98
-addiu $t0 $s0 0
-subu $t7 $t0 $s1
-addiu $t6 $t7 970
-sw $t5 44($sp)
-addiu $t5 $t6 -100
-sw $t4 48($sp)
-addiu $t4 $t5 42
-sw $t3 52($sp)
-addiu $t3 $t4 34
-sw $t2 56($sp)
-mul $t2 $s1 2
-addu $s0 $t3 $t2
-j $LABEL6  
-$LABEL5:   
-mul $t1 $s1 4
-addiu $t0 $t1 0
-mul $t7 $s0 5
-addu $t6 $t0 $t7
-addiu $t5 $t6 24
-addiu $t4 $t5 -97
-addiu $s1 $t4 99
-subu $t3 $0 $s0
-addiu $t3 $t3 0
-addu $t2 $t3 $s1
-sw $t1 104($sp)
-addiu $t1 $t2 388
-sw $t0 108($sp)
-addiu $t0 $t1 -1653
-sw $t7 112($sp)
-addiu $t7 $t0 453
-sw $t6 116($sp)
-addiu $t6 $t7 555
-sw $t5 120($sp)
-mul $t5 $s1 4
-subu $s0 $t6 $t5
-$LABEL6:   
+FUNC_factorial:   
+move $s0 $a3 
+bgt $s0 1 $LABEL0
+li $v0 1 
+jr $ra  
 $LABEL0:   
-li $v0 1 
-move $a0 $s1 
-syscall   
-move $a0 $s0 
-syscall   
-li $s1 0 
-li $s0 0 
-bge $s1 10 $LABEL9
-$LABEL11:   
-ble $s0 2 $LABEL12
-addu $s1 $s1 $s0
-$LABEL12:   
-addiu $s0 $s0 1
-div $t4 $s1 2
-mul $t3 $t4 2
-bne $t3 $s1 $LABEL14
-addiu $s0 $s0 1
-$LABEL14:   
-blt $s1 10 $LABEL11
-$LABEL9:   
-$LABEL7:   
-li $v0 1 
-move $a0 $s1 
-syscall   
-move $a0 $s0 
-syscall   
-li $s1 0 
-li $s0 0 
-bge $s1 20 $LABEL18
-$LABEL20:   
-div $t2 $s1 2
-mul $t1 $t2 2
-subu $t0 $s1 $t1
-bne $t0 $0 $LABEL21
-addiu $s1 $s1 1
-j $LABEL22  
-$LABEL21:   
-div $t7 $s1 2
-mul $t6 $t7 2
-subu $t5 $s1 $t6
-bne $t5 1 $LABEL23
-addu $s1 $s1 $s0
-$LABEL23:   
-$LABEL22:   
-addiu $s0 $s0 1
-blt $s1 20 $LABEL20
-$LABEL18:   
-div $t4 $s1 2
-mul $t3 $t4 2
-bne $s1 $t3 $LABEL25
-mul $t2 $s1 7
-addiu $t1 $t2 0
-mul $t0 $s0 2
-addu $t7 $t1 $t0
-addiu $t6 $t7 99
-addiu $t5 $t6 -97
-addiu $s1 $t5 103
-subu $t4 $0 $s0
-addiu $t4 $t4 0
-addu $t3 $t4 $s1
-sw $t2 284($sp)
-addiu $t2 $t3 194
-sw $t1 288($sp)
-addiu $t1 $t2 -523
-sw $t0 292($sp)
-addiu $t0 $t1 53
-sw $t7 296($sp)
-addiu $t7 $t0 355
-sw $t6 300($sp)
-mul $t6 $s1 2
-subu $s0 $t7 $t6
-$LABEL25:   
-$LABEL16:   
-li $v0 1 
-move $a0 $s1 
-syscall   
-move $a0 $s0 
-syscall   
-j $LABEL27  
-li $v0 4 
-li $a0 268500992 
-syscall   
-$LABEL27:   
-j $LABEL29  
-li $v0 4 
-li $a0 268501000 
-syscall   
-$LABEL29:   
-li $s1 0 
-li $s0 0 
-mul $t5 $s0 2
-subu $t4 $s1 $t5
-bne $t4 $0 $LABEL33
-bge $s1 30 $LABEL35
-$LABEL37:   
-div $t3 $s1 2
-mul $t2 $t3 2
-subu $t1 $t2 $s1
-bne $t1 -1 $LABEL38
-addiu $s1 $s1 1
-j $LABEL39  
-$LABEL38:   
-div $t0 $s1 2
-mul $t7 $t0 2
-subu $t6 $t7 $s1
-bne $t6 $0 $LABEL40
-addu $s1 $s1 $s0
-$LABEL40:   
-$LABEL39:   
-addiu $s0 $s0 1
-blt $s1 30 $LABEL37
-$LABEL35:   
-j $LABEL34  
-$LABEL33:   
-li $s1 -1 
-li $s0 -1 
-$LABEL34:   
-$LABEL31:   
-li $v0 1 
-move $a0 $s1 
-syscall   
-move $a0 $s0 
-syscall   
-j $LABEL42  
-li $v0 4 
-li $a0 268501008 
-syscall   
-$LABEL42:   
-li $s6 -1 
-sw $s6 44($gp)
-li $s7 97 
-sw $s7 48($gp)
-jr $ra  
-FUNC_returnInt:   
-li $v0 10 
-jr $ra  
-FUNC_returnChar:   
-li $v0 114 
-jr $ra  
-FUNC_returnIntParameter:   
-lw $s2 -12($fp)
-lw $s1 -16($fp)
-bne $a3 1 $LABEL44
-move $s0 $a2 
-j $LABEL47  
-$LABEL44:   
-bne $a3 2 $LABEL46
-move $s0 $a1 
-j $LABEL47  
-$LABEL46:   
-bne $a3 3 $LABEL48
-move $s0 $s2 
-j $LABEL51  
-$LABEL48:   
-bne $a3 4 $LABEL50
-move $s0 $s1 
-j $LABEL51  
-$LABEL50:   
-li $s0 0 
-$LABEL51:   
-$LABEL47:   
-move $v0 $s0 
-jr $ra  
-FUNC_returnCharParameter:   
-lw $s1 -12($fp)
-lw $s0 -16($fp)
-bne $a3 1 $LABEL52
-move $v0 $a2 
-jr $ra  
-$LABEL52:   
-bne $a3 2 $LABEL54
-move $v0 $a1 
-jr $ra  
-$LABEL54:   
-bne $a3 3 $LABEL56
-move $v0 $s1 
-jr $ra  
-$LABEL56:   
-bne $a3 4 $LABEL58
-move $v0 $s0 
-jr $ra  
-$LABEL58:   
-li $v0 48 
-jr $ra  
-$LABEL59:   
-$LABEL55:   
-li $v0 0 
-jr $ra  
-FUNC_testAssign:   
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnChar  
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-move $t5 $v0 
-addiu $t4 $t5 -97
-li $a3 2 
-li $a2 1 
-li $a1 -2 
-li $t8 10 
-sw $t8 -12($sp)
-sw $t4 -16($sp)
-sw $13 -76($sp)
-sw $31 -148($sp)
-move $fp $sp 
-addiu $sp $fp -168
-jal FUNC_returnIntParameter  
-lw $13 -76($fp)
-lw $31 -148($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t5 36($sp)
-move $t5 $v0 
-mul $t4 $t5 2
-div $t3 $t4 2
-addiu $t2 $t3 10
-div $t1 $t2 4
-addiu $t0 $t1 97
-addiu $t7 $t0 -97
-addiu $t6 $t7 -2
-sll $t8 $t6 2
-addiu $t8 $t8 8
-subu $t8 $fp $t8
-li $t9 2 
-sw $t9 0($t8)
-sw $t5 48($sp)
-lw $t5 -8($fp)
-sw $t4 52($sp)
-div  $t2 $t5
-mflo $t4  
-sw $t3 60($sp)
-addiu $t3 $t4 -2
-sw $8 -32($sp)
-sw $9 -36($sp)
-sw $10 -40($sp)
-sw $11 -44($sp)
-sw $12 -48($sp)
-sw $13 -52($sp)
-sw $14 -56($sp)
-sw $15 -60($sp)
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnInt  
-lw $8 -32($fp)
-lw $9 -36($fp)
-lw $10 -40($fp)
-lw $11 -44($fp)
-lw $12 -48($fp)
-lw $13 -52($fp)
-lw $14 -56($fp)
-lw $15 -60($fp)
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t1 68($sp)
-move $t1 $v0 
-sw $t0 72($sp)
-addu $t0 $t3 $t1
-sw $t7 76($sp)
-addiu $t7 $t0 -11
-sw $8 -32($sp)
-sw $9 -36($sp)
-sw $10 -40($sp)
-sw $11 -44($sp)
-sw $12 -48($sp)
-sw $13 -52($sp)
-sw $14 -56($sp)
-sw $15 -60($sp)
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnInt  
-lw $8 -32($fp)
-lw $9 -36($fp)
-lw $10 -40($fp)
-lw $11 -44($fp)
-lw $12 -48($fp)
-lw $13 -52($fp)
-lw $14 -56($fp)
-lw $15 -60($fp)
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t6 80($sp)
-move $t6 $v0 
-sw $t2 -4($fp)
-subu $t2 $0 $t6
-addiu $t2 $t2 0
-sw $8 -32($sp)
-sw $9 -36($sp)
-sw $10 -40($sp)
-sw $11 -44($sp)
-sw $12 -48($sp)
-sw $13 -52($sp)
-sw $14 -56($sp)
-sw $15 -60($sp)
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnChar  
-lw $8 -32($fp)
-lw $9 -36($fp)
-lw $10 -40($fp)
-lw $11 -44($fp)
-lw $12 -48($fp)
-lw $13 -52($fp)
-lw $14 -56($fp)
-lw $15 -60($fp)
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t5 96($sp)
-move $t5 $v0 
-sw $t4 92($sp)
-addiu $t4 $t5 -97
-sw $t3 100($sp)
-mul $t3 $t4 10
-sw $8 -32($sp)
-sw $9 -36($sp)
-sw $10 -40($sp)
-sw $11 -44($sp)
-sw $12 -48($sp)
-sw $13 -52($sp)
-sw $14 -56($sp)
-sw $15 -60($sp)
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnInt  
-lw $8 -32($fp)
-lw $9 -36($fp)
-lw $10 -40($fp)
-lw $11 -44($fp)
-lw $12 -48($fp)
-lw $13 -52($fp)
-lw $14 -56($fp)
-lw $15 -60($fp)
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t1 104($sp)
-move $t1 $v0 
-li $a3 4 
-li $a2 1 
-move $a1 $t1 
-li $t8 10 
-sw $t8 -12($sp)
-li $t8 97 
-sw $t8 -16($sp)
-sw $8 -56($sp)
-sw $10 -64($sp)
-sw $11 -68($sp)
-sw $12 -72($sp)
-sw $13 -76($sp)
-sw $14 -80($sp)
-sw $15 -84($sp)
-sw $31 -148($sp)
-move $fp $sp 
-addiu $sp $fp -168
-jal FUNC_returnIntParameter  
-lw $8 -56($fp)
-lw $10 -64($fp)
-lw $11 -68($fp)
-lw $12 -72($fp)
-lw $13 -76($fp)
-lw $14 -80($fp)
-lw $15 -84($fp)
-lw $31 -148($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t7 112($sp)
-move $t7 $v0 
-sw $t6 116($sp)
-addu $t6 $t3 $t7
-sw $t5 128($sp)
-addu $t5 $t2 $t6
-sw $t4 132($sp)
-lw $t4 112($sp)
-sll $t8 $t4 2
-addiu $t8 $t8 8
-subu $t8 $fp $t8
-sw $t5 0($t8)
-lw $t1 -12($fp)
-sw $t0 108($sp)
-addiu $t0 $t1 -255
-sw $t3 124($sp)
-addiu $t3 $t0 196
-sw $t7 168($sp)
-addiu $t7 $t3 -196
-sll $t8 $t7 2
-addiu $t8 $t8 8
-subu $t8 $fp $t8
-li $t9 1 
-sw $t9 0($t8)
-sw $8 -32($sp)
-sw $9 -36($sp)
-sw $10 -40($sp)
-sw $11 -44($sp)
-sw $12 -48($sp)
-sw $13 -52($sp)
-sw $14 -56($sp)
-sw $15 -60($sp)
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnChar  
-lw $8 -32($fp)
-lw $9 -36($fp)
-lw $10 -40($fp)
-lw $11 -44($fp)
-lw $12 -48($fp)
-lw $13 -52($fp)
-lw $14 -56($fp)
-lw $15 -60($fp)
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t2 120($sp)
-move $t2 $v0 
-sw $t6 172($sp)
-move $t6 $t2 
-sw $14 -56($sp)
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnChar  
-lw $14 -56($fp)
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-move $t7 $v0 
-sw $14 -56($sp)
-sw $15 -60($sp)
-sw $31 -124($sp)
-move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_returnChar  
-lw $14 -56($fp)
-lw $15 -60($fp)
-lw $31 -124($fp)
-move $sp $fp 
-addiu $fp $sp 440
-sw $t6 -20($fp)
-move $t6 $v0 
-li $a3 4 
-li $a2 97 
-move $a1 $t7 
-sw $t6 -12($sp)
-li $t8 97 
-sw $t8 -16($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -164
-jal FUNC_returnCharParameter  
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 440
-move $t7 $v0 
-sw $t7 -24($fp)
-lw $t6 -24($fp)
-sw $t6 -28($fp)
-li $t9 120 
-sw $t9 -32($fp)
-li $v0 1 
-lw $t5 -4($fp)
-move $a0 $t5 
-syscall   
-lw $t4 -8($fp)
-li $v0 1 
-move $a0 $t4 
-syscall   
-lw $t3 -12($fp)
-li $v0 1 
-move $a0 $t3 
-syscall   
-lw $t2 -16($fp)
-li $v0 1 
-move $a0 $t2 
-syscall   
-li $v0 11 
-lw $t1 -20($fp)
-move $a0 $t1 
-syscall   
-li $v0 11 
-move $a0 $t6 
-syscall   
-lw $t0 -28($fp)
-li $v0 11 
-move $a0 $t0 
-syscall   
-sw $t7 244($sp)
-lw $t7 -32($fp)
-li $v0 11 
-move $a0 $t7 
-syscall   
-li $s6 -3 
-sw $s6 44($gp)
-li $s7 99 
-sw $s7 48($gp)
-jr $ra  
-FUNC_testInputOutput:   
-li $v0 5 
-syscall   
-move $t7 $v0 
-li $v0 12 
-syscall   
-move $t6 $v0 
-li $v0 4 
-li $a0 268501022 
-syscall   
-li $a0 268501118 
-syscall   
-li $v0 1 
-move $a0 $t7 
-syscall   
-li $v0 4 
-li $a0 268501137 
-syscall   
-li $v0 11 
-move $a0 $t6 
-syscall   
-jr $ra  
-FUNC_testTrick:   
-jr $ra  
-FUNC_judge1:   
-lw $s1 -12($fp)
-li $s0 0 
-bge $a3 $a2 $LABEL60
-blt $a1 $s1 $LABEL62
-li $s0 1 
-$LABEL62:   
-$LABEL60:   
-move $v0 $s0 
-jr $ra  
-FUNC_judge2:   
-lw $s1 -12($fp)
-li $s0 0 
-bge $a3 $a2 $LABEL64
-bgt $a1 $s1 $LABEL66
-li $s0 1 
-$LABEL66:   
-$LABEL64:   
-move $v0 $s0 
-jr $ra  
-FUNC_Qsort:   
-move $s4 $a3 
-move $s3 $a2 
-move $s2 $s4 
-move $s1 $s3 
-sll $t8 $s2 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t5 0($t8)
-move $s0 $t5 
-blt $s4 $s3 $LABEL68
-jr $ra  
-$LABEL68:   
-bge $s2 $s1 $LABEL70
-$LABEL72:   
-sll $t8 $s1 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t5 0($t8)
-move $a3 $s2 
-move $a2 $s1 
-move $a1 $t5 
-sw $s0 -12($sp)
-sw $s0 -84($sp)
-sw $s1 -88($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -156
-jal FUNC_judge1  
-lw $s0 -84($fp)
-lw $s1 -88($fp)
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 316
-move $t5 $v0 
-bne $t5 1 $LABEL73
-$LABEL75:   
-addiu $s1 $s1 -1
-sll $t8 $s1 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t4 0($t8)
-move $a3 $s2 
-move $a2 $s1 
-move $a1 $t4 
-sw $s0 -12($sp)
-sw $s0 -84($sp)
-sw $s1 -88($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -156
-jal FUNC_judge1  
-lw $s0 -84($fp)
-lw $s1 -88($fp)
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 316
-move $t4 $v0 
-beq $t4 1 $LABEL75
-$LABEL73:   
-sll $t8 $s1 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t3 0($t8)
-sll $t8 $s2 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-sw $t3 0($t8)
-sll $t8 $s2 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t2 0($t8)
-move $a3 $s2 
-move $a2 $s1 
-move $a1 $t2 
-sw $s0 -12($sp)
-sw $11 -64($sp)
-sw $s0 -84($sp)
-sw $s1 -88($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -156
-jal FUNC_judge2  
-lw $11 -64($fp)
-lw $s0 -84($fp)
-lw $s1 -88($fp)
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 316
-sw $t3 76($sp)
-move $t3 $v0 
-bne $t3 1 $LABEL76
-$LABEL78:   
-addiu $s2 $s2 1
-sll $t8 $s1 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t2 0($t8)
-move $a3 $s2 
-move $a2 $s1 
-move $a1 $t2 
-sw $s0 -12($sp)
-sw $s0 -84($sp)
-sw $s1 -88($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -156
-jal FUNC_judge1  
-lw $s0 -84($fp)
-lw $s1 -88($fp)
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 316
-move $t2 $v0 
-beq $t2 1 $LABEL78
-$LABEL76:   
-sll $t8 $s2 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t1 0($t8)
-sll $t8 $s1 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-sw $t1 0($t8)
-blt $s2 $s1 $LABEL72
-$LABEL70:   
-sll $t8 $s2 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-sw $s0 0($t8)
-addiu $t0 $s2 -1
-move $a3 $s4 
-move $a2 $t0 
-sw $s0 -84($sp)
-sw $s1 -88($sp)
-sw $s2 -92($sp)
-sw $s3 -96($sp)
-sw $s4 -100($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -316
-jal FUNC_Qsort  
-lw $s0 -84($fp)
-lw $s1 -88($fp)
-lw $s2 -92($fp)
-lw $s3 -96($fp)
-lw $s4 -100($fp)
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 316
-addiu $t0 $s2 1
-move $a3 $t0 
-move $a2 $s3 
-sw $s0 -84($sp)
-sw $s1 -88($sp)
-sw $s2 -92($sp)
-sw $s3 -96($sp)
-sw $s4 -100($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -316
-jal FUNC_Qsort  
-lw $s0 -84($fp)
-lw $s1 -88($fp)
-lw $s2 -92($fp)
-lw $s3 -96($fp)
-lw $s4 -100($fp)
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 316
-jr $ra  
-FUNC_testRecursion:   
-li $t9 5 
-sw $t9 52($gp)
-li $t9 8 
-sw $t9 56($gp)
-li $t9 3 
-sw $t9 60($gp)
-li $t9 6 
-sw $t9 64($gp)
-li $t9 4 
-sw $t9 68($gp)
-li $t9 1 
-sw $t9 72($gp)
-li $t9 2 
-sw $t9 76($gp)
-li $t9 7 
-sw $t9 80($gp)
-li $a3 0 
-li $a2 7 
-sw $s0 -84($sp)
-sw $31 -144($sp)
-move $fp $sp 
-addiu $sp $fp -316
-jal FUNC_Qsort  
-lw $s0 -84($fp)
-lw $31 -144($fp)
-move $sp $fp 
-addiu $fp $sp 160
-li $s0 0 
-bge $s0 8 $LABEL79
-$LABEL81:   
-sll $t8 $s0 2
-addiu $t8 $t8 52
-addu $t8 $gp $t8
-lw $t0 0($t8)
-li $v0 1 
-move $a0 $t0 
-syscall   
-addiu $s0 $s0 1
-blt $s0 8 $LABEL81
-$LABEL79:   
-li $s6 -5 
-sw $s6 44($gp)
-li $s7 101 
-sw $s7 48($gp)
-jr $ra  
-FUNC_testCallFunction:   
-li $v0 5 
-syscall   
-move $s0 $v0 
-bne $s0 $0 $LABEL82
-sw $s0 -88($sp)
-sw $31 -148($sp)
-move $fp $sp 
-addiu $sp $fp -596
-jal FUNC_testIfWhile  
-lw $s0 -88($fp)
-lw $31 -148($fp)
-move $sp $fp 
-addiu $fp $sp 160
-j $LABEL85  
-$LABEL82:   
-bne $s0 1 $LABEL84
-j $LABEL85  
-$LABEL84:   
-bne $s0 2 $LABEL86
-sw $s0 -100($sp)
-sw $31 -160($sp)
-move $fp $sp 
-addiu $sp $fp -440
-jal FUNC_testAssign  
-lw $s0 -100($fp)
-lw $31 -160($fp)
-move $sp $fp 
-addiu $fp $sp 160
-j $LABEL89  
-$LABEL86:   
-bne $s0 3 $LABEL88
-sw $31 -140($sp)
-move $fp $sp 
-addiu $sp $fp -148
-jal FUNC_testInputOutput  
-lw $31 -140($fp)
-move $sp $fp 
-addiu $fp $sp 160
-j $LABEL89  
-$LABEL88:   
-bne $s0 4 $LABEL90
+addiu $t7 $s0 -1
+move $a3 $t7 
 sw $s0 -68($sp)
 sw $31 -128($sp)
 move $fp $sp 
-addiu $sp $fp -160
-jal FUNC_testRecursion  
+addiu $sp $fp -152
+jal FUNC_factorial  
 lw $s0 -68($fp)
 lw $31 -128($fp)
 move $sp $fp 
-addiu $fp $sp 160
-$LABEL90:   
-$LABEL89:   
-$LABEL85:   
-lw $s6 44($gp)
-move $t7 $s6 
-li $v0 1 
-move $a0 $t7 
+addiu $fp $sp 152
+move $t7 $v0 
+mul $v0 $s0 $t7
+jr $ra  
+$LABEL1:   
+li $v0 0 
+jr $ra  
+FUNC_mod:   
+div  $a3 $a2
+mflo $t5  
+mul $t4 $t5 $a2
+subu $v0 $a3 $t4
+jr $ra  
+FUNC_swap:   
+li $v0 4 
+li $a0 268500992 
 syscall   
-lw $s7 48($gp)
-move $t6 $s7 
-li $v0 11 
-move $a0 $t6 
+li $v0 1 
+move $a0 $a3 
+syscall   
+li $v0 4 
+li $a0 268500999 
+syscall   
+li $v0 1 
+move $a0 $a2 
+syscall   
+move $t3 $a3 
+move $a3 $a2 
+move $a2 $t3 
+li $v0 4 
+li $a0 268501006 
+syscall   
+li $v0 1 
+move $a0 $a3 
+syscall   
+li $v0 4 
+li $a0 268501018 
+syscall   
+li $v0 1 
+move $a0 $a2 
+syscall   
+jr $ra  
+FUNC_complete_num:   
+move $s0 $a3 
+move $s4 $s0 
+$LABEL2:   
+li $s3 -1 
+move $s1 $s4 
+li $s0 1 
+$LABEL3:   
+move $a3 $s4 
+move $a2 $s0 
+sw $31 -132($sp)
+move $fp $sp 
+addiu $sp $fp -148
+jal FUNC_mod  
+lw $31 -132($fp)
+move $sp $fp 
+addiu $fp $sp 872
+move $t2 $v0 
+bne $t2 $0 $LABEL4
+addiu $s3 $s3 1
+subu $s1 $s1 $s0
+blt $s3 128 $LABEL6
+li $v0 4 
+li $a0 268501030 
+syscall   
+j $LABEL7  
+$LABEL6:   
+sll $t8 $s3 2
+addiu $t8 $t8 4
+subu $t8 $fp $t8
+sw $s0 0($t8)
+$LABEL7:   
+$LABEL4:   
+addiu $s0 $s0 1
+blt $s0 $s4 $LABEL3
+bne $s1 $0 $LABEL8
+li $v0 4 
+li $a0 268501052 
+syscall   
+li $v0 1 
+move $a0 $s4 
+syscall   
+li $s0 0 
+$LABEL10:   
+li $v0 4 
+li $a0 268501072 
+syscall   
+sll $t8 $s0 2
+addiu $t8 $t8 4
+subu $t8 $fp $t8
+lw $t1 0($t8)
+li $v0 1 
+move $a0 $t1 
+syscall   
+addiu $s0 $s0 1
+ble $s0 $s3 $LABEL10
+li $v0 4 
+li $a0 268501076 
+syscall   
+$LABEL8:   
+addiu $s4 $s4 1
+blt $s4 1024 $LABEL2
+li $v0 4 
+li $a0 268501088 
+syscall   
+li $s2 0 
+li $s0 0 
+$LABEL11:   
+mul $s1 $s2 $s0
+mul $t0 $s4 $s3
+mul $s2 $s2 $s0
+addu $t7 $s2 $s1
+addu $s2 $t7 $t0
+addiu $s0 $s0 1
+blt $s0 1024 $LABEL11
+move $s1 $s2 
+li $s0 0 
+$LABEL12:   
+addu $s1 $s1 $s0
+addiu $s0 $s0 1
+blt $s0 1024 $LABEL12
+li $s2 1 
+li $v0 4 
+li $a0 268501164 
+syscall   
+li $v0 1 
+move $a0 $s1 
+syscall   
+li $v0 4 
+li $a0 268501171 
+syscall   
+li $s3 0 
+li $s4 2 
+$LABEL13:   
+div $s1 $s4 2
+li $s0 2 
+$LABEL14:   
+move $a3 $s4 
+move $a2 $s0 
+sw $31 -132($sp)
+move $fp $sp 
+addiu $sp $fp -148
+jal FUNC_mod  
+lw $31 -132($fp)
+move $sp $fp 
+addiu $fp $sp 872
+move $t6 $v0 
+bne $t6 $0 $LABEL15
+li $s2 0 
+$LABEL15:   
+addiu $s0 $s0 1
+ble $s0 $s1 $LABEL14
+bne $s2 1 $LABEL17
+li $v0 4 
+li $a0 268501247 
+syscall   
+li $v0 1 
+move $a0 $s4 
+syscall   
+addiu $s3 $s3 1
+div $t5 $s3 10
+mul $t4 $t5 10
+bne $t4 $s3 $LABEL19
+li $v0 4 
+li $a0 268501250 
+syscall   
+$LABEL19:   
+$LABEL17:   
+li $s2 1 
+addiu $s4 $s4 1
+ble $s4 1024 $LABEL13
+li $v0 4 
+li $a0 268501262 
+syscall   
+li $v0 1 
+move $a0 $s3 
 syscall   
 jr $ra  
 main:   
-li $s6 0 
-sw $s6 44($gp)
-li $s7 95 
-sw $s7 48($gp)
+li $a3 10 
 move $fp $sp 
-addiu $sp $fp -160
-jal FUNC_testCallFunction  
+addiu $sp $fp -152
+jal FUNC_factorial  
 move $sp $fp 
-addiu $fp $sp 156
+addiu $fp $sp 328
+move $t3 $v0 
+move $t2 $t3 
+li $v0 4 
+li $a0 268501287 
+syscall   
+li $v0 1 
+move $a0 $t2 
+syscall   
+li $a3 5 
+li $a2 10 
+sw $10 -52($sp)
 move $fp $sp 
-addiu $sp $fp -128
-jal FUNC_testTrick  
+addiu $sp $fp -140
+jal FUNC_swap  
+lw $10 -52($fp)
 move $sp $fp 
-addiu $fp $sp 156
+addiu $fp $sp 328
+li $a3 2 
+sw $10 -608($sp)
+move $fp $sp 
+addiu $sp $fp -872
+jal FUNC_complete_num  
+lw $10 -608($fp)
+move $sp $fp 
+addiu $fp $sp 328
 li $v0 10 
 syscall   
