@@ -1,85 +1,192 @@
-const int zero = 0;
-const int one = 1, minus_two = -2;
-const char renn = '0';
-const char first_alpha = 'a', first_captical = 'A';
-int x, yy, zz, yyy[7];
-int rt15()
-{
-    const int zero=1;
-    return(3*5/one+one-zero);
-}
-int fact(int t)
-{
-    if(t < 3)
-        return(t);
-    else
-        return(fact(t-1)*t);
-}
+const int const_int1 = 123, const_int2 = 234;
+const char const_char1 = 'a', const_char2 = 'b';
+int global_int1, global_int2;
+int global_int_arr1[5], global_int_arr2[5];
+char global_char1, global_char2;
+char global_char_arr1[5], global_char_arr2[5];
 
-char fun2(int a, int b, int c, int d, int e, int f)
-{
-    printf(a+b*c*d/e-f);
-    return('A');
-}
+void void_0para() {
+	const int _local_const_int = -0;
+	
+	char var_char, var_char_switch, var_char_input;
+	int var_int_switch, var_int_while, var_int_input, var_int_if;
+	
+	printf(_local_const_int);
+	
+	printf("global const test:");
+	printf(const_int1);
+	printf(const_int2);
+	printf(const_char1);
+	printf(const_char2);
+	
+	printf("please input char and int");
+	scanf(var_int_input, var_char_input);
+	printf(var_int_input);
+	printf(var_char_input);
+	
+	printf("string test:");
+	printf("a");
+	printf(" ");
+	printf("");
+	printf("A");
+	printf("!");
+	printf("'");
+	printf("(");
+	printf(")");
+	printf("*");
+	printf("+");
+	printf(",");
+	printf("0");
+	printf(":");
+	printf(";");
+	printf("=");
+	printf("_");
+	printf("[");
+	printf("]");
+	printf("{");
+	printf("}");
+	printf("abcdeABCDE");
+	
+	printf("char test:");
+	var_char = '+';
+	printf(var_char);
+	var_char = '-';
+	printf(var_char);
+	var_char = '*';
+	printf(var_char);
+	var_char = '/';
+	printf(var_char);
+	var_char = 'a';
+	printf(var_char);
+	var_char = 'A';
+	printf(var_char);
+	var_char = '_';
+	printf(var_char);
+	var_char = '0';
+	printf(var_char);
+	var_char = '1';
+	printf(var_char);
+	
+	var_char_switch = '_';
+	printf("switch test1:");
+		if(var_char_switch== 'a') printf("test1: case a");
+		else if(var_char_switch== '_') printf("test1: case _");
+		else printf("test1: default");
+	printf("switch test2:");
 
-void main()
-{
-    const int b =+1, c=2, d=3, e=4;
-    char ar[2];
-    int r, m1[8];
-    int aa, a;
-    
-    x = +-1;
-    r = -4;
-    aa = 6;
-    printf("!@#$%%abcd114514ABCD963287~;: ", fact(aa));
-    ar[d*e+6*(minus_two+b-1)] = fun2(x-r, aa, b, e, c, minus_two) ;
-    printf((ar[zero/fact(4)]));
-    ar[1] = '0';
-    aa = -b * (ar[1] + rt15()) + (c - e * 9) + 2 * 'm';
-    printf(aa);
-    a = aa;
-    scanf(a, x);
-    if (a > 0)
-    {
-        printf("1 hit ");
-        if (x <= 0) {
-            r = a / x * a;
-            printf("2 hit ");
-        }
-        r = r + aa;
-    }
-    if (x != 0)
-    {
-        printf("3 hit ");
-        if (a == -4)
-        {
-            r = r + 1;
-            printf("4 hit ");
-        }
-    }
-    if (a < 0)
-    {
-        printf("5 hit ");
-        if (x >= 0)
-        {
-            r = r + a;
-            printf("6 hit ");
-        }
-    }
-    else
-    {
-        r = r * -1;
-        printf(r);
-    }
-    for(a = -2; a<d; a = a+1)
-    {
-        x = x + e;
-    }
-    if (x > 0){
-    do{
-        x = x - c;
-    }while (x > 0)
+		if(var_char_switch== 'a') printf("test2: case a");
+		else if(var_char_switch== '_') printf("test2: case _");
+
+	printf("switch test3:");
+		if(var_char_switch== 'a') printf("test3: case a");
+		else if(var_char_switch== 'b') printf("test3: case b");
+		else printf("test3: default");
+	
+	var_int_switch = -345;
+	printf("switch test4:");
+		if(var_int_switch== 345) printf("test4: case 345");
+		else if(var_int_switch== -345) printf("test4: case -345");
+		else printf("test4: default");
 	}
-    printf(x);
+	printf("switch test5:");
+	
+		if(var_int_switch== 345) printf("test5: case 345");
+		else if(var_int_switch== -345) printf("test5: case -345");
+	printf("switch test6:");
+		if(var_int_switch== 123) printf("test6: case 123");
+		else if(var_int_switch== 345) printf("test6: case 345");
+		else printf("test6: default");
+
+	
+	printf("while test1:");
+	var_int_while = 0;
+	while (var_int_while < 3) {
+		printf("var_int_while = ", var_int_while);
+		var_int_while = var_int_while + 1;
+	}
+	printf("while test2:");
+	var_int_while = 0;
+	while (var_int_while < 0) {
+		printf("var_int_while = ", var_int_while);
+		var_int_while = var_int_while + 1;
+	}
+	
+	var_int_if = 3;
+	printf("if test1:");
+	if (var_int_if == 3) {
+		printf("var_int_if == 3");
+	}
+	if (var_int_if <= 2) {
+		printf("var_int_if <= 2");
+	}
+	if (var_int_if) {
+		printf("var_int_if > 0");
+	}
+	var_int_if = 2;
+	printf("if test2:");
+	if (var_int_if == 3) {
+		printf("var_int_if == 3");
+	}
+	if (var_int_if <= 2) {
+		;
+	}
+	if (var_int_if) {
+		printf("var_int_if > 0");
+	}
+	var_int_if = 4;
+	printf("if test2:");
+	if (var_int_if == 3) {
+		printf("var_int_if == 3");
+	}
+	if (var_int_if <= 2) {
+		printf("var_int_if <= 2");
+	}
+	if (var_int_if) {
+		
+	}
+	
+	return;
+	printf("after return");
+}
+
+int int_0para() {
+	int a, b;
+	char c;
+	a = - - 6;
+	b = 7;
+	c = 'a';
+	return (a + b * c);
+}
+
+char char_0para() {
+	int a, b, c;
+	
+	a = 1;
+	b = 2;
+	c = 3;
+	global_int_arr1[0] = - (a + b) * c;
+	global_int_arr1[1] = global_int_arr1[0] + 3;
+	global_int_arr1[2] = int_0para();
+	printf(global_int_arr1[0]);
+	printf(global_int_arr1[1]);
+	printf(global_int_arr1[2]);
+	global_char_arr1[1] = 'e';
+	return (global_char_arr1[1]);
+}
+
+int int_2para(int a, int b) {
+	return (a + b);
+}
+
+int fact(int n) {
+	if (n >= 1) return (n * fact(n - 1));
+	return (1);
+}
+
+void main() {
+	void_0para();
+	printf(int_0para());
+	char_0para();
+	printf(int_2para(2 + 3 * 4, 4 + 5 + 6));
+	printf(fact(5));
 }

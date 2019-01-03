@@ -253,5 +253,50 @@
     <Text Include="test5.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="error1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="jsh2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="old_mips.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo6.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo7.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo8.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

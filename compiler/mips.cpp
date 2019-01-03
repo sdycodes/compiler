@@ -203,7 +203,23 @@ void mc2mp() {
 		if (mc[i].op == "LABEL") {	
 			gen_mips(mc[i].n1+':');
 			if (mc[i].n1[0] != '$') {	//是一个函数标签
+				//更新def_loc
 				def_loc = search_tab(mc[i].n1 == "main" ? "main" : mc[i].n1.substr(5), islocal, -2);
+				//保存现场
+				/*
+				bool should[6];
+				memset(should, 0, sizeof(should));
+				int o = def_loc + 1;
+				while (o < stp&&st[o].kind != ST_FUNC) {
+					if (name2reg[o] >= 16)
+						should[name2reg[o] - 16] = true;
+					o++;
+				}
+				for (o = 0;o < 6;o++)
+					if (should[o])
+						gen_mips("sw", no2name(o+16), "$fp", to_string(-st[def_loc].addr-(16+o)*4));
+				*/
+				//取参数
 				int k = def_loc + 1;
 				int get_cnt = 0;
 				int rest = 0;
@@ -346,6 +362,7 @@ void mc2mp() {
 			for (int j = 8;j < 16;j++) 
 				if (t_alloc.find(j)!=t_alloc.end()&&t_alloc[j]!="")
 					gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
+			
 			int j = def_loc + 1;
 			bool should[8];
 			memset(should, 0, sizeof(should));
@@ -369,6 +386,7 @@ void mc2mp() {
 			for (int l = 0;l < 6;l++)
 				if (should[l])
 					gen_mips("sw", no2name(l + 16), "$sp", to_string(-context_offset - (l + 16) * 4));
+			
 			//main函数且不是自递归的则不需要
 			if(!(st[def_loc].name=="main"&&noRA))
 				gen_mips("sw", "$31", "$sp", to_string(-context_offset - 124));
@@ -377,21 +395,23 @@ void mc2mp() {
 			gen_mips("subiu", "$sp", "$fp", to_string(st[loc].size));
 			//jump to function
 			gen_mips("jal", mc[i].n1);
+			
 			//个性化恢复现场
 			for (int j = 8;j < 16;j++) {
 				if (t_alloc.find(j) != t_alloc.end() && t_alloc[j] != "")
 					gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
 			}
+			
 			for (int l = 0;l < 6;l++) {
 				if (should[l])
 					gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
 			}
+			
 			//main函数且不是自递归的则不需要
 			if (!(st[def_loc].name == "main"&&noRA))
 				gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31 * 4));
 			gen_mips("move", "$sp", "$fp");
 			gen_mips("addiu", "$fp", "$sp", to_string(st[def_loc].size));
-			
 		}
 		else if (mc[i].op == "RET") {
 			//put the result on $v0
@@ -399,6 +419,20 @@ void mc2mp() {
 				gen_mips("li", "$v0", mc[i].n1);
 			else if (mc[i].n1 != "#")
 				gen_mips("move", "$v0", get_reg(mc[i].n1, false, def_loc));
+			//恢复现场
+			/*
+			bool should[6];
+			memset(should, 0, sizeof(should));
+			int o = def_loc + 1;
+			while (o < stp&&st[o].kind != ST_FUNC) {
+				if (name2reg[o] >= 16)
+					should[name2reg[o] - 16] = true;
+				o++;
+			}
+			for (o = 0;o < 6;o++)
+				if (should[o])
+					gen_mips("lw", no2name(o + 16), "$fp", to_string(-st[def_loc].addr - (o + 16) * 4));
+			*/
 			gen_mips("jr", "$ra");
 		}
 		else if (mc[i].op == "OUTS"|| mc[i].op == "OUTV"|| mc[i].op == "OUTC") {

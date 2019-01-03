@@ -1,149 +1,73 @@
-CONST INT MAX_NUM 1024
+INT x
 GOTO main
-SET FUNC_factorial
-#0 = n <= 1
-BNZ #0 $LABEL0
-RET 1
-SET $LABEL0
-#2 = n - 1
-PUSH #2
-CALL FUNC_factorial
-#4 = #RET
-#1 = n * #4
-RET #1
-SET $LABEL1
-RET 0
-SET FUNC_mod
-#0 = x / y
-#1 = #0 * y
-x = x - #1
-RET x
-SET FUNC_swap
-OUTS  x = 
-OUTV x
-OUTS  y = 
-OUTV y
-temp = x
-x = y
-y = temp
-OUTS  SWAP x = 
-OUTV x
-OUTS  SWAP y = 
-OUTV y
-RET #
-SET FUNC_complete_num
-j = val
-SET $LABEL2
-n = -1
-s = j
-i = 1
-SET $LABEL3
-PUSH j
-PUSH i
-CALL FUNC_mod
-#5 = #RET
-#6 = #5 == 0
-BNZ #6 $LABEL4
-n = n + 1
-s = s - i
-#9 = n >= 128
-BNZ #9 $LABEL6
-OUTS  OVERFLOW!          
-GOTO $LABEL7
-SET $LABEL6
-k[n] = i
-SET $LABEL7
-SET $LABEL4
-i = i + 1
-#11 = i < j
-BEZ #11 $LABEL3
-#12 = s == 0
-BNZ #12 $LABEL8
-OUTS  complete number: 
-OUTV j
-i = 0
-SET $LABEL10
-OUTS   
-#13 = k[i]
-OUTV #13
-i = i + 1
-#15 = i <= n
-BEZ #15 $LABEL10
-OUTS           
-SET $LABEL8
-j = j + 1
-#17 = j < 1024
-BEZ #17 $LABEL2
-OUTS  ---------------------------------------------------------------          
-a = 0
-i = 0
-SET $LABEL11
-b = a * i
-c = j * n
-a = a * i
-#21 = a + b
-a = #21 + c
-i = i + 1
-#24 = i < 1024
-BEZ #24 $LABEL11
-b = a
-i = 0
-SET $LABEL12
-b = b + i
-i = i + 1
-#27 = i < 1024
-BEZ #27 $LABEL12
-leap = 1
-OUTS  b = 
-OUTV b
-OUTS  ---------------------------------------------------------------          
-h = 0
-m = 2
-SET $LABEL13
-k2 = m / 2
-i = 2
-SET $LABEL14
-PUSH m
-PUSH i
-CALL FUNC_mod
-#33 = #RET
-#34 = #33 == 0
-BNZ #34 $LABEL15
-leap = 0
-SET $LABEL15
-i = i + 1
-#36 = i <= k2
-BEZ #36 $LABEL14
-#37 = leap == 1
-BNZ #37 $LABEL17
-OUTS  
-OUTV m
-h = h + 1
-#39 = h / 10
-x2 = #39 * 10
-#41 = x2 == h
-BNZ #41 $LABEL19
-OUTS           
-SET $LABEL19
-SET $LABEL17
-leap = 1
-m = m + 1
-#43 = m <= 1024
-BEZ #43 $LABEL13
-OUTS           The total is 
-OUTV h
-RET #
+SET FUNC_add
+#0 = x
+#1 = #0 + a
+#2 = #1 + b
+x = #2 + c
+#4 = x
+RET #4
 FUNC main
-INT n
-PUSH 10
-CALL FUNC_factorial
-#45 = #RET
-n = #45
-OUTS  10! = 
-OUTV n
-PUSH 5
-PUSH 10
-CALL FUNC_swap
+x = 1
+#5 = x
+PUSH 1
 PUSH 2
-CALL FUNC_complete_num
+PUSH 3
+CALL FUNC_add
+#9 = #RET
+PUSH 0
+PUSH 0
+PUSH 0
+CALL FUNC_add
+#14 = #RET
+PUSH #9
+PUSH #14
+PUSH 0
+CALL FUNC_add
+#17 = #RET
+#21 = x
+PUSH -3
+PUSH #21
+PUSH -1
+CALL FUNC_add
+#25 = #RET
+PUSH #17
+PUSH #25
+PUSH 0
+CALL FUNC_add
+#28 = #RET
+#29 = #5 + #28
+#31 = x
+#33 = x
+#36 = x
+PUSH #33
+PUSH 0
+PUSH #36
+CALL FUNC_add
+#38 = #RET
+#40 = x
+PUSH #31
+PUSH #38
+PUSH #40
+CALL FUNC_add
+#42 = #RET
+#44 = x
+#47 = x
+PUSH 0
+PUSH #47
+PUSH 0
+CALL FUNC_add
+#50 = #RET
+PUSH #44
+PUSH #50
+PUSH 1
+CALL FUNC_add
+#53 = #RET
+PUSH 0
+PUSH #42
+PUSH #53
+CALL FUNC_add
+#55 = #RET
+#56 = #29 + #55
+OUTV #56
 EXIT
