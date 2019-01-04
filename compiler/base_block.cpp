@@ -20,10 +20,10 @@ void init_block(block& b) {
 	}
 }
 
-//¼ÆËã»ù±¾¿é
+//è®¡ç®—åŸºæœ¬å—
 void split_block() {
 	int cnt = 0;
-	//Èë¿Ú¿é
+	//å…¥å£å—
 	block init;
 	init_block(init);
 	init.no = cnt++;
@@ -35,7 +35,7 @@ void split_block() {
 		tmp.no = cnt++;
 		tmp.start = i;
 		int j = i;
-		//ÕÒµ½±¾¿éµÄ½áÊø»òÏÂÒ»¿éµÄ¿ªÊ¼
+		//æ‰¾åˆ°æœ¬å—çš„ç»“æŸæˆ–ä¸‹ä¸€å—çš„å¼€å§‹
 		while (j < (int)mc.size() &&
 			mc[j].op != "BNZ"&&mc[j].op != "BEZ"&&mc[j].op != "GOTO" &&
 			!(i!=j&&mc[j].op == "LABEL"&&mc[j].n1[0] == '$') &&
@@ -64,9 +64,9 @@ void split_block() {
 	blocks.push_back(exit);
 }
 
-//¼ÆËãÁ÷Í¼
+//è®¡ç®—æµå›¾
 void gen_DAG() {
-	//¼ÆËãÃ¿¸ö¿éµÄºó¼Ì
+	//è®¡ç®—æ¯ä¸ªå—çš„åç»§
 	blocks[0].next.push_back(1);
 	for (int i = 1;i < (int)blocks.size() - 1;i++) {
 		if (mc[blocks[i].end].op == "GOTO") {
@@ -85,7 +85,7 @@ void gen_DAG() {
 		else
 			blocks[i].next.push_back(i+1);
 	}
-	//¼ÆËãÃ¿¸ö¿éµÄÇ°Çı
+	//è®¡ç®—æ¯ä¸ªå—çš„å‰é©±
 	blocks[1].pre.push_back(0);
 	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		if (i != 1) {
@@ -101,14 +101,14 @@ void gen_DAG() {
 				blocks[i].pre.push_back(j);
 		}
 	}
-	//¼ÆËãexit¿éµÄÇ°Çı
+	//è®¡ç®—exitå—çš„å‰é©±
 	for (int j = 1;j < (int)blocks.size() - 1;j++) {
 		if (mc[blocks[j].end].op == "RET" || mc[blocks[j].end].op == "EXIT")
 			blocks.back().pre.push_back(j);
 	}
 }
 
-//¼ÆËãdef use
+//è®¡ç®—def use
 void cal_def_use() {
 	int def_loc, loc;
 	bool islocal;
@@ -117,7 +117,7 @@ void cal_def_use() {
 		for (int j = blocks[i].start;j <= blocks[i].end;j++) {
 			if (mc[j].op == "LABEL"&&mc[j].n1[0]!='$') {
 				def_loc = search_tab(mc[j].n1=="main"?"main":mc[j].n1.substr(5), islocal, -2);
-				//°Ñ²ÎÊıµÄdefÖÃÎªtrue
+				//æŠŠå‚æ•°çš„defç½®ä¸ºtrue
 				//int k = def_loc + 1;
 				//while (k < stp&&st[k].kind == ST_PARA) {
 				//	blocks[i].def[k] = true;
@@ -140,6 +140,7 @@ void cal_def_use() {
 				}
 				islocal = false;
 				loc = search_tab(mc[j].res, islocal, def_loc);
+
 				if (rec.find(loc) == rec.end() && isVar(mc[j].res)) {
 					rec[loc] = true;
 				}
@@ -207,14 +208,14 @@ void cal_def_use() {
 				blocks[i].def[it->first] = true;
 			}
 		for (map<int, bool>::iterator it = rec.begin();it != rec.end();it++) 
-			if (!it->second&&!blocks[i].def[it->first]) {	//³öÏÖÔÚdefÀï¾Í²»ÄÜÔÚuseÀï
+			if (!it->second&&!blocks[i].def[it->first]) {	//å‡ºç°åœ¨defé‡Œå°±ä¸èƒ½åœ¨useé‡Œ
 				blocks[i].use[it->first] = true;
 			}
 		
 	}
 }
 
-//Ò»Ğ©¼¯ºÏ¼ÆËãµÄ¸¨Öúº¯Êı
+//ä¸€äº›é›†åˆè®¡ç®—çš„è¾…åŠ©å‡½æ•°
 void unionset(bool a[], bool b[], bool c[], int size) {
 	for (int i = 0;i < size;i++)
 		c[i] = a[i] || b[i];
@@ -235,7 +236,7 @@ bool assign_and_check_change(bool a[], bool b[], int size) {
 	return change;
 }
 
-//¼ÆËãin out
+//è®¡ç®—in out
 void cal_in_out() {
 	cal_def_use();
 	bool change = false;

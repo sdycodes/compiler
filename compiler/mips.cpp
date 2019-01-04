@@ -41,7 +41,7 @@ void resetMidvar(string midvarname) {
 		int k;
 		for (k = 0;k < REG_NUM;k++)
 			if (tstk[k] == it->first)	break;
-		//ÒÆ¶¯
+		//ç§»åŠ¨
 		for (;k < REG_NUM - 1;k++)
 			tstk[k] = tstk[k + 1];
 		tstk[k] = it->first;
@@ -83,7 +83,7 @@ bool calnoRA() {
 	return true;
 }
 string get_reg(string name, bool assign, int def_loc) {
-	//#RET Ö±½Ó·µ»Øv0
+	//#RET ç›´æ¥è¿”å›v0
 	if (name == "#RET")
 		return "$v0";
 	bool islocal;
@@ -91,66 +91,66 @@ string get_reg(string name, bool assign, int def_loc) {
 	int loc = search_tab(name, islocal, def_loc);
 	static int data_buffer = 6;
 	//static int data_buffer = 0;
-	//Ò»¸öÈ«¾Ö±äÁ¿ »òÕßÊÇÒ»¸öÎ´·ÖÅä¼Ä´æÆ÷µÄ¿ç»ù±¾¿é¾Ö²¿±äÁ¿
+	//ä¸€ä¸ªå…¨å±€å˜é‡ æˆ–è€…æ˜¯ä¸€ä¸ªæœªåˆ†é…å¯„å­˜å™¨çš„è·¨åŸºæœ¬å—å±€éƒ¨å˜é‡
 	if (loc != -1 && (!islocal|| name2reg[loc] == -1)) {
 		if (!islocal&&name2reg[loc] > 0)	return no2name(name2reg[loc]);
 		reg = "$s" + to_string(data_buffer);
 		//reg = data_buffer == 0 ? "$a3" : "$v1";
 		if (!islocal&&!assign)
-			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//´ÓÄÚ´æÖĞ¶ÁÈ¡
+			gen_mips("lw", reg, "$gp", to_string(st[loc].addr));	//ä»å†…å­˜ä¸­è¯»å–
 		else if(!assign)
 			gen_mips("lw", reg, "$fp", to_string(-st[loc].addr));
 		data_buffer = data_buffer == 6 ? 7 : 6;
 		//data_buffer = data_buffer == 0 ? 1 : 0;
 		return reg;
 	}
-	//Èç¹ûÊÇÒ»¸ö·ÖÅäÁËs/a¼Ä´æÆ÷µÄ¿ç»ù±¾¿é¾Ö²¿±äÁ¿
+	//å¦‚æœæ˜¯ä¸€ä¸ªåˆ†é…äº†s/aå¯„å­˜å™¨çš„è·¨åŸºæœ¬å—å±€éƒ¨å˜é‡
 	if (loc != -1 && name2reg[loc]!=0&&name2reg[loc]!=-1) {
 		return no2name(name2reg[loc]);
 	}
-	//Èç¹ûÊÇ²»¿ç»ù±¾¿éµÄ¾Ö²¿±äÁ¿»òÕßÖĞ¼ä±äÁ¿ ²ÉÓÃLRUËã·¨
+	//å¦‚æœæ˜¯ä¸è·¨åŸºæœ¬å—çš„å±€éƒ¨å˜é‡æˆ–è€…ä¸­é—´å˜é‡ é‡‡ç”¨LRUç®—æ³•
 	if(loc==-1||name2reg[loc]==0){
 		map<int, string>::iterator it = t_alloc.begin();
 		for (;it != t_alloc.end();it++) {
 			if (it->second == name)
 				break;
 		}
-		//Èç¹ûµ±Ç°±äÁ¿ÒÑ¾­·ÖÅäÁË¼Ä´æÆ÷
+		//å¦‚æœå½“å‰å˜é‡å·²ç»åˆ†é…äº†å¯„å­˜å™¨
 		if (it != t_alloc.end()) {
 			int v;
-			//Ñ°ÕÒËü¶ÔÓ¦µÄ¼Ä´æÆ÷Î»ÖÃ
+			//å¯»æ‰¾å®ƒå¯¹åº”çš„å¯„å­˜å™¨ä½ç½®
 			for (v = 0;v < REG_NUM;v++) {
 				if (tstk[v] == it->first)
 					break;
 			}
 			int r = tstk[v];
-			//·Åµ½¶¥²¿ LRUËã·¨
+			//æ”¾åˆ°é¡¶éƒ¨ LRUç®—æ³•
 			for (int w = v;w >= 1;w--)
 				tstk[w] = tstk[w - 1];
 			tstk[0] = r;
 			return no2name(r);
 		}
-		//Èç¹ûÃ»ÓĞ·ÖÅä¼Ä´æÆ÷
+		//å¦‚æœæ²¡æœ‰åˆ†é…å¯„å­˜å™¨
 		else {
 			string rec_name = "";
-			//Èç¹ûÕ»µ×¼Ä´æÆ÷²»¿Õ ËµÃ÷¼Ä´æÆ÷È«²¿±»Õ¼ÓÃ ĞèÒªµ¯³öÕ»µ×
+			//å¦‚æœæ ˆåº•å¯„å­˜å™¨ä¸ç©º è¯´æ˜å¯„å­˜å™¨å…¨éƒ¨è¢«å ç”¨ éœ€è¦å¼¹å‡ºæ ˆåº•
 			if (t_alloc.find(tstk[REG_NUM - 1]) != t_alloc.end() && t_alloc[tstk[REG_NUM - 1]] != "") {
 				rec_name = t_alloc[tstk[REG_NUM - 1]];
 			}
 			int r = tstk[REG_NUM - 1];
 			for (int k = REG_NUM - 1;k >= 1;k--)
 				tstk[k] = tstk[k - 1];
-			tstk[0] = r;	//Õ»µ×¼Ä´æÆ÷·Åµ½Õ»¶¥
-			t_alloc[r] = name;	//·ÖÅä¼Ä´æÆ÷
-			//rec_name²»¿ÕËµÃ÷±»¼·µôÁË£¬ĞèÒª»ØĞ´
+			tstk[0] = r;	//æ ˆåº•å¯„å­˜å™¨æ”¾åˆ°æ ˆé¡¶
+			t_alloc[r] = name;	//åˆ†é…å¯„å­˜å™¨
+			//rec_nameä¸ç©ºè¯´æ˜è¢«æŒ¤æ‰äº†ï¼Œéœ€è¦å›å†™
 			if (rec_name != "") {
 				int rec_loc = search_tab(rec_name, islocal, def_loc);
-				if (rec_loc == -1) 	//Ò»¸öÖĞ¼ä±äÁ¿
+				if (rec_loc == -1) 	//ä¸€ä¸ªä¸­é—´å˜é‡
 					gen_mips("sw", no2name(r), "$sp", to_string((stoi(rec_name.substr(1)) << 2) + 4));
-				else //Ò»¸ö²»¿çÔ½»ù±¾¿éµÄ¾Ö²¿±äÁ¿
+				else //ä¸€ä¸ªä¸è·¨è¶ŠåŸºæœ¬å—çš„å±€éƒ¨å˜é‡
 					gen_mips("sw", no2name(r), "$fp", to_string(-st[rec_loc].addr));
 			}
-			//°ÑĞÂ·ÖÅäµÄload³öÀ´ Èç¹û²»ÊÇ±»¸³ÖµµÄ»°
+			//æŠŠæ–°åˆ†é…çš„loadå‡ºæ¥ å¦‚æœä¸æ˜¯è¢«èµ‹å€¼çš„è¯
 			if (!assign) {
 				if (loc == -1)
 					gen_mips("lw", no2name(r), "$sp", to_string((stoi(name.substr(1)) << 2) + 4));
@@ -199,13 +199,13 @@ void mc2mp() {
 	int block_no = 1;
 	int block_end = blocks[block_no].end;
 	for (int i = 0;i < (int)mc.size();i++) {
-		//±êÇ©
+		//æ ‡ç­¾
 		if (mc[i].op == "LABEL") {	
 			gen_mips(mc[i].n1+':');
-			if (mc[i].n1[0] != '$') {	//ÊÇÒ»¸öº¯Êı±êÇ©
-				//¸üĞÂdef_loc
+			if (mc[i].n1[0] != '$') {	//æ˜¯ä¸€ä¸ªå‡½æ•°æ ‡ç­¾
+				//æ›´æ–°def_loc
 				def_loc = search_tab(mc[i].n1 == "main" ? "main" : mc[i].n1.substr(5), islocal, -2);
-				//±£´æÏÖ³¡
+				//ä¿å­˜ç°åœº
 				/*
 				bool should[6];
 				memset(should, 0, sizeof(should));
@@ -219,7 +219,7 @@ void mc2mp() {
 					if (should[o])
 						gen_mips("sw", no2name(o+16), "$fp", to_string(-st[def_loc].addr-(16+o)*4));
 				*/
-				//È¡²ÎÊı
+				//å–å‚æ•°
 				int k = def_loc + 1;
 				int get_cnt = 0;
 				int rest = 0;
@@ -240,12 +240,12 @@ void mc2mp() {
 			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
 			string numres = mc[i].n1==mc[i].res?num1:
 							mc[i].n2==mc[i].res?num2:get_reg(mc[i].res, true, def_loc);
-			//¶¼ÊÇ³£Á¿ li
+			//éƒ½æ˜¯å¸¸é‡ li
 			if (isCon(mc[i].n1)&&isCon(mc[i].n2)) {
 				int res = mc[i].op == "ADD" ? stoi(num1) + stoi(num2) : stoi(num1) - stoi(num2);
 				gen_mips("li", numres, to_string(res));
 			}
-			//Ò»¸öÊÇ³£Á¿ Ò»¸öÊÇ±äÁ¿ addi/subi
+			//ä¸€ä¸ªæ˜¯å¸¸é‡ ä¸€ä¸ªæ˜¯å˜é‡ addi/subi
 			else if (isCon(mc[i].n2)) {
 				string op = mc[i].op == "ADD" ? "addiu" : "subiu";
 				gen_mips(op, numres, num1, num2);
@@ -259,12 +259,12 @@ void mc2mp() {
 					gen_mips("addiu", numres, num2, num1);
 				}
 			}
-			//¶¼ÊÇ±äÁ¿
+			//éƒ½æ˜¯å˜é‡
 			else {
 				string op = mc[i].op == "ADD" ? "addu" : "subu";
 				gen_mips(op, numres, num1, num2);
 			}
-			//ÕâÀïÊÇ¶ÔÓÚÈ«¾Ö±äÁ¿µÄÌØÊâ²Ù×÷ 
+			//è¿™é‡Œæ˜¯å¯¹äºå…¨å±€å˜é‡çš„ç‰¹æ®Šæ“ä½œ 
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
 				if (!islocal) {
@@ -276,7 +276,7 @@ void mc2mp() {
 			}
 		}
 		else if(mc[i].op=="MULT"||mc[i].op=="DIV"){
-			//¶¼ÊÇ³£Á¿ li
+			//éƒ½æ˜¯å¸¸é‡ li
 			string num1 = isCon(mc[i].n1) ? mc[i].n1 : get_reg(mc[i].n1, false, def_loc);
 			string num2 = isCon(mc[i].n2) ? mc[i].n2 : get_reg(mc[i].n2, false, def_loc);
 			string numres = mc[i].n1 == mc[i].res ? num1 :
@@ -285,7 +285,7 @@ void mc2mp() {
 				int res = mc[i].op == "MULT" ? stoi(num1) * stoi(num2) : stoi(num1) / stoi(num2);
 				gen_mips("li", numres, to_string(res));
 			}
-			//Ò»¸öÊÇ³£Á¿ Ò»¸öÊÇ±äÁ¿
+			//ä¸€ä¸ªæ˜¯å¸¸é‡ ä¸€ä¸ªæ˜¯å˜é‡
 			else if (isCon(mc[i].n2)) {
 				string op = mc[i].op == "MULT" ? "mul" : "div";
 				gen_mips(op, numres, num1, num2);
@@ -299,7 +299,7 @@ void mc2mp() {
 					gen_mips("mul", numres, num2, num1);
 				}
 			}
-			//¶¼ÊÇ±äÁ¿
+			//éƒ½æ˜¯å˜é‡
 			else {
 				if(mc[i].op=="MULT")
 					gen_mips("mul", numres, num1, num2);
@@ -308,7 +308,7 @@ void mc2mp() {
 					gen_mips("mflo", numres);
 				}
 			}
-			//ÕâÀïÊÇ¶ÔÓÚÈ«¾Ö±äÁ¿µÄÌØÊâ²Ù×÷ 
+			//è¿™é‡Œæ˜¯å¯¹äºå…¨å±€å˜é‡çš„ç‰¹æ®Šæ“ä½œ 
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
 				if (!islocal) {
@@ -328,8 +328,8 @@ void mc2mp() {
 		}
 		else if (mc[i].op == "CALL") {
 			int loc = search_tab(mc[i].n1=="main"?"main":mc[i].n1.substr(5), islocal, -2);
-			int context_offset = st[loc].addr;	//±£´æÏÖ³¡µÄÆğÊ¼Î»ÖÃ
-			//´«²ÎÊı
+			int context_offset = st[loc].addr;	//ä¿å­˜ç°åœºçš„èµ·å§‹ä½ç½®
+			//ä¼ å‚æ•°
 			int para_cnt = 0;
 			int rest = 0;
 			if (mc[i].n1!="main"&&isLeaf(mc[i].n1))
@@ -352,13 +352,14 @@ void mc2mp() {
 				else
 					gen_mips("sw", get_reg(paras[j], false, def_loc), "$sp", to_string(-j * 4));
 			}
-			//º¯Êı´«²Îºó ËùÓĞµÄ²ÎÊıÖĞ¼ä±äÁ¿¶¼Ó¦Çå³ı ÕâÒ²ÒâÎ¶×Å¹«¹²×Ó±í´ïÊ½µÄÖĞ¼ä±äÁ¿²»ÄÜ¿çº¯Êı
+			//å‡½æ•°ä¼ å‚å æ‰€æœ‰çš„å‚æ•°ä¸­é—´å˜é‡éƒ½åº”æ¸…é™¤ è¿™ä¹Ÿæ„å‘³ç€å…¬å…±å­è¡¨è¾¾å¼çš„ä¸­é—´å˜é‡ä¸èƒ½è·¨å‡½æ•°
 			for (int j = 0;j < (int)paras.size();j++) {
 				if (paras[j][0] == '#') 
 					resetMidvar(paras[j]);
 			}
 			paras.clear();
-			//¸öĞÔ»¯±£´æÏÖ³¡
+
+			//ä¸ªæ€§åŒ–ä¿å­˜ç°åœº
 			for (int j = 8;j < 16;j++) 
 				if (t_alloc.find(j)!=t_alloc.end()&&t_alloc[j]!="")
 					gen_mips("sw", "$" + to_string(j), "$sp", to_string(-context_offset - j * 4));
@@ -370,8 +371,8 @@ void mc2mp() {
 				if (name2reg[j] > 0)
 					should[name2reg[j] - 16] = true;
 				j++;
-			}	//¼ÇÂ¼ÁËĞèÒª±£´æÏÖ³¡µÄ¼Ä´æÆ÷
-			//Èç¹û±»µ÷ÓÃµÄº¯ÊıÊÇÒ¶×Óº¯Êı ÄÇÃ´Ö»ÓĞÁ½ÕßµÄ½»¼¯²ÅĞèÒª±£´æÏÖ³¡
+			}	//è®°å½•äº†éœ€è¦ä¿å­˜ç°åœºçš„å¯„å­˜å™¨
+			//å¦‚æœè¢«è°ƒç”¨çš„å‡½æ•°æ˜¯å¶å­å‡½æ•° é‚£ä¹ˆåªæœ‰ä¸¤è€…çš„äº¤é›†æ‰éœ€è¦ä¿å­˜ç°åœº
 			if (mc[i].n1 != "main"&&isLeaf(mc[i].n1)) {
 				bool should2[8];
 				memset(should2, 0, 8);
@@ -387,16 +388,17 @@ void mc2mp() {
 				if (should[l])
 					gen_mips("sw", no2name(l + 16), "$sp", to_string(-context_offset - (l + 16) * 4));
 			
-			//mainº¯ÊıÇÒ²»ÊÇ×Ôµİ¹éµÄÔò²»ĞèÒª
+			//mainå‡½æ•°ä¸”ä¸æ˜¯è‡ªé€’å½’çš„åˆ™ä¸éœ€è¦
 			if(!(st[def_loc].name=="main"&&noRA))
 				gen_mips("sw", "$31", "$sp", to_string(-context_offset - 124));
-			//·ÖÅäº¯ÊıÔËĞĞÕ»
+			//åˆ†é…å‡½æ•°è¿è¡Œæ ˆ
 			gen_mips("move", "$fp", "$sp");
 			gen_mips("subiu", "$sp", "$fp", to_string(st[loc].size));
 			//jump to function
 			gen_mips("jal", mc[i].n1);
+
 			
-			//¸öĞÔ»¯»Ö¸´ÏÖ³¡
+			//ä¸ªæ€§åŒ–æ¢å¤ç°åœº
 			for (int j = 8;j < 16;j++) {
 				if (t_alloc.find(j) != t_alloc.end() && t_alloc[j] != "")
 					gen_mips("lw", "$" + to_string(j), "$fp", to_string(-context_offset - j * 4));
@@ -407,7 +409,7 @@ void mc2mp() {
 					gen_mips("lw", no2name(l + 16), "$fp", to_string(-context_offset - (l + 16) * 4));
 			}
 			
-			//mainº¯ÊıÇÒ²»ÊÇ×Ôµİ¹éµÄÔò²»ĞèÒª
+			//mainå‡½æ•°ä¸”ä¸æ˜¯è‡ªé€’å½’çš„åˆ™ä¸éœ€è¦
 			if (!(st[def_loc].name == "main"&&noRA))
 				gen_mips("lw", "$" + to_string(31), "$fp", to_string(-context_offset - 31 * 4));
 			gen_mips("move", "$sp", "$fp");
@@ -419,7 +421,7 @@ void mc2mp() {
 				gen_mips("li", "$v0", mc[i].n1);
 			else if (mc[i].n1 != "#")
 				gen_mips("move", "$v0", get_reg(mc[i].n1, false, def_loc));
-			//»Ö¸´ÏÖ³¡
+			//æ¢å¤ç°åœº
 			/*
 			bool should[6];
 			memset(should, 0, sizeof(should));
@@ -521,7 +523,7 @@ void mc2mp() {
 			gen_mips("syscall");
 			string numres = get_reg(mc[i].n1, true, def_loc);
 			gen_mips("move", numres, "$v0");
-			//ÕâÀïÊÇ¶ÔÓÚÈ«¾Ö±äÁ¿µÄÌØÊâ²Ù×÷ 
+			//è¿™é‡Œæ˜¯å¯¹äºå…¨å±€å˜é‡çš„ç‰¹æ®Šæ“ä½œ 
 			int loc = search_tab(mc[i].n1, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
 				if (!islocal) {
@@ -542,7 +544,7 @@ void mc2mp() {
 				gen_mips("li", numres, mc[i].n1);
 			else
 				gen_mips("move", numres, num1);
-			//¶ÔÈ«¾Ö±äÁ¿µÄÌØÊâ²Ù×÷
+			//å¯¹å…¨å±€å˜é‡çš„ç‰¹æ®Šæ“ä½œ
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
 				if (!islocal) {
@@ -552,7 +554,7 @@ void mc2mp() {
 				else
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
-			//Èç¹û¸³ÖµµÄÊÇÒ»¸ö·ÇÖĞ¼ä±äÁ¿ Çå³ıµôËùÓĞÖĞ¼ä±äÁ¿
+			//å¦‚æœèµ‹å€¼çš„æ˜¯ä¸€ä¸ªéä¸­é—´å˜é‡ æ¸…é™¤æ‰æ‰€æœ‰ä¸­é—´å˜é‡
 			if (mc[i].res[0] != '#') {
 				map<int, string>::iterator it = t_alloc.begin();
 				while (it != t_alloc.end()) {
@@ -607,7 +609,7 @@ void mc2mp() {
 					gen_mips("addu", "$t8", "$gp", "$t8");
 				gen_mips("lw", numres, "$t8", "0");
 			}
-			//¶ÔÈ«¾Ö±äÁ¿µÄÌØÊâ²Ù×÷
+			//å¯¹å…¨å±€å˜é‡çš„ç‰¹æ®Šæ“ä½œ
 			int loc = search_tab(mc[i].res, islocal, def_loc);
 			if (loc != -1 && (!islocal || name2reg[loc] == -1)) {
 				if (!islocal) {
@@ -618,7 +620,7 @@ void mc2mp() {
 					gen_mips("sw", numres, "$fp", to_string(-st[loc].addr));
 			}
 		}
-		//Ò»¸ö»ù±¾¿é½áÊø Çå³ıt¼Ä´æÆ÷µÄ¶ÔÓ¦¹ØÏµ  ¸üĞÂÎ»ÖÃ
+		//ä¸€ä¸ªåŸºæœ¬å—ç»“æŸ æ¸…é™¤tå¯„å­˜å™¨çš„å¯¹åº”å…³ç³»  æ›´æ–°ä½ç½®
 		if (i == block_end) {
 			t_alloc.clear();
 			block_no++;
