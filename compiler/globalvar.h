@@ -64,5 +64,10 @@ extern vector<mce> mc;
 extern int tno;
 extern int lno;
 
+extern vector<mce> omc;
 extern vector<mce> mp;
+
+extern bool isError;
+
+extern int CHOOSEA;
 #endif

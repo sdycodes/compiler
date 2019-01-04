@@ -11,14 +11,15 @@ typedef struct block {
 	bool def[MAXSIGNNUM], use[MAXSIGNNUM], in[MAXSIGNNUM], out[MAXSIGNNUM];
 }block;
 extern vector<block> blocks;
-extern int name2reg[MAXSIGNNUM];
-void dump_def_use();
+extern bool isOB[MAXSIGNNUM];
+void dump_blocks();
 void init_block(block& b);
-void split_block();
-void gen_DAG();
-void cal_def_use();
-void unionset(bool a[], bool b[], bool c[], int size = MAXSIGNNUM);
-void substract(bool a[], bool b[], bool c[], int size = MAXSIGNNUM);
-bool assign_and_check_change(bool a[], bool b[], int size = MAXSIGNNUM);
-void cal_in_out();
+void split_block(void);
+void gen_DAG(void);
+void cal_def_use(void);
+void unionset(bool a[], bool b[], bool c[], int size);
+void substract(bool a[], bool b[], bool c[], int size);
+bool assign_and_check_change(bool a[], bool b[], int size);
+void cal_in_out(void);
+void cal_isOB(void);
 #endif

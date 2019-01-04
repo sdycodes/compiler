@@ -14,6 +14,7 @@ void genmc(string op, string n1, string n2, string res) {
 	return;
 }
 
+
 string genlabel() {
 	lno++;
 	return "$LABEL"+to_string(lno-1);
@@ -24,7 +25,7 @@ string gent() {
 	return "#"+to_string(tno-1);
 }
 
-void dumpmc() {
+void dumpmc(vector<mce> mc) {
 	int i=0, loc;
 	bool islocal;
 	//output global variables
@@ -53,7 +54,7 @@ void dumpmc() {
 	string mop;
 	for (int j = 0;j < (int)mc.size();j++) {
 		if (mc[j].op == "LABEL") {
-			loc = search_tab(mc[j].n1, islocal);
+			loc = search_tab(mc[j].n1, islocal, -2);
 			// if its a function output its parameters and const and variables
 			if (loc != -1) {
 				printf("FUNC %s\n", st[loc].name.c_str());
@@ -65,7 +66,7 @@ void dumpmc() {
 						if (st[k].type == ST_INT)
 							printf("CONST INT %s %d\n", st[k].name.c_str(), st[k].val);
 						else
-							printf("CONST CHAR %s '%c'\n", st[k].name.c_str(), st[k].val%256);
+							printf("CONST CHAR %s '%c'\n", st[k].name.c_str(), st[k].val % 256);
 					}
 					else if (st[k].kind == ST_VAR) {
 						if (st[k].type == ST_INT)
@@ -100,7 +101,7 @@ void dumpmc() {
 			printf("%s = %s %s %s\n", mc[j].res.c_str(), mc[j].n1.c_str(), mop.c_str(), mc[j].n2.c_str());
 		}
 		else if (mc[j].op == "CALL" || mc[j].op == "PUSH" || mc[j].op == "GOTO" || mc[j].op == "RET" || \
-			mc[j].op == "INC" ||mc[j].op =="INV"|| mc[j].op == "OUTC" || mc[j].op == "OUTV")
+			mc[j].op == "INC" || mc[j].op == "INV" || mc[j].op == "OUTC" || mc[j].op == "OUTV")
 			printf("%s %s\n", mc[j].op.c_str(), mc[j].n1.c_str());
 		else if (mc[j].op == "ASSIGN")
 			printf("%s = %s\n", mc[j].res.c_str(), mc[j].n1.c_str());
@@ -108,14 +109,13 @@ void dumpmc() {
 			printf("%s[%s] = %s\n", mc[j].res.c_str(), mc[j].n1.c_str(), mc[j].n2.c_str());
 		else if (mc[j].op == "LELEM")
 			printf("%s = %s[%s]\n", mc[j].res.c_str(), mc[j].n1.c_str(), mc[j].n2.c_str());
-		else if (mc[j].op == "BNZ"||mc[j].op=="BEZ")
+		else if (mc[j].op == "BNZ" || mc[j].op == "BEZ")
 			printf("%s %s %s\n", mc[j].op.c_str(), mc[j].n1.c_str(), mc[j].res.c_str());
 		else if (mc[j].op == "OUTS")
 			printf("OUTS %s\n", &strtab[atoi(mc[j].n1.c_str())]);
-		else if (mc[j].op=="EXIT")
+		else if (mc[j].op == "EXIT")
 			printf("EXIT\n");
-		else {
+		else if (mc[j].op != "NULL")
 			printf("!!!!!!!!!%s\n", mc[j].op.c_str());
-		}
 	}
 }

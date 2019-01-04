@@ -1,0 +1,183 @@
+.data   
+$string: .asciiz "" 
+.text   
+li $fp 0x7fffeffc 
+subiu $sp $fp 356
+j main  
+FUNC_add:   
+move $a3 $a3 
+move $a2 $a2 
+move $a1 $a1 
+lw $s6 0($gp)
+move $t7 $s6 
+addu $t6 $t7 $a3
+addu $t5 $t6 $a2
+addu $s7 $t5 $a1
+sw $s7 0($gp)
+lw $s6 0($gp)
+move $t4 $s6 
+move $v0 $t4 
+jr $ra  
+main:   
+li $s7 1 
+sw $s7 0($gp)
+lw $s6 0($gp)
+move $t3 $s6 
+li $a3 1 
+li $a2 2 
+li $a1 3 
+sw $11 -56($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $11 -56($fp)
+move $sp $fp 
+addiu $fp $sp 356
+move $t2 $v0 
+li $a3 0 
+li $a2 0 
+li $a1 0 
+sw $10 -52($sp)
+sw $11 -56($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $10 -52($fp)
+lw $11 -56($fp)
+move $sp $fp 
+addiu $fp $sp 356
+move $t1 $v0 
+move $a3 $t2 
+move $a2 $t1 
+li $a1 0 
+sw $11 -56($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $11 -56($fp)
+move $sp $fp 
+addiu $fp $sp 356
+sw $t3 24($sp)
+move $t3 $v0 
+lw $s7 0($gp)
+move $t2 $s7 
+li $a3 -3 
+move $a2 $t2 
+li $a1 -1 
+sw $11 -56($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $11 -56($fp)
+move $sp $fp 
+addiu $fp $sp 356
+sw $t3 72($sp)
+move $t3 $v0 
+lw $t2 72($sp)
+move $a3 $t2 
+move $a2 $t3 
+li $a1 0 
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+move $sp $fp 
+addiu $fp $sp 356
+move $t3 $v0 
+lw $t2 24($sp)
+addu $t1 $t2 $t3
+lw $s6 0($gp)
+move $t0 $s6 
+lw $s7 0($gp)
+move $t7 $s7 
+lw $s6 0($gp)
+move $t6 $s6 
+move $a3 $t7 
+li $a2 0 
+move $a1 $t6 
+sw $8 -44($sp)
+sw $9 -48($sp)
+sw $10 -52($sp)
+sw $11 -56($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $8 -44($fp)
+lw $9 -48($fp)
+lw $10 -52($fp)
+lw $11 -56($fp)
+move $sp $fp 
+addiu $fp $sp 356
+move $t7 $v0 
+lw $s7 0($gp)
+move $t6 $s7 
+move $a3 $t0 
+move $a2 $t7 
+move $a1 $t6 
+sw $9 -48($sp)
+sw $10 -52($sp)
+sw $11 -56($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $9 -48($fp)
+lw $10 -52($fp)
+lw $11 -56($fp)
+move $sp $fp 
+addiu $fp $sp 356
+move $t7 $v0 
+lw $s6 0($gp)
+move $t6 $s6 
+sw $t3 116($sp)
+lw $s7 0($gp)
+move $t3 $s7 
+li $a3 0 
+move $a2 $t3 
+li $a1 0 
+sw $9 -48($sp)
+sw $10 -52($sp)
+sw $14 -68($sp)
+sw $15 -72($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $9 -48($fp)
+lw $10 -52($fp)
+lw $14 -68($fp)
+lw $15 -72($fp)
+move $sp $fp 
+addiu $fp $sp 356
+sw $t7 172($sp)
+move $t7 $v0 
+move $a3 $t6 
+move $a2 $t7 
+li $a1 1 
+sw $9 -48($sp)
+sw $10 -52($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $9 -48($fp)
+lw $10 -52($fp)
+move $sp $fp 
+addiu $fp $sp 356
+move $t7 $v0 
+li $a3 0 
+lw $t6 172($sp)
+move $a2 $t6 
+move $a1 $t7 
+sw $9 -48($sp)
+sw $10 -52($sp)
+move $fp $sp 
+subiu $sp $fp 160
+jal FUNC_add  
+lw $9 -48($fp)
+lw $10 -52($fp)
+move $sp $fp 
+addiu $fp $sp 356
+move $t7 $v0 
+addu $t6 $t1 $t7
+li $v0 1 
+move $a0 $t6 
+syscall   
+li $v0 10 
+syscall   

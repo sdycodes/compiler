@@ -45,6 +45,12 @@
     <ClInclude Include="base_block.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="optimize.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="reg_distribution.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -75,6 +81,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="base_block.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="optimize.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="reg_distribution.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,6 +137,165 @@
       <Filter>资源文件</Filter>
     </Text>
     <Text Include="public_test5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="gg3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="unlimitedcall.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="jsh.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web6.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web7.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web8.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web9.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web10.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web11.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web12.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web14.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web15.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web16.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web17.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web18.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web19.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web20.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web21.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="web22.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="comment.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="tests.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test_global.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="temp.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="problem_codes.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="try.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="BulletFly.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="midcode.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="new_midcode.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="test5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="error5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="jsh2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="old_mips.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo1.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo2.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo3.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo4.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo5.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo6.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo7.txt">
+      <Filter>资源文件</Filter>
+    </Text>
+    <Text Include="algo8.txt">
       <Filter>资源文件</Filter>
     </Text>
   </ItemGroup>

@@ -4,23 +4,26 @@
 #include "globalvar.h"
 #include "sign_table.h"
 vector<block> blocks;
-int name2reg[MAXSIGNNUM] = { 0 };
-#define isVar(x) (((x)[0]=='_'||((x)[0]>='a'&&(x)[0]<='z')||((x)[0]>='A'&&(x)[0]<='Z'))&&islocal)
+//#define isVar(x) (((x)[0]=='_'||((x)[0]>='a'&&(x)[0]<='z')||((x)[0]>='A'&&(x)[0]<='Z'))&&islocal)
+#define isVar(x) ((st[loc].kind==ST_VAR||st[loc].kind==ST_PARA)&&islocal)
 
+bool isOB[MAXSIGNNUM];
 void init_block(block& b) {
 	b.no = 0;
 	b.start = 0;
 	b.end = 0;
-	for (int i = 0;i < MAXSIGNNUM;i++) {
+	for (int i = 0;i < stp;i++) {
 		b.use[i] = false;
 		b.def[i] = false;
 		b.in[i] = false;
 		b.out[i] = false;
 	}
 }
+
+//è®¡ç®—åŸºæœ¬å—
 void split_block() {
 	int cnt = 0;
-	//Èë¿Ú¿é
+	//å…¥å£å—
 	block init;
 	init_block(init);
 	init.no = cnt++;
@@ -32,7 +35,7 @@ void split_block() {
 		tmp.no = cnt++;
 		tmp.start = i;
 		int j = i;
-		//ÕÒµ½±¾¿éµÄ½áÊø»òÏÂÒ»¿éµÄ¿ªÊ¼
+		//æ‰¾åˆ°æœ¬å—çš„ç»“æŸæˆ–ä¸‹ä¸€å—çš„å¼€å§‹
 		while (j < (int)mc.size() &&
 			mc[j].op != "BNZ"&&mc[j].op != "BEZ"&&mc[j].op != "GOTO" &&
 			!(i!=j&&mc[j].op == "LABEL"&&mc[j].n1[0] == '$') &&
@@ -61,8 +64,9 @@ void split_block() {
 	blocks.push_back(exit);
 }
 
+//è®¡ç®—æµå›¾
 void gen_DAG() {
-	//¼ÆËãÃ¿¸ö¿éµÄºó¼Ì
+	//è®¡ç®—æ¯ä¸ªå—çš„åç»§
 	blocks[0].next.push_back(1);
 	for (int i = 1;i < (int)blocks.size() - 1;i++) {
 		if (mc[blocks[i].end].op == "GOTO") {
@@ -81,7 +85,7 @@ void gen_DAG() {
 		else
 			blocks[i].next.push_back(i+1);
 	}
-	//¼ÆËãÃ¿¸ö¿éµÄÇ°Çı
+	//è®¡ç®—æ¯ä¸ªå—çš„å‰é©±
 	blocks[1].pre.push_back(0);
 	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		if (i != 1) {
@@ -97,13 +101,14 @@ void gen_DAG() {
 				blocks[i].pre.push_back(j);
 		}
 	}
-	//¼ÆËãexit¿éµÄÇ°Çı
+	//è®¡ç®—exitå—çš„å‰é©±
 	for (int j = 1;j < (int)blocks.size() - 1;j++) {
 		if (mc[blocks[j].end].op == "RET" || mc[blocks[j].end].op == "EXIT")
 			blocks.back().pre.push_back(j);
 	}
 }
 
+//è®¡ç®—def use
 void cal_def_use() {
 	int def_loc, loc;
 	bool islocal;
@@ -111,7 +116,13 @@ void cal_def_use() {
 		map<int, bool> rec;
 		for (int j = blocks[i].start;j <= blocks[i].end;j++) {
 			if (mc[j].op == "LABEL"&&mc[j].n1[0]!='$') {
-				def_loc = search_tab(mc[j].n1=="main"?"main":mc[j].n1.substr(5), islocal);
+				def_loc = search_tab(mc[j].n1=="main"?"main":mc[j].n1.substr(5), islocal, -2);
+				//æŠŠå‚æ•°çš„defç½®ä¸ºtrue
+				//int k = def_loc + 1;
+				//while (k < stp&&st[k].kind == ST_PARA) {
+				//	blocks[i].def[k] = true;
+				//	k++;
+				//}
 			}
 			else if (mc[j].op == "ADD" || mc[j].op == "SUB" ||
 				mc[j].op == "MULT" || mc[j].op == "DIV" || mc[j].op == "EQ" || mc[j].op == "NE" ||
@@ -129,7 +140,8 @@ void cal_def_use() {
 				}
 				islocal = false;
 				loc = search_tab(mc[j].res, islocal, def_loc);
-				if (rec.find(loc) == rec.end()&&isVar(mc[j].res)) {
+
+				if (rec.find(loc) == rec.end() && isVar(mc[j].res)) {
 					rec[loc] = true;
 				}
 			}
@@ -173,34 +185,37 @@ void cal_def_use() {
 				islocal = false;
 				loc = search_tab(mc[j].n2, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n2)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 			}
 			else if (mc[j].op == "INC" || mc[j].op == "INV") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, true));
+					rec[loc] = true;
 				}
 			}
 			else if (mc[j].op == "OUTV" || mc[j].op == "OUTC") {
 				islocal = false;
 				loc = search_tab(mc[j].n1, islocal, def_loc);
 				if (rec.find(loc) == rec.end() && isVar(mc[j].n1)) {
-					rec.insert(pair<int, bool>(loc, false));
+					rec[loc] = false;
 				}
 			}
 		}
-		for (map<int, bool>::iterator it = rec.begin();it!=rec.end();it++) {
+		for (map<int, bool>::iterator it = rec.begin();it!=rec.end();it++) 
 			if (it->second) {
 				blocks[i].def[it->first] = true;
 			}
-			else
+		for (map<int, bool>::iterator it = rec.begin();it != rec.end();it++) 
+			if (!it->second&&!blocks[i].def[it->first]) {	//å‡ºç°åœ¨defé‡Œå°±ä¸èƒ½åœ¨useé‡Œ
 				blocks[i].use[it->first] = true;
-		}
+			}
+		
 	}
 }
 
+//ä¸€äº›é›†åˆè®¡ç®—çš„è¾…åŠ©å‡½æ•°
 void unionset(bool a[], bool b[], bool c[], int size) {
 	for (int i = 0;i < size;i++)
 		c[i] = a[i] || b[i];
@@ -221,10 +236,8 @@ bool assign_and_check_change(bool a[], bool b[], int size) {
 	return change;
 }
 
-
+//è®¡ç®—in out
 void cal_in_out() {
-	split_block();
-	gen_DAG();
 	cal_def_use();
 	bool change = false;
 	bool tmp[MAXSIGNNUM];
@@ -233,57 +246,30 @@ void cal_in_out() {
 		for (int i = 1;i < (int)blocks.size()-1;i++) {
 			memset(tmp, 0, sizeof(tmp));
 			for (int j = 0;j < (int)blocks[i].next.size();j++) {
-				unionset(blocks[blocks[i].next[j]].in, tmp, tmp);
+				unionset(blocks[blocks[i].next[j]].in, tmp, tmp, stp);
 			}
-			change = !change ? assign_and_check_change(tmp, blocks[i].out) : true;
-			substract(blocks[i].out, blocks[i].def, tmp);
-			unionset(tmp, blocks[i].use, tmp);
-			change = !change ? assign_and_check_change(tmp, blocks[i].in) : true;
+			change = !change ? assign_and_check_change(tmp, blocks[i].out, stp) : true;
+			substract(blocks[i].out, blocks[i].def, tmp, stp);
+			unionset(tmp, blocks[i].use, tmp, stp);
+			change = !change ? assign_and_check_change(tmp, blocks[i].in, stp) : true;
 		}
 	} while (change);
 }
 
-
-void cal_alloc() {
-	cal_in_out();
-	int sregcnt = 16;
-	int func_begin, func_end;
-	bool islocal;
-	for (int i = 2;i < blocks.size() - 1;i++) {
-		//Èç¹û±¾¿éÊÇÒ»¸öº¯ÊıµÄ¿ªÊ¼ ÄÇÃ´¿ÉÒÔ´ÓÍ··ÖÅä¼Ä´æÆ÷
-		if (mc[blocks[i].start].op == "LABEL"&&mc[blocks[i].start].n1[0] != '$') {
-			sregcnt = 16;
-			func_begin = search_tab(mc[blocks[i].start].n1 == "main" ? "main" : mc[blocks[i].start].n1.substr(5), islocal);
-			func_end = func_begin + 1;
-			while (func_end < stp&&st[func_end].kind != ST_FUNC)
-				func_end++;	//Ò»¸öº¯ÊıÔÚ·ûºÅ±íÖĞµÄ·¶Î§ ×ó±ÕÓÒ¿ªÇø¼ä
-		}
-		if (sregcnt > 23) continue;	//¼ÓËÙÈç¹ûÒÑ¾­Ã»ÓĞ¼Ä´æÆ÷¿É·ÖÁËÄÇÃ´ÔÚ½øÈëÏÂÒ»¸öº¯ÊıÖ®Ç°Ã»±ØÒª·ÖÁË
-		for (int j = func_begin;j < func_end;j++) {
-			//Èç¹ûÄ³¸ö±äÁ¿ÊÇÕâ¸ö»ù±¾¿éµÄin±äÁ¿
-			if (blocks[i].in[j]) {
-				//ÓĞ¼Ä´æÆ÷²¢ÇÒ´Ë±äÁ¿Ã»·ÖÅä¹ı Ôò·ÖÅä
-				if (sregcnt <= 23 && name2reg[j] == 0)
-					name2reg[j] = sregcnt++;
-			}
-		}
-	}
-}
-void dump_def_use() {
-	cal_in_out();
+void dump_blocks() {
 	for (int i = 1;i < (int)blocks.size()-1;i++) {
 		cout << "\n--------------------"<<blocks[i].no<<"-----------------\n";
 		cout << "def:";
-		for (int j = 0;j<MAXSIGNNUM;j++)
+		for (int j = 0;j<stp;j++)
 			if(blocks[i].def[j]) cout << st[j].name<<" ";
 		cout << "\nuse:";
-		for (int j = 0;j < MAXSIGNNUM;j++)
+		for (int j = 0;j < stp;j++)
 			if (blocks[i].use[j]) cout << st[j].name << " ";
 		cout << "\nin:";
-		for (int j = 0;j < MAXSIGNNUM;j++)
+		for (int j = 0;j < stp;j++)
 			if (blocks[i].in[j]) cout << st[j].name << " ";
 		cout << "\nout:";
-		for (int j = 0;j < MAXSIGNNUM;j++)
+		for (int j = 0;j < stp;j++)
 			if (blocks[i].out[j]) cout << st[j].name << " ";
 		cout << "\npre:";
 		for (int j = 0;j < (int)blocks[i].pre.size();j++)
@@ -298,3 +284,10 @@ void dump_def_use() {
 	}
 }
 
+void cal_isOB() {
+	memset(isOB, 0, sizeof(isOB));
+	for (int i = 0;i < (int)blocks.size();i++) {
+		for (int j = 0;j < stp;j++)
+			isOB[j] = isOB[j] || blocks[i].in[j];
+	}
+}
