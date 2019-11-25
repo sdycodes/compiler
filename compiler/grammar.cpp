@@ -11,7 +11,7 @@
 #define DUMP_GREAMMAR false
 
 bool hasReturn;
-bool only_jier;
+bool only_char;
 bool isvoid;
 string factor(bool &onlyChar) {
 	int co = 1;
@@ -383,7 +383,7 @@ void printfstmt() {
 	else_ERR("expect a left parent", 2)
 }
 void returnstmt() {
-	only_jier = true;
+	only_char = true;
 	hasReturn = true;
 	string rec_val;
 	if (type == SEMICOLON) {
@@ -393,7 +393,7 @@ void returnstmt() {
 	else if (type == LPAR) {
 		if (isvoid)	errmsg("void function no value", 0);
 		nextsym(type, val, name);
-		rec_val = expr(only_jier);
+		rec_val = expr(only_char);
 		if (type == RPAR) {
 			genmc("RET", rec_val, "0", "0");
 			nextsym(type, val, name);
@@ -646,7 +646,7 @@ void funcDef(int loc) {
 		genmc("RET", "#", "0", "0");
 	else if (hasReturn) {
 		genmc("RET", "0", "0", "0");
-		if (!only_jier&&st[loc].type == ST_CHAR)
+		if (!only_char&&st[loc].type == ST_CHAR)
 			errmsg("type not match", 0);
 	}
 	else_ERR("expect a return statement", 0);
